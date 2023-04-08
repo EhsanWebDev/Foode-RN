@@ -7,23 +7,172 @@ import {useTheme} from '@shopify/restyle';
 import {Theme} from '../../theme/theme';
 import TabBar from './TabBar';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Image} from 'react-native';
+import {Dimensions, Image, View} from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
+import {verticalScale} from 'react-native-size-matters';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {Divider} from 'react-native-paper';
+
+const imagesData = [
+  {
+    id: 1,
+    image:
+      'https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
+  },
+  {
+    id: 2,
+    image:
+      'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
+  },
+  {
+    id: 3,
+    image:
+      'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
+  },
+];
 
 const Tab = createMaterialTopTabNavigator();
 
 const Home2 = () => {
   return (
     <Box mt="l" mx="m">
-      <Text variant="SM" color="title">
+      <Box>
+        <Text fontSize={22} color="title" fontWeight="bold" mb="xs">
+          News
+        </Text>
+        <Box
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          my="s">
+          <Box flex={1} mr="l">
+            <Text mb="xs" fontWeight="bold" color="title">
+              Lorem, ipsum.
+            </Text>
+            <Text variant="SM" color="textMuted">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
+              dolor. Lorem ipsum dolor sit amet
+            </Text>
+          </Box>
+          <Box backgroundColor="gray" width={46} height={46}></Box>
+        </Box>
+        <Divider />
+        <Box
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          my="s">
+          <Box flex={1} mr="l">
+            <Text mb="xs" fontWeight="bold" color="title">
+              Lorem, ipsum.
+            </Text>
+            <Text variant="SM" color="textMuted">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
+              dolor. Lorem ipsum dolor sit amet
+            </Text>
+          </Box>
+          <Box backgroundColor="gray" width={46} height={46}></Box>
+        </Box>
+        <Divider />
+        <Box
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          my="s">
+          <Box flex={1} mr="l">
+            <Text mb="xs" fontWeight="bold" color="title">
+              Lorem, ipsum.
+            </Text>
+            <Text variant="SM" color="textMuted">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
+              dolor. Lorem ipsum dolor sit amet
+            </Text>
+          </Box>
+          <Box backgroundColor="gray" width={46} height={46}></Box>
+        </Box>
+        <Divider />
+      </Box>
+      {/* <Text variant="SM" color="title">
         Some Content...
-      </Text>
+      </Text> */}
     </Box>
+  );
+};
+
+const PaginationItem: React.FC<{
+  index: number;
+  backgroundColor: string;
+  length: number;
+  animValue: Animated.SharedValue<number>;
+  isRotate?: boolean;
+  inActiveColor?: string;
+}> = props => {
+  const {animValue, index, length, backgroundColor, inActiveColor, isRotate} =
+    props;
+  const width = 8;
+
+  const animStyle = useAnimatedStyle(() => {
+    let inputRange = [index - 1, index, index + 1];
+    let outputRange = [-width, 0, width];
+
+    if (index === 0 && animValue?.value > length - 1) {
+      inputRange = [length - 1, length, length + 1];
+      outputRange = [-width, 0, width];
+    }
+
+    return {
+      transform: [
+        {
+          translateX: interpolate(
+            animValue?.value,
+            inputRange,
+            outputRange,
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  }, [animValue, index, length]);
+  return (
+    <View
+      style={{
+        backgroundColor: inActiveColor,
+        width,
+        height: width,
+        borderRadius: 4,
+        overflow: 'hidden',
+        // transform: [
+        //   {
+        //     rotateZ: isRotate ? '90deg' : '0deg',
+        //   },
+        // ],
+      }}>
+      <Animated.View
+        style={[
+          {
+            borderRadius: 50,
+            backgroundColor,
+            flex: 1,
+          },
+          animStyle,
+        ]}
+      />
+    </View>
   );
 };
 
 const Home: React.FC = ({navigation}) => {
   const theme = useTheme<Theme>();
   const {colors} = theme || {};
+  const width = Dimensions.get('window').width;
+
+  const [isVertical, setIsVertical] = React.useState(false);
+  const progressValue = useSharedValue<number>(0);
   return (
     <Box flex={1} backgroundColor="mainBackground" pt="s">
       <Box
@@ -35,21 +184,10 @@ const Home: React.FC = ({navigation}) => {
           source={require('../../assets/images/logo.png')}
           style={{width: 32, height: 32, marginLeft: -4}}
         />
-        {/* <Icon
-          name="ios-fast-food-outline"
-          size={32}
-          style={{marginLeft: -2}}
-          color={colors.title}
-        /> */}
         <Text variant="Normal" fontWeight="bold" color="title">
           Home
         </Text>
-        <Icon
-          name="ios-person-circle-outline"
-          size={32}
-          // style={{marginLeft: -4}}
-          color={colors.title}
-        />
+        <Icon name="ios-person-circle-outline" size={32} color={colors.title} />
       </Box>
       <Box
         px="m"
@@ -86,7 +224,63 @@ const Home: React.FC = ({navigation}) => {
           onPress={() => {}}
         />
       </Box>
-      {/* <Tab.Navigator
+      <Box>
+        <Carousel
+          snapEnabled
+          onProgressChange={(_, absoluteProgress) =>
+            (progressValue.value = absoluteProgress)
+          }
+          width={width}
+          height={verticalScale(width / 2.5)}
+          data={imagesData}
+          scrollAnimationDuration={1000}
+          onSnapToItem={index => console.log('current index:', index)}
+          renderItem={({item}) => (
+            <Box
+              style={{
+                flex: 1,
+                marginHorizontal: theme.spacing.m,
+              }}>
+              <Image
+                key={item.id}
+                source={{
+                  uri: item.image,
+                }}
+                style={{
+                  height: verticalScale(width / 2.5),
+                  borderRadius: 8,
+                }}
+              />
+            </Box>
+          )}
+        />
+        {!!progressValue && (
+          <Box
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 35,
+              alignSelf: 'center',
+              marginTop: 10,
+            }}>
+            {imagesData.map((item, index) => {
+              return (
+                <PaginationItem
+                  backgroundColor={colors.primary}
+                  inActiveColor={colors.gray}
+                  animValue={progressValue}
+                  index={index}
+                  key={item.id}
+                  isRotate={isVertical}
+                  length={imagesData.length}
+                />
+              );
+            })}
+          </Box>
+        )}
+      </Box>
+
+      <Tab.Navigator
         tabBar={props => <TabBar {...props} />}
         screenOptions={{
           //use this config
@@ -118,8 +312,7 @@ const Home: React.FC = ({navigation}) => {
         <Tab.Screen name="Galleries" component={Home2} />
         <Tab.Screen name="Additional Tab (1)" component={Home2} />
         <Tab.Screen name="Additional Tab (2)" component={Home2} />
- 
-      </Tab.Navigator> */}
+      </Tab.Navigator>
     </Box>
 
     // <Box px="l" pt="xl" backgroundColor="mainBackground" flex={1}>

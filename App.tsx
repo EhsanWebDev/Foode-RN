@@ -12,6 +12,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Text from './src/components/Text/CustomText';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,65 +38,68 @@ const Settings = () => (
 const App = () => {
   return (
     // <Provider store={store}>
-    <SafeAreaView style={{flex: 1}}>
-      <NavigationContainer>
-        <ThemeProvider theme={theme}>
-          <PaperProvider>
-            <AuthStack />
-            {/* <Tab.Navigator
-              screenOptions={{
-                headerShown: false,
-                tabBarLabel: () => null,
-                tabBarActiveTintColor: theme.colors.primary,
-                tabBarInactiveTintColor: theme.colors.muted,
-                tabBarStyle: {
-                  // paddingTop: 10,
-                  // margin: 0,
-                  // height: 50,
-                  // justifyContent: 'center',
-                },
-              }}>
-              <Tab.Screen
-                name="Home"
-                component={HomeStack}
-                options={{
-                  tabBarIcon: ({focused, color, size}) => (
-                    <Icon name="home" size={20} color={color} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Settings"
-                component={Settings}
-                options={{
-                  tabBarIcon: ({focused, color, size}) => (
-                    <Icon name="settings" size={20} color={color} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Tab (1)"
-                component={Settings}
-                options={{
-                  tabBarIcon: ({focused, color, size}) => (
-                    <Icon name="airplane" size={20} color={color} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Tab (2)"
-                component={Settings}
-                options={{
-                  tabBarIcon: ({focused, color, size}) => (
-                    <Icon name="person" size={20} color={color} />
-                  ),
-                }}
-              />
-            </Tab.Navigator> */}
-          </PaperProvider>
-        </ThemeProvider>
-      </NavigationContainer>
-    </SafeAreaView>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
+        <NavigationContainer>
+          <ThemeProvider theme={theme}>
+            <PaperProvider>
+              {/* <AuthStack /> */}
+              {/* <Tab.Navigator
+                screenOptions={{
+                  headerShown: false,
+                  tabBarLabel: () => null,
+                  tabBarActiveTintColor: theme.colors.primary,
+                  tabBarInactiveTintColor: theme.colors.muted,
+                  tabBarStyle: {
+                    // paddingTop: 10,
+                    // margin: 0,
+                    // height: 50,
+                    // justifyContent: 'center',
+                  },
+                }}>
+                <Tab.Screen
+                  name="Home"
+                  component={HomeStack}
+                  options={{
+                    tabBarIcon: ({focused, color, size}) => (
+                      <Icon name="home" size={20} color={color} />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Settings"
+                  component={Settings}
+                  options={{
+                    tabBarIcon: ({focused, color, size}) => (
+                      <Icon name="settings" size={20} color={color} />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Tab (1)"
+                  component={Settings}
+                  options={{
+                    tabBarIcon: ({focused, color, size}) => (
+                      <Icon name="airplane" size={20} color={color} />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Tab (2)"
+                  component={Settings}
+                  options={{
+                    tabBarIcon: ({focused, color, size}) => (
+                      <Icon name="person" size={20} color={color} />
+                    ),
+                  }}
+                />
+              </Tab.Navigator> */}
+              <HomeStack />
+            </PaperProvider>
+          </ThemeProvider>
+        </NavigationContainer>
+      </SafeAreaView>
+    </GestureHandlerRootView>
 
     // </Provider>
   );
