@@ -71,17 +71,16 @@ const theme = createTheme({
   },
   cardVariants: {
     defaults: {
-      shadowColor: 'secondary',
+      shadowColor: 'muted',
       shadowOffset: {
         width: 0,
-        height: 0,
+        height: 1,
       },
-      shadowOpacity: 0.08,
-      shadowRadius: 8,
-      elevation: 1,
+      shadowOpacity: 0.14,
+      shadowRadius: 14,
+      elevation: 3,
     },
     primary: {
-      padding: 'm',
       borderRadius: 12,
       backgroundColor: 'cardPrimaryBackground',
     },

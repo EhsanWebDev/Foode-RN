@@ -13,21 +13,25 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Text from './src/components/Text/CustomText';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import UploadPhoto from './src/screens/Auth/Signup/UploadPhoto/UploadPhoto';
+import {AuthStackNavigatorParamList} from './src/navigation/types';
 
 const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
-const AuthNavigator = createNativeStackNavigator();
+const AuthNavigator = createNativeStackNavigator<AuthStackNavigatorParamList>();
+
 const HomeStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="Home" component={Home} />
   </Stack.Navigator>
 );
 const AuthStack = () => (
-  <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="Bio" component={Bio} />
-  </Stack.Navigator>
+  <AuthNavigator.Navigator screenOptions={{headerShown: false}}>
+    <AuthNavigator.Screen name="Login" component={Login} />
+    <AuthNavigator.Screen name="Bio" component={Bio} />
+    <AuthNavigator.Screen name="UploadPhoto" component={UploadPhoto} />
+  </AuthNavigator.Navigator>
 );
 const Settings = () => (
   <Box>
@@ -43,7 +47,7 @@ const App = () => {
         <NavigationContainer>
           <ThemeProvider theme={theme}>
             <PaperProvider>
-              {/* <AuthStack /> */}
+              <AuthStack />
               {/* <Tab.Navigator
                 screenOptions={{
                   headerShown: false,
@@ -94,7 +98,7 @@ const App = () => {
                   }}
                 />
               </Tab.Navigator> */}
-              <HomeStack />
+              {/* <HomeStack /> */}
             </PaperProvider>
           </ThemeProvider>
         </NavigationContainer>

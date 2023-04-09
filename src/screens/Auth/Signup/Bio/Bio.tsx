@@ -81,7 +81,7 @@ const Bio: React.FC = ({navigation}) => {
 
       <CustomButton
         label="Next"
-        onPress={() => {}}
+        onPress={() => navigation.navigate('UploadPhoto')}
         backgroundColor="primary"
         paddingVertical="m"
         mb="xs"

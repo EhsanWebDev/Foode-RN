@@ -46,6 +46,11 @@ allprojects {
             }
         }
         google()
+
+        // ADDING THIS FOR IMAGE CROP PICKER
+         maven { url 'https://maven.google.com' }
+         
         maven { url 'https://www.jitpack.io' }
+
     }
 }

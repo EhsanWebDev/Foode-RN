@@ -4,6 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs to access your photo gallery</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App needs to access your phone camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App needs to access your mic to record videos</string>
 	<key>CFBundleDisplayName</key>
 	<string>NamasteSchiffli</string>
 	<key>CFBundleExecutable</key>
