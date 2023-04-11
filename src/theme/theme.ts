@@ -44,6 +44,7 @@ const theme = createTheme({
     },
     Normal: {
       fontSize: 16,
+      color: 'title',
     },
     SM: {
       fontSize: 12,
@@ -74,9 +75,9 @@ const theme = createTheme({
       shadowColor: 'muted',
       shadowOffset: {
         width: 0,
-        height: 1,
+        height: 2,
       },
-      shadowOpacity: 0.14,
+      shadowOpacity: 0.12,
       shadowRadius: 14,
       elevation: 3,
     },

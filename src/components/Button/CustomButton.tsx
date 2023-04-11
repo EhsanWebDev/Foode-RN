@@ -25,12 +25,14 @@ type Props = RestyleProps & {
   label: string;
   labelOnly?: boolean;
   buttonType?: 'rounded-full' | 'textOnly';
+  disabled?: boolean;
 };
 
 const CustomButton: React.FC<Props> = ({
   label,
   onPress,
   buttonType = 'rounded-full',
+  disabled,
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -39,9 +41,10 @@ const CustomButton: React.FC<Props> = ({
     paddingVertical: 'm',
     borderRadius: 24,
     alignItems: 'center',
+    opacity: disabled ? 0.7 : 1,
   };
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
       {buttonType === 'textOnly' ? (
         <Text fontWeight="bold" variant="SM" {...props}>
           {label}

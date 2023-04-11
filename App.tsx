@@ -15,6 +15,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import UploadPhoto from './src/screens/Auth/Signup/UploadPhoto/UploadPhoto';
 import {AuthStackNavigatorParamList} from './src/navigation/types';
+import SetLocation from './src/screens/Auth/Signup/SetLocation/SetLocation';
+import VerifyCode from './src/screens/Auth/ForgotPassword/VerifyCode/VerifyCode';
+import ResetPassword from './src/screens/Auth/ForgotPassword/ResetPassword/ResetPassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +34,8 @@ const AuthStack = () => (
     <AuthNavigator.Screen name="Login" component={Login} />
     <AuthNavigator.Screen name="Bio" component={Bio} />
     <AuthNavigator.Screen name="UploadPhoto" component={UploadPhoto} />
+    <AuthNavigator.Screen name="VerifyCode" component={VerifyCode} />
+    <AuthNavigator.Screen name="ResetPassword" component={ResetPassword} />
   </AuthNavigator.Navigator>
 );
 const Settings = () => (

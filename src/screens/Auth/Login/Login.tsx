@@ -1,18 +1,28 @@
 import React, {useState} from 'react';
+import {Image, TouchableOpacity} from 'react-native';
+
 import Box from '../../../components/View/CustomView';
 import Text from '../../../components/Text/CustomText';
 import CustomInput from '../../../components/TextInput/CustomInput';
 import CustomButton from '../../../components/Button/CustomButton';
 import Card from '../../../components/Card/Card';
+import RememberMe from '../../../components/RememberMe/RememberMe';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import icon from '../../../assets/images/logo.png';
 
 const Login: React.FC = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   return (
     <Box flex={1} paddingHorizontal="m" backgroundColor="mainBackground">
-      <Box flex={1} alignItems="center" justifyContent="flex-end">
-        <Text variant="Normal" fontWeight="bold">
+      <Box flex={1} alignItems="center" justifyContent="center">
+        <Image source={icon} />
+        <Text variant="Normal" fontWeight="bold" mt="l">
           Sign in to your account
         </Text>
       </Box>
@@ -31,20 +41,22 @@ const Login: React.FC = ({navigation}) => {
             label="Password"
             placeholder="Password"
             secureTextEntry={!showPass}
-            value={email}
-            onChangeText={text => setEmail(text)}
+            value={password}
+            onChangeText={text => setPassword(text)}
             showIcon
             iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
             onIconPress={() => setShowPass(pass => !pass)}
           />
         </Box>
-        <Text variant="SM" fontWeight="bold" ml="l" marginTop="l">
-          Remember me
-        </Text>
-        <CustomButton label="Sign in" onPress={() => {}} marginTop="l" />
+        <RememberMe
+          checked={checked}
+          onCheck={() => setChecked(check => !check)}
+        />
+
+        <CustomButton label="Sign in" onPress={() => {}} mt="l" />
         <Box alignItems="center">
           <CustomButton
-            onPress={() => {}}
+            onPress={() => navigation.navigate('VerifyCode')}
             mt="l"
             buttonType="textOnly"
             label="  Forgot the password?"
@@ -55,12 +67,41 @@ const Login: React.FC = ({navigation}) => {
           or continue with
         </Text>
         <Box mt="l" flexDirection="row" justifyContent="space-between">
-          <Card alignItems="center" flexGrow={1} mr="m" variant="primary">
-            <Text>Facebook</Text>
-          </Card>
-          <Card alignItems="center" flexGrow={1} ml="m" variant="primary">
-            <Text>Google</Text>
-          </Card>
+          <>
+            <Card
+              alignItems="center"
+              flexGrow={1}
+              mr="m"
+              justifyContent="center"
+              variant="primary">
+              <TouchableOpacity>
+                <Box flexDirection="row" alignItems="center">
+                  <Icon name="facebook" size={24} color="blue" />
+                  <Text fontWeight="bold" variant="SM" ml="s">
+                    Facebook
+                  </Text>
+                </Box>
+              </TouchableOpacity>
+            </Card>
+          </>
+
+          <>
+            <Card
+              alignItems="center"
+              flexGrow={1}
+              ml="m"
+              p="s"
+              variant="primary">
+              <TouchableOpacity>
+                <Box flexDirection="row" alignItems="center">
+                  <Icon name="google" size={24} color="red" />
+                  <Text fontWeight="bold" variant="SM" ml="s">
+                    Google
+                  </Text>
+                </Box>
+              </TouchableOpacity>
+            </Card>
+          </>
         </Box>
 
         <Box
