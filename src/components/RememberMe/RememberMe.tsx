@@ -9,14 +9,14 @@ import {useTheme} from '@shopify/restyle';
 const RememberMe = ({checked, onCheck}) => {
   const theme = useTheme<Theme>();
   return (
-    <Box flexDirection="row" alignItems="center" mt="l" ml="s">
+    <Box flexDirection="row" alignItems="center" mt="l" ml="m">
       <Icon
         onPress={onCheck}
         name={checked ? 'check-circle' : 'checkbox-blank-circle-outline'}
         size={globalUnits.icon_LG}
         color={theme.colors.primary}
       />
-      <Text variant="SM" fontWeight="bold" ml="s">
+      <Text variant="SM" fontWeight="bold" color="title" ml="s">
         Remember me
       </Text>
     </Box>

@@ -101,7 +101,7 @@ const UploadPhoto = ({navigation}: UploadPhotoScreenNavigationProp) => {
         </>
       )}
 
-      <Box flex={1} justifyContent="flex-end" mb="xs">
+      <Box flex={1} justifyContent="flex-end" mb="m">
         <CustomButton disabled={!userPhoto} label="Next" onPress={() => {}} />
       </Box>
     </ScreenContainer>

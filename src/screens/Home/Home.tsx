@@ -7,7 +7,7 @@ import {useTheme} from '@shopify/restyle';
 import {Theme} from '../../theme/theme';
 import TabBar from './TabBar';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Dimensions, Image, View} from 'react-native';
+import {Dimensions, Image, ScrollView, View} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import {verticalScale} from 'react-native-size-matters';
 import Animated, {
@@ -40,66 +40,65 @@ const Tab = createMaterialTopTabNavigator();
 
 const Home2 = () => {
   return (
-    <Box mt="l" mx="m">
+    <Box mt="m" mx="m">
       <Box>
         <Text fontSize={22} color="title" fontWeight="bold" mb="xs">
           News
         </Text>
-        <Box
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          my="s">
-          <Box flex={1} mr="l">
-            <Text mb="xs" fontWeight="bold" color="title">
-              Lorem, ipsum.
-            </Text>
-            <Text variant="SM" color="textMuted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
-              dolor. Lorem ipsum dolor sit amet
-            </Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            my="s">
+            <Box flex={1} mr="l">
+              <Text mb="xs" fontWeight="bold" color="title">
+                Lorem, ipsum.
+              </Text>
+              <Text variant="SM" color="textMuted">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Commodi, dolor. Lorem ipsum dolor sit amet
+              </Text>
+            </Box>
+            <Box backgroundColor="gray" width={46} height={46}></Box>
           </Box>
-          <Box backgroundColor="gray" width={46} height={46}></Box>
-        </Box>
-        <Divider />
-        <Box
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          my="s">
-          <Box flex={1} mr="l">
-            <Text mb="xs" fontWeight="bold" color="title">
-              Lorem, ipsum.
-            </Text>
-            <Text variant="SM" color="textMuted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
-              dolor. Lorem ipsum dolor sit amet
-            </Text>
+          <Divider />
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            my="s">
+            <Box flex={1} mr="l">
+              <Text mb="xs" fontWeight="bold" color="title">
+                Lorem, ipsum.
+              </Text>
+              <Text variant="SM" color="textMuted">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Commodi, dolor. Lorem ipsum dolor sit amet
+              </Text>
+            </Box>
+            <Box backgroundColor="gray" width={46} height={46}></Box>
           </Box>
-          <Box backgroundColor="gray" width={46} height={46}></Box>
-        </Box>
-        <Divider />
-        <Box
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          my="s">
-          <Box flex={1} mr="l">
-            <Text mb="xs" fontWeight="bold" color="title">
-              Lorem, ipsum.
-            </Text>
-            <Text variant="SM" color="textMuted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
-              dolor. Lorem ipsum dolor sit amet
-            </Text>
+          <Divider />
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            my="s">
+            <Box flex={1} mr="l">
+              <Text mb="xs" fontWeight="bold" color="title">
+                Lorem, ipsum.
+              </Text>
+              <Text variant="SM" color="textMuted">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Commodi, dolor. Lorem ipsum dolor sit amet
+              </Text>
+            </Box>
+            <Box backgroundColor="gray" width={46} height={46}></Box>
           </Box>
-          <Box backgroundColor="gray" width={46} height={46}></Box>
-        </Box>
-        <Divider />
+          <Divider />
+        </ScrollView>
       </Box>
-      {/* <Text variant="SM" color="title">
-        Some Content...
-      </Text> */}
     </Box>
   );
 };
@@ -166,7 +165,7 @@ const PaginationItem: React.FC<{
   );
 };
 
-const Home: React.FC = ({navigation}) => {
+const Home = ({navigation}) => {
   const theme = useTheme<Theme>();
   const {colors} = theme || {};
   const width = Dimensions.get('window').width;
@@ -187,7 +186,20 @@ const Home: React.FC = ({navigation}) => {
         <Text variant="Normal" fontWeight="bold" color="title">
           Home
         </Text>
-        <Icon name="ios-person-circle-outline" size={32} color={colors.title} />
+        <Box flexDirection="row" alignItems="center">
+          <Icon
+            name="ios-cart"
+            size={24}
+            color={colors.title}
+            style={{marginRight: 2}}
+            onPress={() => navigation.navigate('Cart')}
+          />
+          <Icon
+            name="ios-person-circle-outline"
+            size={24}
+            color={colors.title}
+          />
+        </Box>
       </Box>
       <Box
         px="m"
@@ -217,10 +229,9 @@ const Home: React.FC = ({navigation}) => {
           </Box>
         </Box>
         <CustomButton
+          buttonSize="small"
+          buttonType="contained"
           label="Order Now"
-          paddingVertical="xs"
-          variant="XS"
-          px="s"
           onPress={() => {}}
         />
       </Box>
@@ -279,54 +290,22 @@ const Home: React.FC = ({navigation}) => {
           </Box>
         )}
       </Box>
-
-      <Tab.Navigator
-        tabBar={props => <TabBar {...props} />}
-        screenOptions={{
-          //use this config
-          tabBarScrollEnabled: true,
-          tabBarIndicatorStyle: {
-            backgroundColor: colors.secondary,
-            height: 2,
-          },
-          // tabBarIndicator: () => null,
-          tabBarItemStyle: {
-            width: 'auto',
-            alignItems: 'flex-start',
-            paddingBottom: 0,
-            marginBottom: 0,
-            minWidth: 10,
-          },
-          tabBarLabelStyle: {
-            fontSize: 12,
-            color: '#000',
-            textTransform: 'capitalize',
-            paddingBottom: 0,
-            marginBottom: 0,
-          },
-        }}>
-        <Tab.Screen name="Order" component={Home2} />
-        <Tab.Screen name="Reservations" component={Home2} />
-        <Tab.Screen name="Loyalty" component={Home2} />
-        <Tab.Screen name="About" component={Home2} />
-        <Tab.Screen name="Galleries" component={Home2} />
-        <Tab.Screen name="Additional Tab (1)" component={Home2} />
-        <Tab.Screen name="Additional Tab (2)" component={Home2} />
-      </Tab.Navigator>
+      <Box flex={1}>
+        <Tab.Navigator
+          tabBar={props => <TabBar {...props} />}
+          sceneContainerStyle={{
+            backgroundColor: colors.mainBackground,
+          }}>
+          <Tab.Screen name="Order" component={Home2} />
+          <Tab.Screen name="Reservations" component={Home2} />
+          <Tab.Screen name="Loyalty" component={Home2} />
+          <Tab.Screen name="About" component={Home2} />
+          <Tab.Screen name="Galleries" component={Home2} />
+          <Tab.Screen name="Additional Tab (1)" component={Home2} />
+          <Tab.Screen name="Additional Tab (2)" component={Home2} />
+        </Tab.Navigator>
+      </Box>
     </Box>
-
-    // <Box px="l" pt="xl" backgroundColor="mainBackground" flex={1}>
-    //   <CustomButton
-    //     label="Go to Login"
-    //     onPress={() => navigation.navigate('Login')}
-    //     mt="l"
-    //   />
-    //   <CustomButton
-    //     label="Go to Bio"
-    //     onPress={() => navigation.navigate('Bio')}
-    //     mt="l"
-    //   />
-    // </Box>
   );
 };
 

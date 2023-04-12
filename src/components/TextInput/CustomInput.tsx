@@ -53,7 +53,12 @@ const Input: React.FC<InputProps & RestyleProps> = ({
   return (
     <Box {...props}>
       {label && (
-        <Text color="textMuted" marginBottom="m" fontWeight="bold" variant="SM">
+        <Text
+          marginBottom="s"
+          ml="m"
+          fontWeight="bold"
+          variant="body_sm"
+          color="textMuted">
           {label} {required && <Text color="error">*</Text>}
         </Text>
       )}

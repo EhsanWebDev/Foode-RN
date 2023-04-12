@@ -18,17 +18,10 @@ import {AuthStackNavigatorParamList} from './src/navigation/types';
 import SetLocation from './src/screens/Auth/Signup/SetLocation/SetLocation';
 import VerifyCode from './src/screens/Auth/ForgotPassword/VerifyCode/VerifyCode';
 import ResetPassword from './src/screens/Auth/ForgotPassword/ResetPassword/ResetPassword';
+import RootNavigation from './src/navigation/RootNavigation';
 
-const Tab = createBottomTabNavigator();
-
-const Stack = createNativeStackNavigator();
 const AuthNavigator = createNativeStackNavigator<AuthStackNavigatorParamList>();
 
-const HomeStack = () => (
-  <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Home" component={Home} />
-  </Stack.Navigator>
-);
 const AuthStack = () => (
   <AuthNavigator.Navigator screenOptions={{headerShown: false}}>
     <AuthNavigator.Screen name="Login" component={Login} />
@@ -37,11 +30,6 @@ const AuthStack = () => (
     <AuthNavigator.Screen name="VerifyCode" component={VerifyCode} />
     <AuthNavigator.Screen name="ResetPassword" component={ResetPassword} />
   </AuthNavigator.Navigator>
-);
-const Settings = () => (
-  <Box>
-    <Text variant="header">Settings</Text>
-  </Box>
 );
 
 const App = () => {
@@ -52,58 +40,7 @@ const App = () => {
         <NavigationContainer>
           <ThemeProvider theme={theme}>
             <PaperProvider>
-              <AuthStack />
-              {/* <Tab.Navigator
-                screenOptions={{
-                  headerShown: false,
-                  tabBarLabel: () => null,
-                  tabBarActiveTintColor: theme.colors.primary,
-                  tabBarInactiveTintColor: theme.colors.muted,
-                  tabBarStyle: {
-                    // paddingTop: 10,
-                    // margin: 0,
-                    // height: 50,
-                    // justifyContent: 'center',
-                  },
-                }}>
-                <Tab.Screen
-                  name="Home"
-                  component={HomeStack}
-                  options={{
-                    tabBarIcon: ({focused, color, size}) => (
-                      <Icon name="home" size={20} color={color} />
-                    ),
-                  }}
-                />
-                <Tab.Screen
-                  name="Settings"
-                  component={Settings}
-                  options={{
-                    tabBarIcon: ({focused, color, size}) => (
-                      <Icon name="settings" size={20} color={color} />
-                    ),
-                  }}
-                />
-                <Tab.Screen
-                  name="Tab (1)"
-                  component={Settings}
-                  options={{
-                    tabBarIcon: ({focused, color, size}) => (
-                      <Icon name="airplane" size={20} color={color} />
-                    ),
-                  }}
-                />
-                <Tab.Screen
-                  name="Tab (2)"
-                  component={Settings}
-                  options={{
-                    tabBarIcon: ({focused, color, size}) => (
-                      <Icon name="person" size={20} color={color} />
-                    ),
-                  }}
-                />
-              </Tab.Navigator> */}
-              {/* <HomeStack /> */}
+              <RootNavigation />
             </PaperProvider>
           </ThemeProvider>
         </NavigationContainer>

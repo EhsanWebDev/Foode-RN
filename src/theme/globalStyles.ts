@@ -12,7 +12,7 @@ export const shadow = {
 };
 
 export const globalUnits = {
-  inputHeight: verticalScale(36),
+  inputHeight: verticalScale(42),
 
   borderRadius: moderateScale(24),
   borderRadius_xs: moderateScale(8),

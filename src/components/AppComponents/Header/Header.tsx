@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
         </TouchableOpacity>
       )}
 
-      <Text ml={showBackIcon ? 'l' : 'none'} variant="header">
+      <Text ml={showBackIcon ? 'm' : 'none'} variant="header">
         {label}
       </Text>
     </Box>

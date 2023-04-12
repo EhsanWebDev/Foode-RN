@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     height: 30,
-    marginTop: 10,
+    marginTop: 20,
   },
   indicator: {
     backgroundColor: 'black',

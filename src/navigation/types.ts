@@ -10,8 +10,13 @@ export type AuthStackNavigatorParamList = {
   SetLocation: undefined;
   VerifyCode: undefined;
   ResetPassword: undefined;
+  AppTabs: undefined;
 };
 
+export type LoginScreenNavigationProp = NativeStackScreenProps<
+  AuthStackNavigatorParamList,
+  'Login'
+>;
 export type UploadPhotoScreenNavigationProp = NativeStackScreenProps<
   AuthStackNavigatorParamList,
   'UploadPhoto'

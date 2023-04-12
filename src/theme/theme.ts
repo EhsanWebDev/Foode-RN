@@ -1,4 +1,5 @@
 import {createTheme} from '@shopify/restyle';
+import {moderateScale} from 'react-native-size-matters';
 
 const palette = {
   primary: '#F44360',
@@ -8,6 +9,7 @@ const palette = {
   slate: '#56616F',
   muted: '#878E96',
   gray: 'darkgray',
+  input: '#EDF0F3',
 
   black: '#272E39',
   white: '#FFFFFF',
@@ -25,6 +27,7 @@ const theme = createTheme({
 
     error: palette.red,
     gray: palette.gray,
+    inputBorder: palette.input,
 
     title: palette.black,
     text: palette.white,
@@ -38,8 +41,20 @@ const theme = createTheme({
       color: 'title',
     },
     header: {
-      fontSize: 24,
+      fontSize: moderateScale(20),
       fontWeight: 'bold',
+      color: 'title',
+    },
+    body: {
+      fontSize: moderateScale(14),
+      color: 'title',
+    },
+    body_sm: {
+      fontSize: moderateScale(12),
+      color: 'title',
+    },
+    body_xs: {
+      fontSize: moderateScale(10),
       color: 'title',
     },
     Normal: {
@@ -57,6 +72,7 @@ const theme = createTheme({
     none: 0,
     xs: 4,
     s: 8,
+    s_m: 12,
     m: 16,
     l: 20,
     xl: 40,
@@ -90,13 +106,16 @@ const theme = createTheme({
     },
     inputCard: {
       backgroundColor: 'cardPrimaryBackground',
+      elevation: 1,
+      borderColor: 'inputBorder',
+      borderWidth: 1,
+      shadowColor: 'muted',
       shadowOffset: {
         width: 0,
-        height: 1,
+        height: 0,
       },
-      shadowOpacity: 0.18,
-      shadowRadius: 1,
-      elevation: 1,
+      shadowOpacity: 0.08,
+      shadowRadius: 24,
     },
   },
 });

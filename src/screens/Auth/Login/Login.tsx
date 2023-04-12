@@ -1,28 +1,25 @@
 import React, {useState} from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image} from 'react-native';
 
 import Box from '../../../components/View/CustomView';
 import Text from '../../../components/Text/CustomText';
 import CustomInput from '../../../components/TextInput/CustomInput';
 import CustomButton from '../../../components/Button/CustomButton';
-import Card from '../../../components/Card/Card';
 import RememberMe from '../../../components/RememberMe/RememberMe';
+import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
+import {LoginScreenNavigationProp} from '../../../navigation/types';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import icon from '../../../assets/images/logo.png';
-
-const Login: React.FC = ({navigation}) => {
+const Login = ({navigation}: LoginScreenNavigationProp) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
   const [checked, setChecked] = useState(false);
 
   return (
-    <Box flex={1} paddingHorizontal="m" backgroundColor="mainBackground">
+    <ScreenContainer>
       <Box flex={1} alignItems="center" justifyContent="center">
-        <Image source={icon} />
-        <Text variant="Normal" fontWeight="bold" mt="l">
+        <Image source={require('../../../assets/images/logo.png')} />
+        <Text variant="body" fontWeight="bold" mt="l">
           Sign in to your account
         </Text>
       </Box>
@@ -53,7 +50,11 @@ const Login: React.FC = ({navigation}) => {
           onCheck={() => setChecked(check => !check)}
         />
 
-        <CustomButton label="Sign in" onPress={() => {}} mt="l" />
+        <CustomButton
+          label="Sign in"
+          onPress={() => navigation.navigate('AppTabs')}
+          mt="l"
+        />
         <Box alignItems="center">
           <CustomButton
             onPress={() => navigation.navigate('VerifyCode')}
@@ -62,46 +63,6 @@ const Login: React.FC = ({navigation}) => {
             label="  Forgot the password?"
             color="primary"
           />
-        </Box>
-        <Text variant="SM" textAlign="center" marginTop="xl">
-          or continue with
-        </Text>
-        <Box mt="l" flexDirection="row" justifyContent="space-between">
-          <>
-            <Card
-              alignItems="center"
-              flexGrow={1}
-              mr="m"
-              justifyContent="center"
-              variant="primary">
-              <TouchableOpacity>
-                <Box flexDirection="row" alignItems="center">
-                  <Icon name="facebook" size={24} color="blue" />
-                  <Text fontWeight="bold" variant="SM" ml="s">
-                    Facebook
-                  </Text>
-                </Box>
-              </TouchableOpacity>
-            </Card>
-          </>
-
-          <>
-            <Card
-              alignItems="center"
-              flexGrow={1}
-              ml="m"
-              p="s"
-              variant="primary">
-              <TouchableOpacity>
-                <Box flexDirection="row" alignItems="center">
-                  <Icon name="google" size={24} color="red" />
-                  <Text fontWeight="bold" variant="SM" ml="s">
-                    Google
-                  </Text>
-                </Box>
-              </TouchableOpacity>
-            </Card>
-          </>
         </Box>
 
         <Box
@@ -122,7 +83,7 @@ const Login: React.FC = ({navigation}) => {
           />
         </Box>
       </Box>
-    </Box>
+    </ScreenContainer>
   );
 };
 

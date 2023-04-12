@@ -7,10 +7,11 @@ import CustomButton from '../../../../components/Button/CustomButton';
 import {globalUnits} from '../../../../theme/globalStyles';
 import Header from '../../../../components/AppComponents/Header/Header';
 import {verticalScale} from 'react-native-size-matters';
+import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 
 const Bio: React.FC = ({navigation}) => {
   return (
-    <Box flex={1} px="l" pt="m" backgroundColor="mainBackground">
+    <ScreenContainer>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -19,7 +20,7 @@ const Bio: React.FC = ({navigation}) => {
           <Box flex={1}>
             <Header label="Fill in your bio" onBackPress={navigation.goBack} />
 
-            <Text mt="l">
+            <Text mt="l" variant="body">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Delectus, voluptas.
             </Text>
@@ -75,20 +76,15 @@ const Bio: React.FC = ({navigation}) => {
                 mb="l"
               />
             </Box>
+            <CustomButton
+              label="Next"
+              onPress={() => navigation.navigate('UploadPhoto')}
+              mb="m"
+            />
           </Box>
         </ScrollView>
       </KeyboardAvoidingView>
-
-      <CustomButton
-        label="Next"
-        onPress={() => navigation.navigate('UploadPhoto')}
-        backgroundColor="primary"
-        paddingVertical="m"
-        mb="xs"
-        borderRadius={globalUnits.borderRadius}
-        alignItems="center"
-      />
-    </Box>
+    </ScreenContainer>
   );
 };
 
