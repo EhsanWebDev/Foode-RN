@@ -11,7 +11,7 @@ import {
   useRestyle,
   useTheme,
 } from '@shopify/restyle';
-import {Theme} from '../../theme/theme';
+import {AppFontSizes, AppFonts, Theme} from '../../theme/theme';
 import styles from './styles';
 import DatePicker from 'react-native-styled-datepicker';
 import {Dialog, Modal, Portal, RadioButton} from 'react-native-paper';
@@ -53,12 +53,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
   return (
     <Box {...props}>
       {label && (
-        <Text
-          marginBottom="s"
-          ml="m"
-          fontWeight="bold"
-          variant="body_sm"
-          color="textMuted">
+        <Text marginBottom="s" ml="m" variant="body_sm_bold" color="textMuted">
           {label} {required && <Text color="error">*</Text>}
         </Text>
       )}
@@ -166,10 +161,19 @@ const Input: React.FC<InputProps & RestyleProps> = ({
           alignItems="center"
           borderRadius={24}>
           <TextInput
-            style={[styles.input, extraInputStyles]}
+            style={[
+              styles.input,
+              {
+                fontFamily: AppFonts.Secondary_SemiBold,
+                fontSize: AppFontSizes._input,
+                color: colors.inputText,
+              },
+              extraInputStyles,
+            ]}
             returnKeyLabel="Done"
             returnKeyType="done"
             placeholderTextColor={colors.gray}
+            selectionColor={colors.gray}
             {...rest}
           />
           {showIcon && (

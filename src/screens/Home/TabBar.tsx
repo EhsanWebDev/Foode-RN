@@ -11,7 +11,7 @@ import {
   I18nManager,
   LayoutChangeEvent,
 } from 'react-native';
-import {Theme} from '../../theme/theme';
+import {AppFonts, Theme} from '../../theme/theme';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -200,8 +200,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontSize: 12,
+    fontSize: 13,
     textAlign: 'center',
+    fontFamily: AppFonts.Primary_SemiBold,
   },
 });
 

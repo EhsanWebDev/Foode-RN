@@ -1,6 +1,26 @@
 import {createTheme} from '@shopify/restyle';
 import {moderateScale} from 'react-native-size-matters';
 
+export enum AppFonts {
+  Primary_Light = 'SourceSansPro-Light',
+  Primary_Regular = 'SourceSansPro-Regular',
+  Primary_SemiBold = 'SourceSansPro-SemiBold',
+  Primary_Bold = 'SourceSansPro-Bold',
+
+  Secondary_Light = 'Poppins-Light',
+  Secondary_Regular = 'Poppins-Regular',
+  Secondary_SemiBold = 'Poppins-SemiBold',
+  Secondary_Bold = 'Poppins-Bold',
+}
+export enum AppFontSizes {
+  _header = 22,
+  _regular = 16,
+  _title = 14,
+  _sm = 12,
+  _xs = 10,
+  _input = 13,
+}
+
 const palette = {
   primary: '#F44360',
   primary_light: '#FEECEF',
@@ -9,7 +29,8 @@ const palette = {
   slate: '#56616F',
   muted: '#878E96',
   gray: 'darkgray',
-  input: '#EDF0F3',
+  input: '#EAEEF2',
+  inputPlaceholder: '#DCE0E3',
 
   black: '#272E39',
   white: '#FFFFFF',
@@ -27,7 +48,10 @@ const theme = createTheme({
 
     error: palette.red,
     gray: palette.gray,
+
     inputBorder: palette.input,
+    inputText: palette.black,
+    inputPlaceholder: palette.inputPlaceholder,
 
     title: palette.black,
     text: palette.white,
@@ -41,21 +65,59 @@ const theme = createTheme({
       color: 'title',
     },
     header: {
-      fontSize: moderateScale(20),
-      fontWeight: 'bold',
+      fontSize: moderateScale(AppFontSizes._header),
+      fontFamily: AppFonts.Primary_Bold,
       color: 'title',
     },
     body: {
-      fontSize: moderateScale(14),
+      fontSize: moderateScale(AppFontSizes._regular),
       color: 'title',
+      fontFamily: AppFonts.Primary_Regular,
+    },
+    body_bold: {
+      fontSize: moderateScale(AppFontSizes._regular),
+      color: 'title',
+      fontFamily: AppFonts.Primary_Bold,
+    },
+    title: {
+      fontSize: moderateScale(AppFontSizes._title),
+      color: 'title',
+      fontFamily: AppFonts.Primary_Regular,
+    },
+    title_bold: {
+      fontSize: moderateScale(AppFontSizes._title),
+      color: 'title',
+      fontFamily: AppFonts.Primary_Bold,
     },
     body_sm: {
-      fontSize: moderateScale(12),
+      fontSize: moderateScale(AppFontSizes._sm),
       color: 'title',
+      fontFamily: AppFonts.Primary_Regular,
+    },
+    body_sm_bold: {
+      fontSize: moderateScale(AppFontSizes._sm),
+      color: 'title',
+      fontFamily: AppFonts.Primary_Bold,
     },
     body_xs: {
-      fontSize: moderateScale(10),
+      fontSize: moderateScale(AppFontSizes._xs),
       color: 'title',
+      fontFamily: AppFonts.Primary_Regular,
+    },
+    body_xs_bold: {
+      fontSize: moderateScale(AppFontSizes._xs),
+      color: 'title',
+      fontFamily: AppFonts.Primary_Bold,
+    },
+    input: {
+      fontSize: moderateScale(AppFontSizes._input),
+      color: 'inputText',
+      fontFamily: AppFonts.Secondary_Regular,
+    },
+    input_bold: {
+      fontSize: moderateScale(AppFontSizes._input),
+      color: 'inputText',
+      fontFamily: AppFonts.Secondary_SemiBold,
     },
     Normal: {
       fontSize: 16,
@@ -76,6 +138,7 @@ const theme = createTheme({
     m: 16,
     l: 20,
     xl: 40,
+    header: 40,
   },
   breakpoints: {
     phone: 0,
@@ -91,31 +154,33 @@ const theme = createTheme({
       shadowColor: 'muted',
       shadowOffset: {
         width: 0,
-        height: 2,
+        height: 1,
       },
-      shadowOpacity: 0.12,
-      shadowRadius: 14,
-      elevation: 3,
+      shadowOpacity: 0.35,
+      shadowRadius: 3.84,
+
+      elevation: 5,
     },
     primary: {
       borderRadius: 12,
       backgroundColor: 'cardPrimaryBackground',
     },
     secondary: {
-      backgroundColor: 'cardSecondaryBackground',
+      borderRadius: 12,
+      backgroundColor: 'primary',
     },
     inputCard: {
       backgroundColor: 'cardPrimaryBackground',
-      elevation: 1,
+      elevation: 2,
       borderColor: 'inputBorder',
       borderWidth: 1,
       shadowColor: 'muted',
       shadowOffset: {
         width: 0,
-        height: 0,
+        height: 2,
       },
-      shadowOpacity: 0.08,
-      shadowRadius: 24,
+      shadowOpacity: 0.18,
+      shadowRadius: 3.24,
     },
   },
 });

@@ -11,6 +11,7 @@ export type AuthStackNavigatorParamList = {
   VerifyCode: undefined;
   ResetPassword: undefined;
   AppTabs: undefined;
+  RegisteredCredentials: undefined;
 };
 
 export type LoginScreenNavigationProp = NativeStackScreenProps<

@@ -7,9 +7,15 @@ import {useTheme} from '@shopify/restyle';
 import {Theme} from '../../theme/theme';
 import TabBar from './TabBar';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Dimensions, Image, ScrollView, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
-import {verticalScale} from 'react-native-size-matters';
+import {scale, verticalScale} from 'react-native-size-matters';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -17,6 +23,8 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {Divider} from 'react-native-paper';
+import {globalUnits} from '../../theme/globalStyles';
+import Card from '../../components/Card/Card';
 
 const imagesData = [
   {
@@ -40,11 +48,37 @@ const Tab = createMaterialTopTabNavigator();
 
 const Home2 = () => {
   return (
-    <Box mt="m" mx="m">
-      <Box>
-        <Text fontSize={22} color="title" fontWeight="bold" mb="xs">
-          News
+    <Box flex={1} mt="s" mx="m">
+      <Card
+        height={verticalScale(140)}
+        variant="primary"
+        px="m"
+        pt="s"
+        marginVertical="l">
+        <Text variant="body_bold">Nearby Restaurants</Text>
+        <Text variant="body_sm">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima,
+          officiis!...
         </Text>
+        <Box position="absolute" right={10} bottom={-25}>
+          <Image
+            source={require('../../assets/images/nearby.png')}
+            style={{
+              width: scale(135),
+              height: verticalScale(135),
+              resizeMode: 'contain',
+            }}
+          />
+        </Box>
+      </Card>
+    </Box>
+  );
+};
+
+const Menu = () => {
+  return (
+    <Box flex={1} mx="m" mt="l">
+      <Box>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Box
             flexDirection="row"
@@ -173,69 +207,56 @@ const Home = ({navigation}) => {
   const [isVertical, setIsVertical] = React.useState(false);
   const progressValue = useSharedValue<number>(0);
   return (
-    <Box flex={1} backgroundColor="mainBackground" pt="s">
+    <Box flex={1} backgroundColor="mainBackground" pt="m">
       <Box
         mx="m"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center">
-        <Image
-          source={require('../../assets/images/logo.png')}
-          style={{width: 32, height: 32, marginLeft: -4}}
-        />
-        <Text variant="Normal" fontWeight="bold" color="title">
-          Home
-        </Text>
-        <Box flexDirection="row" alignItems="center">
-          <Icon
-            name="ios-cart"
-            size={24}
-            color={colors.title}
-            style={{marginRight: 2}}
-            onPress={() => navigation.navigate('Cart')}
-          />
-          <Icon
-            name="ios-person-circle-outline"
-            size={24}
-            color={colors.title}
-          />
-        </Box>
-      </Box>
-      <Box
-        px="m"
-        mb="m"
-        mt="xl"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center">
-        <Box>
-          <Text
-            variant="header"
-            color="title"
-            fontWeight="bold"
-            letterSpacing={1.1}>
-            Find your food
-          </Text>
-          <Box flexDirection="row" alignItems="center" mt="xs">
+        <Box flex={1} flexDirection="row" alignItems="center">
+          <TouchableOpacity onPress={() => navigation.navigate('AuthStack')}>
             <Icon
-              name="md-location-outline"
-              size={16}
-              style={{marginLeft: -2}}
-              color="gray"
+              name="ios-menu"
+              size={globalUnits.icon_LG}
+              color={colors.title}
             />
-            <Text variant="SM" ml="xs" fontWeight="bold" color="textMuted">
-              San Francisco, California
-            </Text>
-          </Box>
+          </TouchableOpacity>
+
+          <Text variant="body_xs" color="textMuted" ml={'xs'}>
+            San Francisco, Cali...
+          </Text>
         </Box>
-        <CustomButton
-          buttonSize="small"
-          buttonType="contained"
-          label="Order Now"
-          onPress={() => {}}
-        />
+        <Box flex={1.2}>
+          <Text variant="body_bold" color="title">
+            HOME
+          </Text>
+        </Box>
+        <Box>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <Icon
+              name="ios-cart"
+              size={globalUnits.icon_LG}
+              color={colors.title}
+            />
+            <Box
+              position="absolute"
+              backgroundColor="primary"
+              width={20}
+              height={20}
+              justifyContent="center"
+              alignItems="center"
+              borderRadius={20}
+              top={-6}
+              right={-8}>
+              <Text variant="body_sm_bold" color="text">
+                3
+              </Text>
+            </Box>
+          </TouchableOpacity>
+        </Box>
       </Box>
-      <Box>
+
+      <Box mt="xl">
         <Carousel
           snapEnabled
           onProgressChange={(_, absoluteProgress) =>
@@ -290,19 +311,17 @@ const Home = ({navigation}) => {
           </Box>
         )}
       </Box>
-      <Box flex={1}>
+      <Box flex={1} mt="s">
         <Tab.Navigator
           tabBar={props => <TabBar {...props} />}
           sceneContainerStyle={{
             backgroundColor: colors.mainBackground,
           }}>
-          <Tab.Screen name="Order" component={Home2} />
-          <Tab.Screen name="Reservations" component={Home2} />
-          <Tab.Screen name="Loyalty" component={Home2} />
-          <Tab.Screen name="About" component={Home2} />
-          <Tab.Screen name="Galleries" component={Home2} />
-          <Tab.Screen name="Additional Tab (1)" component={Home2} />
-          <Tab.Screen name="Additional Tab (2)" component={Home2} />
+          <Tab.Screen name="Home" component={Home2} />
+          <Tab.Screen name="Menu" component={Menu} />
+          <Tab.Screen name="Reservations" component={Menu} />
+          <Tab.Screen name="About" component={Menu} />
+          <Tab.Screen name="Galleries" component={Menu} />
         </Tab.Navigator>
       </Box>
     </Box>

@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Image, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import {verticalScale} from 'react-native-size-matters';
+
 import Box from '../../../../components/View/CustomView';
-import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import Text from '../../../../components/Text/CustomText';
 import Input from '../../../../components/TextInput/CustomInput';
 import CustomButton from '../../../../components/Button/CustomButton';
-import {globalUnits} from '../../../../theme/globalStyles';
 import Header from '../../../../components/AppComponents/Header/Header';
-import {verticalScale} from 'react-native-size-matters';
+
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 
 const Bio: React.FC = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [showPass, setShowPass] = useState(false);
   return (
     <ScreenContainer>
       <KeyboardAvoidingView
@@ -18,14 +21,12 @@ const Bio: React.FC = ({navigation}) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? verticalScale(80) : 0}>
         <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
           <Box flex={1}>
-            <Header label="Fill in your bio" onBackPress={navigation.goBack} />
+            <Header onBackPress={navigation.goBack} />
+            <Box flex={1} alignItems="center" justifyContent="center">
+              <Image source={require('../../../../assets/images/logo.png')} />
+            </Box>
 
-            <Text mt="l" variant="body">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Delectus, voluptas.
-            </Text>
-
-            <Box mt="xl">
+            <Box mt="l">
               <Input
                 label="Full Name"
                 placeholder="Full Name"
@@ -34,12 +35,38 @@ const Bio: React.FC = ({navigation}) => {
                 mb="l"
               />
               <Input
-                label="Nick Name"
-                placeholder="Nick Name"
+                label="Email"
+                placeholder="Email"
                 value={''}
                 onChangeText={() => {}}
                 mb="l"
+                keyboardType="email-address"
               />
+              <Input
+                required
+                label="Password"
+                placeholder="Password"
+                secureTextEntry={!showPass}
+                value={email}
+                onChangeText={text => setEmail(text)}
+                showIcon
+                iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
+                onIconPress={() => setShowPass(pass => !pass)}
+                mb="l"
+              />
+              <Input
+                required
+                label="Confirm Password"
+                placeholder="Confirm Password"
+                secureTextEntry={!showPass}
+                value={email}
+                onChangeText={text => setEmail(text)}
+                showIcon
+                iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
+                onIconPress={() => setShowPass(pass => !pass)}
+                mb="l"
+              />
+
               <Input
                 label="Phone Number"
                 placeholder="Phone Number"
@@ -48,38 +75,11 @@ const Bio: React.FC = ({navigation}) => {
                 keyboardType="phone-pad"
                 mb="l"
               />
-              <Input
-                label="Gender"
-                placeholder="Gender"
-                value={''}
-                onChangeText={() => {}}
-                mb="l"
-                showIcon
-                iconName="caret-down"
-                inputMode="dropdown"
-              />
-              <Input
-                label="Date of Birth"
-                placeholder="Date of Birth"
-                value={''}
-                onChangeText={() => {}}
-                mb="l"
-                iconName="calendar"
-                showIcon
-                inputMode="date-picker"
-              />
-              <Input
-                label="Address"
-                placeholder="Address"
-                value={''}
-                onChangeText={() => {}}
-                mb="l"
-              />
             </Box>
             <CustomButton
-              label="Next"
+              label="Sign up"
               onPress={() => navigation.navigate('UploadPhoto')}
-              mb="m"
+              mt="s"
             />
           </Box>
         </ScrollView>

@@ -8,8 +8,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: '100%',
-
-    fontWeight: 'bold',
   },
 
   calenderHeaderText: {

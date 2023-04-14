@@ -83,24 +83,25 @@ const CustomButton: React.FC<Props> = ({
   };
 
   return (
-    <Box {...props}>
-      <TouchableOpacity onPress={onPress} disabled={disabled}>
-        {buttonType === 'textOnly' ? (
-          <Text fontWeight="bold" variant="SM" {...props}>
+    // <Box>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
+      {buttonType === 'textOnly' ? (
+        <Text
+          variant={buttonSize === 'full' ? 'title_bold' : 'body_sm_bold'}
+          {...props}>
+          {label}
+        </Text>
+      ) : (
+        <Box {...getStyles()} {...props}>
+          <Text
+            variant={buttonSize === 'full' ? 'title_bold' : 'body_sm_bold'}
+            color={buttonType === 'outlined' ? 'primary' : 'text'}>
             {label}
           </Text>
-        ) : (
-          <Box {...getStyles()}>
-            <Text
-              fontWeight="bold"
-              variant={buttonSize === 'full' ? 'body_sm' : 'body_xs'}
-              color={buttonType === 'outlined' ? 'primary' : 'text'}>
-              {label}
-            </Text>
-          </Box>
-        )}
-      </TouchableOpacity>
-    </Box>
+        </Box>
+      )}
+    </TouchableOpacity>
+    // </Box>
   );
 };
 

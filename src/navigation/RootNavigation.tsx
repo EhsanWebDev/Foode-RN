@@ -20,7 +20,7 @@ const RootNavigation = props => {
   return (
     <AppStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="AuthStack">
+      initialRouteName="AppTabs">
       <AppStack.Screen name="AppTabs" component={HomeStack} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
     </AppStack.Navigator>

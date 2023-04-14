@@ -9,6 +9,7 @@ import Text from '../../../components/Text/CustomText';
 import IconButton from '../../../components/Button/IconButton/IconButton';
 import {Swipeable} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomButton from '../../../components/Button/CustomButton';
 import {useAppTheme} from '../../../utils/hooks';
@@ -35,6 +36,48 @@ const data = [
     price: 15,
     image: require('../../../assets/images/burgers/3.jpg'),
   },
+  {
+    id: '4',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
+  {
+    id: '5',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
+  {
+    id: '6',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
+  {
+    id: '7',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
+  {
+    id: '8',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
+  {
+    id: '9',
+    name: 'Beef Cheesy Burger',
+    slug: 'lorem ipsum',
+    price: 15,
+    image: require('../../../assets/images/burgers/3.jpg'),
+  },
 ];
 
 const CartItemAction = ({isAdd}) => {
@@ -42,15 +85,12 @@ const CartItemAction = ({isAdd}) => {
     <TouchableOpacity>
       <Box
         backgroundColor={isAdd ? 'primary' : 'primaryLight'}
-        height={22}
-        width={22}
+        height={24}
+        width={24}
         alignItems="center"
         justifyContent="center"
         borderRadius={6}>
-        <Text
-          variant="body_sm"
-          fontWeight="bold"
-          color={isAdd ? 'text' : 'primary'}>
+        <Text variant="title_bold" color={isAdd ? 'text' : 'primary'}>
           {isAdd ? '+' : '-'}
         </Text>
       </Box>
@@ -85,20 +125,18 @@ const RenderItem = ({item, onPress}) => {
               style={{width: 60, height: 60, borderRadius: 8}}
             />
             <Box ml="m">
-              <Text variant="body" fontWeight="bold">
-                {name}
-              </Text>
+              <Text variant="title_bold">{name}</Text>
               <Text variant="body_xs" color="textMuted">
                 {slug}
               </Text>
-              <Text fontWeight="bold" variant="body_sm" color="primary">
+              <Text variant="body_sm_bold" color="primary">
                 ${price}
               </Text>
             </Box>
           </Box>
           <Box flexDirection="row" alignItems="center">
             <CartItemAction isAdd={false} />
-            <Text fontWeight="bold" variant="body_sm" marginHorizontal="s">
+            <Text variant="body_sm_bold" marginHorizontal="s">
               2
             </Text>
             <CartItemAction isAdd />
@@ -135,31 +173,96 @@ const Cart = ({navigation}) => {
         <Box flex={1} p="l">
           <Box alignItems="center">
             <Icon name="trash" size={28} color={colors.primary} />
-            <Text variant="body_sm" fontWeight="bold" mt="m">
+            <Text variant="body_sm_bold" mt="m">
               Are your sure you want to delete this cart item?
             </Text>
           </Box>
           <Box flexDirection="row" alignItems="center" mt="xl">
-            <CustomButton
-              label="Cancel"
-              flex={1}
-              mr="l"
-              onPress={() => refRBSheet?.current?.close()}
-              buttonType="outlined"
-              buttonSize="full"
-            />
-            <CustomButton label="Yes, delete" flex={1} onPress={() => {}} />
+            <Box flex={1} mr="m">
+              <CustomButton
+                label="Cancel"
+                onPress={() => refRBSheet?.current?.close()}
+                buttonType="outlined"
+                buttonSize="full"
+              />
+            </Box>
+            <Box flex={1}>
+              <CustomButton label="Yes, delete" onPress={() => {}} />
+            </Box>
           </Box>
         </Box>
       </RBSheet>
       <FlatList
-        style={{marginTop: 32}}
+        style={{marginTop: 30}}
+        showsVerticalScrollIndicator={false}
         data={data}
         renderItem={props => (
           <RenderItem {...props} onPress={() => refRBSheet?.current?.open()} />
         )}
         keyExtractor={item => item.id}
+        ListFooterComponent={() => (
+          <Box py="m" mx="xs">
+            <Box
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center">
+              <Text variant="title_bold">Subtotal</Text>
+              <Text variant="title_bold">$132</Text>
+            </Box>
+            <Box
+              mt="s_m"
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center">
+              <Text variant="body_sm">Delivery Fee</Text>
+              <Text variant="body_sm">$3</Text>
+            </Box>
+            <Box
+              mt="xs"
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center">
+              <Text variant="body_sm">Plateform Fee</Text>
+              <Text variant="body_sm">$1</Text>
+            </Box>
+            <Box mt={'s'} flexDirection="row" alignItems="center">
+              <IconMaterial
+                name="ballot-recount-outline"
+                size={20}
+                color={colors.primary}
+              />
+              <CustomButton
+                buttonType="textOnly"
+                label="Apply a voucher"
+                ml="s_m"
+                color="primary"
+              />
+            </Box>
+          </Box>
+        )}
       />
+      <Card variant="secondary" py="m" px="m" mb="s">
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          mx="s">
+          <Text variant="title" color="text">
+            Total
+          </Text>
+          <Text variant="title_bold" color="text">
+            $137
+          </Text>
+        </Box>
+
+        <CustomButton
+          mt="m"
+          label="Place my order"
+          backgroundColor="mainBackground"
+          buttonType="outlined"
+          onPress={() => {}}
+        />
+      </Card>
     </ScreenContainer>
   );
 };

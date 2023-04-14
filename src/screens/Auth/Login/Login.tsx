@@ -19,9 +19,6 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
     <ScreenContainer>
       <Box flex={1} alignItems="center" justifyContent="center">
         <Image source={require('../../../assets/images/logo.png')} />
-        <Text variant="body" fontWeight="bold" mt="l">
-          Sign in to your account
-        </Text>
       </Box>
 
       <Box flex={2.5} mt="xl">
@@ -57,8 +54,8 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
         />
         <Box alignItems="center">
           <CustomButton
-            onPress={() => navigation.navigate('VerifyCode')}
-            mt="l"
+            onPress={() => navigation.navigate('RegisteredCredentials')}
+            mt="m"
             buttonType="textOnly"
             label="  Forgot the password?"
             color="primary"
@@ -70,13 +67,11 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="center">
-          <Text variant="SM" textAlign="center" color="textMuted">
+          <Text variant="title" textAlign="center" color="textMuted">
             Don't have an account?
           </Text>
           <CustomButton
-            onPress={() => {
-              navigation.navigate('Bio');
-            }}
+            onPress={() => navigation.navigate('Bio')}
             label=" Sign up"
             buttonType="textOnly"
             color="primary"

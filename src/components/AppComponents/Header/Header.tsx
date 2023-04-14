@@ -9,14 +9,14 @@ import Text from '../../Text/CustomText';
 import {globalUnits} from '../../../theme/globalStyles';
 
 interface HeaderProps {
-  label: string;
+  label?: string;
   iconName?: string;
   showBackIcon?: boolean;
   onBackPress?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  label = 'Header',
+  label = '',
   iconName = 'chevron-back',
   showBackIcon = true,
   onBackPress,
@@ -41,10 +41,11 @@ const Header: React.FC<HeaderProps> = ({
           </Box>
         </TouchableOpacity>
       )}
-
-      <Text ml={showBackIcon ? 'm' : 'none'} variant="header">
-        {label}
-      </Text>
+      <Box flex={1} alignItems="center" mr="header">
+        <Text ml={showBackIcon ? 'm' : 'none'} variant="header">
+          {label}
+        </Text>
+      </Box>
     </Box>
   );
 };

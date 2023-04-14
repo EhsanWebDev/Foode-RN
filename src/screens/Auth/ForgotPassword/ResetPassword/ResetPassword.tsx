@@ -16,8 +16,10 @@ const ResetPassword = ({navigation}) => {
   return (
     <ScreenContainer>
       <Header label="Reset password" onBackPress={navigation.goBack} />
-      <Box mt="l">
-        <Text>Create a new password</Text>
+      <Box mt="xl">
+        <Text variant="body" ml="s_m">
+          Create a new password
+        </Text>
 
         <Box marginTop="l">
           <Input
@@ -49,9 +51,10 @@ const ResetPassword = ({navigation}) => {
           checked={checked}
           onCheck={() => setChecked(check => !check)}
         />
-      </Box>
-      <Box flex={1} justifyContent="flex-end" mb="s">
-        <CustomButton label="Next" onPress={() => {}} />
+
+        <Box mt="l">
+          <CustomButton label="Reset Password" onPress={() => {}} />
+        </Box>
       </Box>
     </ScreenContainer>
   );

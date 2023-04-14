@@ -45,7 +45,7 @@ const IconButton: FC<IconButtonProps> = ({
       : size === 'medium'
       ? globalUnits.icon_MD
       : globalUnits.icon_SM;
-  const buttonSize = size === 'big' ? 64 : size === 'medium' ? 42 : 28;
+  const buttonSize = size === 'big' ? 54 : size === 'medium' ? 42 : 28;
 
   const theme = useTheme<Theme>();
   const {colors} = theme;
