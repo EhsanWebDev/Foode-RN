@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Alert} from 'react-native';
+import {StyleSheet, Alert} from 'react-native';
 
 import {
   CodeField,
@@ -16,7 +15,7 @@ import {VerifyCodeScreenNavigationProp} from '../../../../navigation/types';
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 import Box from '../../../../components/View/CustomView';
 import {useTheme} from '@shopify/restyle';
-import {AppFontSizes, AppFonts, Theme} from '../../../../theme/theme';
+import {Theme} from '../../../../theme/theme';
 
 const CELL_COUNT = 4;
 

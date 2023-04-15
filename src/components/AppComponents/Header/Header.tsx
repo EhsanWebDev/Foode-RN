@@ -41,10 +41,8 @@ const Header: React.FC<HeaderProps> = ({
           </Box>
         </TouchableOpacity>
       )}
-      <Box flex={1} alignItems="center" mr="header">
-        <Text ml={showBackIcon ? 'm' : 'none'} variant="header">
-          {label}
-        </Text>
+      <Box flex={1} alignItems="center" mr={showBackIcon ? 'header' : 'none'}>
+        <Text variant="header">{label}</Text>
       </Box>
     </Box>
   );

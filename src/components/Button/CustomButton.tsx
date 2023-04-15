@@ -9,6 +9,7 @@ import {
   TextProps,
 } from '@shopify/restyle';
 import {Theme} from '../../theme/theme';
+import {scale} from 'react-native-size-matters';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
@@ -25,7 +26,7 @@ type Props = RestyleProps & {
   labelOnly?: boolean;
   buttonType?: 'contained' | 'textOnly' | 'outlined';
   disabled?: boolean;
-  buttonSize?: 'full' | 'small';
+  buttonSize?: 'full' | 'small' | 'xSmall';
 };
 
 const CustomButton: React.FC<Props> = ({
@@ -59,13 +60,31 @@ const CustomButton: React.FC<Props> = ({
     borderColor: 'primary',
     width: 80,
   };
+  const outlinedXSmall = {
+    ...defaultStyles,
+    backgroundColor: 'mainBackground',
+    paddingHorizontal: 's',
+    paddingVertical: 'xxs',
+    opacity: disabled ? 0.7 : 1,
+    borderColor: 'primary',
+    width: 40,
+    borderWidth: 1,
+  };
+  const roundedXSmall = {
+    backgroundColor: 'primary',
+    paddingVertical: 's',
+    borderRadius: 24,
+    alignItems: 'center',
+    opacity: disabled ? 0.7 : 1,
+    width: 30,
+  };
   const roundedSmall = {
     backgroundColor: 'primary',
     paddingVertical: 's',
     borderRadius: 24,
     alignItems: 'center',
     opacity: disabled ? 0.7 : 1,
-    width: 80,
+    width: scale(90),
   };
 
   const getStyles = () => {
@@ -74,11 +93,16 @@ const CustomButton: React.FC<Props> = ({
         return roundedFull;
       }
       return outlinedFull;
-    } else {
+    } else if (buttonSize === 'small') {
       if (buttonType === 'contained') {
         return roundedSmall;
       }
       return outlinedSmall;
+    } else if (buttonSize === 'xSmall') {
+      if (buttonType === 'contained') {
+        return roundedXSmall;
+      }
+      return outlinedXSmall;
     }
   };
 
@@ -94,7 +118,7 @@ const CustomButton: React.FC<Props> = ({
       ) : (
         <Box {...getStyles()} {...props}>
           <Text
-            variant={buttonSize === 'full' ? 'title_bold' : 'body_sm_bold'}
+            variant={buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'}
             color={buttonType === 'outlined' ? 'primary' : 'text'}>
             {label}
           </Text>

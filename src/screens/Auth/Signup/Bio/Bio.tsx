@@ -21,7 +21,6 @@ const Bio: React.FC = ({navigation}) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? verticalScale(80) : 0}>
         <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
           <Box flex={1}>
-            <Header onBackPress={navigation.goBack} />
             <Box flex={1} alignItems="center" justifyContent="center">
               <Image source={require('../../../../assets/images/logo.png')} />
             </Box>
@@ -81,6 +80,21 @@ const Bio: React.FC = ({navigation}) => {
               onPress={() => navigation.navigate('UploadPhoto')}
               mt="s"
             />
+            <Box
+              mt="l"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center">
+              <Text variant="title" textAlign="center" color="textMuted">
+                Already have an account?
+              </Text>
+              <CustomButton
+                onPress={() => navigation.navigate('Login')}
+                label=" Sign in"
+                buttonType="textOnly"
+                color="primary"
+              />
+            </Box>
           </Box>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -34,6 +34,10 @@ const palette = {
 
   black: '#272E39',
   white: '#FFFFFF',
+
+  orange: '#E2853D',
+  parrot: '#9DC462',
+  lightWhite: '#E3E3E3',
 };
 
 const theme = createTheme({
@@ -59,6 +63,11 @@ const theme = createTheme({
 
     cardPrimaryBackground: palette.white,
     cardSecondaryBackground: palette.black,
+
+    newsCard_1: palette.orange,
+    newsCard_1_text: palette.lightWhite,
+    newsCard_2_text: palette.lightWhite,
+    newsCard_2: palette.parrot,
   },
   textVariants: {
     default: {
@@ -132,13 +141,14 @@ const theme = createTheme({
   },
   spacing: {
     none: 0,
+    xxs: 2,
     xs: 4,
     s: 8,
     s_m: 12,
     m: 16,
     l: 20,
     xl: 40,
-    header: 40,
+    header: 30,
   },
   breakpoints: {
     phone: 0,
