@@ -6,20 +6,23 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RootNavigation from './src/navigation/RootNavigation';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
   return (
     // <Provider store={store}>
     <GestureHandlerRootView style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer>
-          <ThemeProvider theme={theme}>
-            <PaperProvider>
-              <RootNavigation />
-            </PaperProvider>
-          </ThemeProvider>
-        </NavigationContainer>
-      </SafeAreaView>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.container}>
+          <NavigationContainer>
+            <ThemeProvider theme={theme}>
+              <PaperProvider>
+                <RootNavigation />
+              </PaperProvider>
+            </ThemeProvider>
+          </NavigationContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
 
     // </Provider>

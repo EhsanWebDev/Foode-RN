@@ -257,10 +257,10 @@ const Cart = ({navigation}) => {
 
         <CustomButton
           mt="m"
-          label="Place my order"
+          label="Place My Order"
           backgroundColor="mainBackground"
           buttonType="outlined"
-          onPress={() => {}}
+          onPress={() => navigation.navigate('Checkout')}
         />
       </Card>
     </ScreenContainer>

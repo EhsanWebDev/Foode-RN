@@ -31,6 +31,7 @@ import Card from '../../components/Card/Card';
 import {dimensions} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import IconButton from '../../components/Button/IconButton/IconButton';
 
 const imagesData = [
   {
@@ -142,62 +143,62 @@ const Home2 = () => {
   );
 };
 
-const Menu = () => {
+const MenuItem = ({name, onPress}) => {
   return (
-    <Box flex={1} mx="m" mt="l">
+    <>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+        <Box
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mx="s"
+          py="s">
+          <Box flex={0.9}>
+            <Text variant="title_bold" color="title">
+              {name}
+            </Text>
+            <Text numberOfLines={2} variant="body_sm" color="textMuted" mt="xs">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi,
+              dolor...
+            </Text>
+            <Text variant="body_sm" mt="xs" color="primary">
+              from $4.00
+            </Text>
+          </Box>
+          <Box>
+            <Image
+              source={require('../../assets/images/burgers/2.jpg')}
+              style={{
+                width: scale(64),
+                height: verticalScale(60),
+                borderRadius: 8,
+              }}
+            />
+            <Box position="absolute" right={-4} bottom={-4}>
+              <IconButton icon="add" size="small" inverse iconColor="white" />
+            </Box>
+          </Box>
+        </Box>
+      </TouchableOpacity>
+
+      <Divider />
+    </>
+  );
+};
+const Menu = () => {
+  const nav = useNavigation();
+  return (
+    <Box flex={1} mx="s" mt="l">
       <Box>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            my="s">
-            <Box flex={1} mr="l">
-              <Text mb="xs" fontWeight="bold" color="title">
-                Lorem, ipsum.
-              </Text>
-              <Text variant="SM" color="textMuted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Commodi, dolor. Lorem ipsum dolor sit amet
-              </Text>
-            </Box>
-            <Box backgroundColor="gray" width={46} height={46}></Box>
-          </Box>
-          <Divider />
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            my="s">
-            <Box flex={1} mr="l">
-              <Text mb="xs" fontWeight="bold" color="title">
-                Lorem, ipsum.
-              </Text>
-              <Text variant="SM" color="textMuted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Commodi, dolor. Lorem ipsum dolor sit amet
-              </Text>
-            </Box>
-            <Box backgroundColor="gray" width={46} height={46}></Box>
-          </Box>
-          <Divider />
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            my="s">
-            <Box flex={1} mr="l">
-              <Text mb="xs" fontWeight="bold" color="title">
-                Lorem, ipsum.
-              </Text>
-              <Text variant="SM" color="textMuted">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Commodi, dolor. Lorem ipsum dolor sit amet
-              </Text>
-            </Box>
-            <Box backgroundColor="gray" width={46} height={46}></Box>
-          </Box>
-          <Divider />
+          <MenuItem name="Burger Combo" onPress={() => nav.navigate('Cart')} />
+          <MenuItem name="BBQ Burger" onPress={() => nav.navigate('Cart')} />
+          <MenuItem
+            name="Sriracha Burger"
+            onPress={() => nav.navigate('Cart')}
+          />
+          <MenuItem name="Fish Sandwich" onPress={() => nav.navigate('Cart')} />
+          <MenuItem name="Frosty" onPress={() => nav.navigate('Cart')} />
         </ScrollView>
       </Box>
     </Box>
@@ -529,15 +530,15 @@ const Home = ({navigation}) => {
         justifyContent="space-between"
         alignItems="center">
         <Box flex={1} flexDirection="row" alignItems="center">
-          <TouchableOpacity onPress={() => navigation.navigate('AuthStack')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <Icon
-              name="ios-menu"
-              size={globalUnits.icon_LG}
+              name="md-person-circle"
+              size={globalUnits.icon_LG + 4}
               color={colors.title}
             />
           </TouchableOpacity>
 
-          <Text variant="body_sm" color="textMuted" ml={'xs'}>
+          <Text variant="body_sm_bold" ml={'xs'}>
             San Francisco, California.
           </Text>
         </Box>

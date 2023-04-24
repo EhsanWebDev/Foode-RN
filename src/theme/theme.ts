@@ -35,6 +35,9 @@ const palette = {
   black: '#272E39',
   white: '#FFFFFF',
 
+  green: '#23A757',
+  indigo: '#2E5AAC',
+
   orange: '#E2853D',
   parrot: '#9DC462',
   lightWhite: '#E3E3E3',
@@ -68,6 +71,9 @@ const theme = createTheme({
     newsCard_1_text: palette.lightWhite,
     newsCard_2_text: palette.lightWhite,
     newsCard_2: palette.parrot,
+
+    success: palette.green,
+    completed: palette.indigo,
   },
   textVariants: {
     default: {

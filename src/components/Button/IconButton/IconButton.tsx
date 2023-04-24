@@ -26,6 +26,7 @@ export type IconButtonProps = {
   roundness?: 'full' | 'medium' | 'small';
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
+  inverse?: boolean;
 };
 
 const IconButton: FC<IconButtonProps> = ({
@@ -37,14 +38,14 @@ const IconButton: FC<IconButtonProps> = ({
   roundness = 'medium',
   style = {},
   onPress,
+  inverse = false,
 }: IconButtonProps) => {
   const Icon = ICON_LIBRARIES[iconFamily]();
   const iconSize =
     size === 'big'
       ? globalUnits.icon_LG
-      : size === 'medium'
-      ? globalUnits.icon_MD
-      : globalUnits.icon_SM;
+      : (size === 'medium' || size === 'small') && globalUnits.icon_MD;
+
   const buttonSize = size === 'big' ? 54 : size === 'medium' ? 42 : 28;
 
   const theme = useTheme<Theme>();
@@ -52,7 +53,7 @@ const IconButton: FC<IconButtonProps> = ({
 
   const variantStyles = StyleSheet.create({
     containedButton: {
-      backgroundColor: colors.primaryLight,
+      backgroundColor: inverse ? colors.primary : colors.primaryLight,
     },
     textButton: {
       backgroundColor: 'transparent',
