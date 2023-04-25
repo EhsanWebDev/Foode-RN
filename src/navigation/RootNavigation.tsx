@@ -35,7 +35,7 @@ const RootNavigation = () => {
   return (
     <AppStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="AppTabs">
+      initialRouteName="AuthStack">
       <AppStack.Screen name="AppTabs" component={MyDrawer} />
       <AppStack.Screen name="Cart" component={Cart} />
       <AppStack.Screen name="Checkout" component={Checkout} />

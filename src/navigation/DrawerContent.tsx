@@ -56,7 +56,7 @@ const DrawerContent = ({navigation}) => {
           <CustomButton
             buttonType="outlined"
             label="Sign out"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('AuthStack')}
           />
         </Box>
       </Box>

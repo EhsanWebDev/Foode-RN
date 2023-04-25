@@ -19,6 +19,10 @@ import {Dialog, Modal, Portal, RadioButton} from 'react-native-paper';
 type RestyleProps = BoxProps<Theme>;
 
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
+type errorObject = {
+  error: boolean | string | undefined;
+  errorMsg: string | undefined;
+};
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -30,6 +34,7 @@ interface InputProps extends TextInputProps {
   showIcon?: boolean;
   onIconPress?: () => void;
   inputMode?: 'input' | 'date-picker' | 'dropdown';
+  error?: errorObject;
 }
 
 const Input: React.FC<InputProps & RestyleProps> = ({
@@ -40,6 +45,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
   iconName = 'mail',
   inputMode = 'input',
   onIconPress,
+  error,
   ...rest
 }) => {
   const theme = useTheme<Theme>();
@@ -154,34 +160,45 @@ const Input: React.FC<InputProps & RestyleProps> = ({
       ) : (
         <Card
           variant="inputCard"
-          paddingHorizontal="m"
           height={globalUnits.inputHeight}
           justifyContent="space-between"
-          flexDirection="row"
-          alignItems="center"
           borderRadius={24}>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                fontFamily: AppFonts.Secondary_SemiBold,
-                fontSize: AppFontSizes._input,
-                color: colors.inputText,
-              },
-              extraInputStyles,
-            ]}
-            returnKeyLabel="Done"
-            returnKeyType="done"
-            placeholderTextColor={colors.gray}
-            selectionColor={colors.gray}
-            {...rest}
-          />
-          {showIcon && (
-            <TouchableOpacity onPress={onIconPress}>
-              <Icon name={iconName} size={20} color={theme.colors.muted} />
-            </TouchableOpacity>
-          )}
+          <Box
+            height={'100%'}
+            flexDirection="row"
+            alignItems="center"
+            borderWidth={error?.error ? 1 : 0}
+            borderColor="error"
+            paddingHorizontal="m"
+            borderRadius={24}>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  fontFamily: AppFonts.Secondary_SemiBold,
+                  fontSize: AppFontSizes._input,
+                  color: colors.inputText,
+                },
+                extraInputStyles,
+              ]}
+              returnKeyLabel="Done"
+              returnKeyType="done"
+              placeholderTextColor={colors.gray}
+              selectionColor={colors.gray}
+              {...rest}
+            />
+            {showIcon && (
+              <TouchableOpacity onPress={onIconPress}>
+                <Icon name={iconName} size={20} color={theme.colors.muted} />
+              </TouchableOpacity>
+            )}
+          </Box>
         </Card>
+      )}
+      {error?.error && (
+        <Text variant="body_xs_bold" ml={'m'} mt="xs" color="error">
+          {error.errorMsg}
+        </Text>
       )}
     </Box>
   );

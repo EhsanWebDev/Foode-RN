@@ -8,12 +8,34 @@ import CustomButton from '../../../components/Button/CustomButton';
 import RememberMe from '../../../components/RememberMe/RememberMe';
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import {LoginScreenNavigationProp} from '../../../navigation/types';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import {useReduxDispatch, useReduxSelector} from '../../../store';
+import {login} from '../userSlice';
+
+const initial_values = {
+  email: 'sundarcustomer01@gmail.com',
+  password: '123123',
+  rememberMe: false,
+};
+
+const loginSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('*Required'),
+  password: Yup.string().required('*Required'),
+  rememberMe: Yup.boolean(),
+});
 
 const Login = ({navigation}: LoginScreenNavigationProp) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useReduxDispatch();
+  const {user, status} = useReduxSelector(state => state.user);
+  console.log({user, status});
+
   const [showPass, setShowPass] = useState(false);
-  const [checked, setChecked] = useState(false);
+
+  const handleSignIn = values => {
+    dispatch(login({email: values.email, password: values.password}));
+    //  navigation.navigate('AppTabs');
+  };
 
   return (
     <ScreenContainer>
@@ -22,36 +44,69 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
       </Box>
 
       <Box flex={2.5} mt="xl">
-        <CustomInput
-          required
-          label="Email"
-          placeholder="Email Address"
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <Box marginTop="l">
-          <CustomInput
-            required
-            label="Password"
-            placeholder="Password"
-            secureTextEntry={!showPass}
-            value={password}
-            onChangeText={text => setPassword(text)}
-            showIcon
-            iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
-            onIconPress={() => setShowPass(pass => !pass)}
-          />
-        </Box>
-        <RememberMe
-          checked={checked}
-          onCheck={() => setChecked(check => !check)}
-        />
+        <Formik
+          initialValues={initial_values}
+          validationSchema={loginSchema}
+          onSubmit={handleSignIn}>
+          {({
+            handleChange,
+            values,
+            handleSubmit,
+            errors,
+            touched,
+            setFieldTouched,
+            setFieldValue,
+          }) => (
+            <>
+              <CustomInput
+                required
+                label="Email"
+                placeholder="Email Address"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={() => setFieldTouched('email')}
+                error={{
+                  error: touched.email && errors.email,
+                  errorMsg: errors.email,
+                }}
+              />
+              <Box marginTop="l">
+                <CustomInput
+                  required
+                  label="Password"
+                  placeholder="Password"
+                  secureTextEntry={!showPass}
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={() => setFieldTouched('password')}
+                  showIcon
+                  iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
+                  onIconPress={() => setShowPass(pass => !pass)}
+                  error={{
+                    error: touched.password && errors.password,
+                    errorMsg: errors.password,
+                  }}
+                />
+              </Box>
+              <RememberMe
+                checked={values.rememberMe}
+                onCheck={() => setFieldValue('rememberMe', !values.rememberMe)}
+              />
 
-        <CustomButton
-          label="Sign in"
-          onPress={() => navigation.navigate('AppTabs')}
-          mt="l"
-        />
+              <CustomButton
+                loading={status === 'loading'}
+                label="Sign in"
+                onPress={handleSubmit}
+                mt="l"
+                disabled={
+                  status === 'loading' ||
+                  Boolean(!values.email || !values.password)
+                }
+              />
+            </>
+          )}
+        </Formik>
+
         <Box alignItems="center">
           <CustomButton
             onPress={() => navigation.navigate('RegisteredCredentials')}

@@ -7,25 +7,26 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RootNavigation from './src/navigation/RootNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import store from './src/store';
+import {Provider} from 'react-redux';
 
 const App = () => {
   return (
-    // <Provider store={store}>
-    <GestureHandlerRootView style={styles.container}>
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
-          <NavigationContainer>
-            <ThemeProvider theme={theme}>
-              <PaperProvider>
-                <RootNavigation />
-              </PaperProvider>
-            </ThemeProvider>
-          </NavigationContainer>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
-
-    // </Provider>
+    <Provider store={store}>
+      <GestureHandlerRootView style={styles.container}>
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.container}>
+            <NavigationContainer>
+              <ThemeProvider theme={theme}>
+                <PaperProvider>
+                  <RootNavigation />
+                </PaperProvider>
+              </ThemeProvider>
+            </NavigationContainer>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </Provider>
   );
 };
 

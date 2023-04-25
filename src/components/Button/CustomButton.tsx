@@ -10,6 +10,7 @@ import {
 } from '@shopify/restyle';
 import {Theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
+import {ActivityIndicator} from 'react-native-paper';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
@@ -27,6 +28,7 @@ type Props = RestyleProps & {
   buttonType?: 'contained' | 'textOnly' | 'outlined';
   disabled?: boolean;
   buttonSize?: 'full' | 'small' | 'xSmall';
+  loading?: boolean;
 };
 
 const CustomButton: React.FC<Props> = ({
@@ -35,6 +37,7 @@ const CustomButton: React.FC<Props> = ({
   buttonType = 'contained',
   disabled,
   buttonSize = 'full',
+  loading,
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -117,11 +120,15 @@ const CustomButton: React.FC<Props> = ({
         </Text>
       ) : (
         <Box {...getStyles()} {...props}>
-          <Text
-            variant={buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'}
-            color={buttonType === 'outlined' ? 'primary' : 'text'}>
-            {label}
-          </Text>
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text
+              variant={buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'}
+              color={buttonType === 'outlined' ? 'primary' : 'text'}>
+              {label}
+            </Text>
+          )}
         </Box>
       )}
     </TouchableOpacity>
