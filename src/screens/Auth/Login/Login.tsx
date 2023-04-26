@@ -11,11 +11,14 @@ import {LoginScreenNavigationProp} from '../../../navigation/types';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
-import {login} from '../userSlice';
+import {login} from '../actions';
+import showToast from '../../../utils/toast';
+
+// Dev1@me.co 123123
 
 const initial_values = {
-  email: 'sundarcustomer01@gmail.com',
-  password: '123123',
+  email: '',
+  password: '',
   rememberMe: false,
 };
 
@@ -27,14 +30,21 @@ const loginSchema = Yup.object().shape({
 
 const Login = ({navigation}: LoginScreenNavigationProp) => {
   const dispatch = useReduxDispatch();
-  const {user, status} = useReduxSelector(state => state.user);
-  console.log({user, status});
+  const {user, login_status} = useReduxSelector(state => state.user);
+  console.log({user, login_status});
 
   const [showPass, setShowPass] = useState(false);
 
   const handleSignIn = values => {
-    dispatch(login({email: values.email, password: values.password}));
-    //  navigation.navigate('AppTabs');
+    dispatch(login({email: values.email, password: values.password})).then(
+      res => {
+        if (res.payload.status === 200) {
+          navigation.replace('AppTabs');
+          return;
+        }
+        showToast({message: res.payload});
+      },
+    );
   };
 
   return (
@@ -94,12 +104,12 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
               />
 
               <CustomButton
-                loading={status === 'loading'}
+                loading={login_status === 'loading'}
                 label="Sign in"
                 onPress={handleSubmit}
                 mt="l"
                 disabled={
-                  status === 'loading' ||
+                  login_status === 'loading' ||
                   Boolean(!values.email || !values.password)
                 }
               />

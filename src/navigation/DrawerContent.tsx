@@ -6,6 +6,8 @@ import {useAppTheme} from '../utils/hooks';
 import Box from '../components/View/CustomView';
 import Text from '../components/Text/CustomText';
 import CustomButton from '../components/Button/CustomButton';
+import {useReduxDispatch} from '../store';
+import {logoutUser} from '../screens/Auth/userSlice';
 
 type DrawerButtonProps = {
   label: string;
@@ -29,6 +31,13 @@ const DrawerButton = ({label, icon, onPress}: DrawerButtonProps) => {
 };
 
 const DrawerContent = ({navigation}) => {
+  const dispatch = useReduxDispatch();
+
+  const handleLogout = async () => {
+    dispatch(logoutUser({}));
+    navigation.navigate('AuthStack');
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Box flex={1} mt="xl" px="m">
@@ -56,7 +65,7 @@ const DrawerContent = ({navigation}) => {
           <CustomButton
             buttonType="outlined"
             label="Sign out"
-            onPress={() => navigation.navigate('AuthStack')}
+            onPress={handleLogout}
           />
         </Box>
       </Box>

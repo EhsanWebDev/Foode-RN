@@ -9,6 +9,7 @@ import RootNavigation from './src/navigation/RootNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import store from './src/store';
 import {Provider} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
                 </PaperProvider>
               </ThemeProvider>
             </NavigationContainer>
+            <Toast />
           </SafeAreaView>
         </SafeAreaProvider>
       </GestureHandlerRootView>

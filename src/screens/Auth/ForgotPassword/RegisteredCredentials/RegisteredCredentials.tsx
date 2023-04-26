@@ -6,31 +6,67 @@ import ScreenContainer from '../../../../components/AppComponents/Container/Scre
 import Box from '../../../../components/View/CustomView';
 import Input from '../../../../components/TextInput/CustomInput';
 import CustomButton from '../../../../components/Button/CustomButton';
-import Text from '../../../../components/Text/CustomText';
 import Header from '../../../../components/AppComponents/Header/Header';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import {useReduxDispatch, useReduxSelector} from '../../../../store';
+import {forgotPassword} from '../../actions';
+
+const initial_values = {
+  email: '',
+};
+
+const forgotPassSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('*Required'),
+});
 
 const RegisteredCredentials = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const dispatch = useReduxDispatch();
+  const {forgotPass_status} = useReduxSelector(state => state.user);
+
+  const handleSendMail = (values: {email: string}) => {
+    dispatch(forgotPassword({forgot_email: values.email}));
+  };
 
   return (
     <ScreenContainer>
       <Header label="Forgot password" onBackPress={navigation.goBack} />
-      <Box flex={2.5} mt="xl">
-        <Input
-          required
-          label="Email"
-          placeholder="Email Address"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          mt="l"
-        />
+      <Formik
+        initialValues={initial_values}
+        validationSchema={forgotPassSchema}
+        onSubmit={handleSendMail}>
+        {({
+          handleChange,
+          handleSubmit,
+          errors,
+          values,
+          setFieldTouched,
+          touched,
+        }) => (
+          <Box flex={2.5} mt="xl">
+            <Input
+              required
+              label="Email"
+              placeholder="Email Address"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={() => setFieldTouched('email')}
+              error={{
+                error: touched.email && errors.email,
+                errorMsg: errors.email,
+              }}
+              mt="l"
+            />
 
-        <CustomButton
-          label="Verify your email"
-          onPress={() => navigation.navigate('VerifyCode')}
-          mt="xl"
-        />
-      </Box>
+            <CustomButton
+              label="Verify your email"
+              onPress={handleSubmit}
+              mt="xl"
+              loading={forgotPass_status === 'loading'}
+            />
+          </Box>
+        )}
+      </Formik>
     </ScreenContainer>
   );
 };

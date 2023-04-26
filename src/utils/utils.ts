@@ -1,19 +1,12 @@
-export const getBreakpointForScreenSize = ({theme, dimensions}) => {
-  const sortedBreakpoints = Object.entries(theme.breakpoints).sort(
-    (valA, valB) => {
-      return valA[1] - valB[1];
-    },
-  );
+import showToast from './toast';
 
-  return sortedBreakpoints.reduce((acc, [breakpoint, minWidth]) => {
-    if (dimensions.width >= minWidth) return breakpoint;
-    return acc;
-  }, null);
+type errorTypes = {
+  message?: string;
+  status?: number;
 };
 
-export const getResponsiveValue = ({value, dimensions, theme}) => {
-  if (typeof value === 'object') {
-    return value[getBreakpointForScreenSize({theme, dimensions})];
-  }
-  return value;
+export const handleApiErrors = (error: errorTypes) => {
+  const {message} = error || {};
+
+  showToast({message});
 };

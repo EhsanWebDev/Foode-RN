@@ -1,66 +1,66 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import api from '../../store/fetcher/fetcher';
-import {Alert} from 'react-native';
-
-type loadingStates = 'idle' | 'loading' | 'completed' | 'rejected';
-
-type loginType = {
-  user: object | undefined | null;
-  token: string;
-  status: loadingStates;
-  error: boolean | string;
-};
+import {createSlice} from '@reduxjs/toolkit';
+import {loginType} from './types';
+import {forgotPassword, login, signup} from './actions';
 
 const INITIAL_STATE: loginType = {
   user: null,
   token: '',
   status: 'idle',
+  login_status: 'idle',
+  forgotPass_status: 'idle',
+  signUp_status: 'idle',
   error: '',
 };
-
-export const login = createAsyncThunk(
-  'user/login',
-  async (params, {rejectWithValue}) => {
-    try {
-      const {email, password} = params || {};
-
-      const response = await api.post('/login', {
-        email,
-        password,
-      });
-
-      const {data} = response || {};
-      console.log({data});
-      const {status, message} = data || {};
-      if (status === 500) {
-        rejectWithValue(message);
-        Alert.alert(message);
-        return;
-      }
-      return response.data;
-    } catch (error) {
-      rejectWithValue(error);
-    }
-  },
-);
 
 const userSlice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    logoutUser: (state, action) => {
+      state.user = null;
+      state.login_status = 'idle';
+    },
+  },
   extraReducers(builder) {
     builder.addCase(login.pending, state => {
-      state.status = 'loading';
+      state.login_status = 'loading';
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.status = 'completed';
+      state.login_status = 'completed';
       state.user = action.payload;
     });
     builder.addCase(login.rejected, state => {
-      state.status = 'rejected';
+      state.login_status = 'rejected';
+      state.error = 'Error while logging in';
+    });
+
+    // ? SIGN UP
+    builder.addCase(signup.pending, state => {
+      state.signUp_status = 'loading';
+    });
+    builder.addCase(signup.fulfilled, (state, action) => {
+      state.signUp_status = 'completed';
+      state.user = action.payload;
+    });
+    builder.addCase(signup.rejected, state => {
+      state.signUp_status = 'rejected';
+      state.error = 'Error while logging in';
+    });
+
+    // ? FORGOT PASSWORD
+    builder.addCase(forgotPassword.pending, state => {
+      state.forgotPass_status = 'loading';
+    });
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+      state.forgotPass_status = 'completed';
+    });
+    builder.addCase(forgotPassword.rejected, state => {
+      state.forgotPass_status = 'rejected';
       state.error = 'Error while logging in';
     });
   },
 });
+
+export const {logoutUser} = userSlice.actions;
 
 export default userSlice.reducer;
