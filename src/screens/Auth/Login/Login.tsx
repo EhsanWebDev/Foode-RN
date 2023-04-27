@@ -13,8 +13,15 @@ import * as Yup from 'yup';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {login} from '../actions';
 import showToast from '../../../utils/toast';
+import {storeData} from '../../../utils/storage';
 
 // Dev1@me.co 123123
+
+type loginValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 
 const initial_values = {
   email: '',
@@ -35,10 +42,13 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
 
   const [showPass, setShowPass] = useState(false);
 
-  const handleSignIn = values => {
+  const handleSignIn = async (values: loginValues) => {
     dispatch(login({email: values.email, password: values.password})).then(
       res => {
         if (res.payload.status === 200) {
+          if (values.rememberMe) {
+            storeData('user', res.payload);
+          }
           navigation.replace('AppTabs');
           return;
         }

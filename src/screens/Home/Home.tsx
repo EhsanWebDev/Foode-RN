@@ -32,6 +32,7 @@ import {dimensions} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import IconButton from '../../components/Button/IconButton/IconButton';
+import {useReduxSelector} from '../../store';
 
 const imagesData = [
   {
@@ -517,11 +518,21 @@ const PaginationItem: React.FC<{
 
 const Home = ({navigation}) => {
   const theme = useTheme<Theme>();
+  const {user} = useReduxSelector(store => store.user);
   const {colors} = theme || {};
   const width = Dimensions.get('window').width;
 
   const [isVertical, setIsVertical] = React.useState(false);
   const progressValue = useSharedValue<number>(0);
+
+  const handleUserIconPress = () => {
+    if (user) {
+      navigation.navigate('Profile');
+      return;
+    }
+    navigation.navigate('AuthStack');
+  };
+
   return (
     <Box flex={1} backgroundColor="mainBackground" pt="m">
       <Box
@@ -530,7 +541,7 @@ const Home = ({navigation}) => {
         justifyContent="space-between"
         alignItems="center">
         <Box flex={1} flexDirection="row" alignItems="center">
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={handleUserIconPress}>
             <Icon
               name="md-person-circle"
               size={globalUnits.icon_LG + 4}

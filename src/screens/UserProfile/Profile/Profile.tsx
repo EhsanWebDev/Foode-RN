@@ -19,19 +19,24 @@ import Card from '../../../components/Card/Card';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAppTheme} from '../../../utils/hooks';
 import {StretchyScrollView} from 'react-native-stretchy';
+import {useReduxDispatch, useReduxSelector} from '../../../store';
+import {logoutUser} from '../../Auth/userSlice';
+import {removeData} from '../../../utils/storage';
 
 const Profile = ({navigation}) => {
   const {colors} = useAppTheme();
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const {user} = useReduxSelector(store => store.user);
+  const dispatch = useReduxDispatch();
+  // // ref
+  // const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // variables
-  const snapPoints = useMemo(() => [dimensions.height / 1.4], []);
+  // // variables
+  // const snapPoints = useMemo(() => [dimensions.height / 1.4], []);
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  // // callbacks
+  // const handleSheetChanges = useCallback((index: number) => {
+  //   console.log('handleSheetChanges', index);
+  // }, []);
 
   const Item = () => (
     <Card variant="primary" paddingVertical="s" px="s" mb="l">
@@ -58,135 +63,143 @@ const Profile = ({navigation}) => {
     </Card>
   );
 
-  const Exp = () => (
-    <>
-      <StatusBar barStyle="light-content" />
-      <StretchyScrollView
-        backgroundColor="white"
-        image={require('./../../../assets/images/u1.jpg')}
-        imageHeight={300}
-        foreground={
-          <Box flex={1}>
-            <Box position="absolute" top={50} left={16}>
-              <IconButton icon="arrow-back" onPress={navigation.goBack} />
-            </Box>
-          </Box>
-        }
-        onScroll={(position, reachedToTheBottomOfHeader) =>
-          console.log(position, reachedToTheBottomOfHeader)
-        }>
-        <Box
-          flex={1}
-          backgroundColor="mainBackground"
-          borderTopRightRadius={40}
-          borderTopLeftRadius={40}
-          style={{marginTop: -40}}>
-          <Box flex={1}>
-            <Box flex={1} mx="m" mt="l">
-              <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center">
-                <Box>
-                  <Text variant="header">Daniel Sebastian</Text>
-                  <Text variant="body_sm_bold">
-                    daniel.sebastian@domain.com
-                  </Text>
-                </Box>
-                <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
-              </Box>
-              <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                mt="l">
-                <Text variant="body_bold">Favorite</Text>
-                <CustomButton
-                  label="See all"
-                  buttonType="textOnly"
-                  buttonSize="small"
-                  color="primary"
-                  onPress={() => {}}
-                />
-              </Box>
+  // const Exp = () => (
+  //   <>
+  //     <StatusBar barStyle="light-content" />
+  //     <StretchyScrollView
+  //       backgroundColor="white"
+  //       image={require('./../../../assets/images/u1.jpg')}
+  //       imageHeight={300}
+  //       foreground={
+  //         <Box flex={1}>
+  //           <Box position="absolute" top={50} left={16}>
+  //             <IconButton icon="arrow-back" onPress={navigation.goBack} />
+  //           </Box>
+  //         </Box>
+  //       }
+  //       onScroll={(position, reachedToTheBottomOfHeader) =>
+  //         console.log(position, reachedToTheBottomOfHeader)
+  //       }>
+  //       <Box
+  //         flex={1}
+  //         backgroundColor="mainBackground"
+  //         borderTopRightRadius={40}
+  //         borderTopLeftRadius={40}
+  //         style={{marginTop: -40}}>
+  //         <Box flex={1}>
+  //           <Box flex={1} mx="m" mt="l">
+  //             <Box
+  //               flexDirection="row"
+  //               justifyContent="space-between"
+  //               alignItems="center">
+  //               <Box>
+  //                 <Text variant="header">Daniel Sebastian</Text>
+  //                 <Text variant="body_sm_bold">
+  //                   daniel.sebastian@domain.com
+  //                 </Text>
+  //               </Box>
+  //               <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
+  //             </Box>
+  //             <Box
+  //               flexDirection="row"
+  //               justifyContent="space-between"
+  //               alignItems="center"
+  //               mt="l">
+  //               <Text variant="body_bold">Favorite</Text>
+  //               <CustomButton
+  //                 label="See all"
+  //                 buttonType="textOnly"
+  //                 buttonSize="small"
+  //                 color="primary"
+  //                 onPress={() => {}}
+  //               />
+  //             </Box>
 
-              <Box mt="m">
-                <Item />
-                <Item />
-                <Item />
-              </Box>
-            </Box>
-          </Box>
-          <Box flex={1} mx="m">
-            <CustomButton label="Sign out" onPress={() => {}} />
-          </Box>
-        </Box>
-      </StretchyScrollView>
-    </>
-  );
-  const Exp2 = () => (
-    <>
-      <StatusBar barStyle="light-content" />
-      <Box>
-        <Image
-          source={require('./../../../assets/images/u1.jpg')}
-          style={{
-            width: dimensions.width,
-            height: verticalScale(dimensions.height / 3),
-          }}
-        />
-        <Box
-          position="absolute"
-          top={Platform.OS === 'android' ? 16 : 54}
-          left={16}>
-          <IconButton icon="close" onPress={navigation.goBack} />
-        </Box>
-      </Box>
+  //             <Box mt="m">
+  //               <Item />
+  //               <Item />
+  //               <Item />
+  //             </Box>
+  //           </Box>
+  //         </Box>
+  //         <Box flex={1} mx="m">
+  //           <CustomButton label="Sign out" onPress={() => {}} />
+  //         </Box>
+  //       </Box>
+  //     </StretchyScrollView>
+  //   </>
+  // );
+  // const Exp2 = () => (
+  //   <>
+  //     <StatusBar barStyle="light-content" />
+  //     <Box>
+  //       <Image
+  //         source={require('./../../../assets/images/u1.jpg')}
+  //         style={{
+  //           width: dimensions.width,
+  //           height: verticalScale(dimensions.height / 3),
+  //         }}
+  //       />
+  //       <Box
+  //         position="absolute"
+  //         top={Platform.OS === 'android' ? 16 : 54}
+  //         left={16}>
+  //         <IconButton icon="close" onPress={navigation.goBack} />
+  //       </Box>
+  //     </Box>
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
-        <ScrollView style={{flex: 1}}>
-          <Box flex={1} mx="m" mt="l">
-            <Box
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center">
-              <Box>
-                <Text variant="header">Daniel Sebastian</Text>
-                <Text variant="body_sm_bold">daniel.sebastian@domain.com</Text>
-              </Box>
-              <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
-            </Box>
-            <Box
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-              mt="l">
-              <Text variant="body_bold">Favorites</Text>
-              <CustomButton
-                label="See all"
-                buttonType="textOnly"
-                buttonSize="small"
-                color="primary"
-                onPress={() => {}}
-              />
-            </Box>
-            <Box mt="m">
-              <Item />
-              <Item />
-            </Box>
-          </Box>
-        </ScrollView>
+  //     <BottomSheet
+  //       ref={bottomSheetRef}
+  //       index={0}
+  //       snapPoints={snapPoints}
+  //       onChange={handleSheetChanges}>
+  //       <ScrollView style={{flex: 1}}>
+  //         <Box flex={1} mx="m" mt="l">
+  //           <Box
+  //             flexDirection="row"
+  //             justifyContent="space-between"
+  //             alignItems="center">
+  //             <Box>
+  //               <Text variant="header">Daniel Sebastian</Text>
+  //               <Text variant="body_sm_bold">daniel.sebastian@domain.com</Text>
+  //             </Box>
+  //             <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
+  //           </Box>
+  //           <Box
+  //             flexDirection="row"
+  //             justifyContent="space-between"
+  //             alignItems="center"
+  //             mt="l">
+  //             <Text variant="body_bold">Favorites</Text>
+  //             <CustomButton
+  //               label="See all"
+  //               buttonType="textOnly"
+  //               buttonSize="small"
+  //               color="primary"
+  //               onPress={() => {}}
+  //             />
+  //           </Box>
+  //           <Box mt="m">
+  //             <Item />
+  //             <Item />
+  //           </Box>
+  //         </Box>
+  //       </ScrollView>
 
-        <Box mx="l" mb="l">
-          <CustomButton label="Sign out" onPress={() => {}} />
-        </Box>
-      </BottomSheet>
-    </>
-  );
+  //       <Box mx="l" mb="l">
+  //         <CustomButton label="Sign out" onPress={() => {}} />
+  //       </Box>
+  //     </BottomSheet>
+  //   </>
+  // );
+  const {data} = user || {};
+  const {name, email, created_at} = data || {};
+
+  const handleLogout = async () => {
+    dispatch(logoutUser({}));
+    removeData('user');
+    navigation.goBack();
+  };
 
   return (
     <Box flex={1}>
@@ -220,8 +233,8 @@ const Profile = ({navigation}) => {
               justifyContent="space-between"
               alignItems="center">
               <Box>
-                <Text variant="header">Daniel Sebastian</Text>
-                <Text variant="body_sm_bold">daniel.sebastian@domain.com</Text>
+                <Text variant="header">{name ?? '(Not Set)'}</Text>
+                <Text variant="body_sm_bold">{email ?? '(Not Set)'}</Text>
               </Box>
               <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
             </Box>
@@ -249,7 +262,7 @@ const Profile = ({navigation}) => {
         </Box>
 
         <Box mx="l" mb="l">
-          <CustomButton label="Sign out" onPress={() => {}} />
+          <CustomButton label="Sign out" onPress={handleLogout} />
         </Box>
       </SafeAreaView>
     </Box>

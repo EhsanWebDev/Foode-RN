@@ -11,6 +11,7 @@ import DrawerContent from './DrawerContent';
 import Profile from '../screens/UserProfile/Profile/Profile';
 import TrackOrder from '../screens/Shop/Order/TrackOrder';
 import Settings from '../screens/Common/Settings';
+import Splash from '../screens/Common/Splash';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,8 +36,9 @@ const RootNavigation = () => {
   return (
     <AppStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="AuthStack">
+      initialRouteName="Splash">
       <AppStack.Screen name="AppTabs" component={MyDrawer} />
+      <AppStack.Screen name="Splash" component={Splash} />
       <AppStack.Screen name="Cart" component={Cart} />
       <AppStack.Screen name="Checkout" component={Checkout} />
       <AppStack.Screen name="TrackOrder" component={TrackOrder} />

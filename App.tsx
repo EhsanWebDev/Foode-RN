@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import theme from './src/theme/theme';
 import {ThemeProvider} from '@shopify/restyle';
 import {NavigationContainer} from '@react-navigation/native';
@@ -25,6 +25,7 @@ const App = () => {
               </ThemeProvider>
             </NavigationContainer>
             <Toast />
+            <StatusBar barStyle="default" />
           </SafeAreaView>
         </SafeAreaProvider>
       </GestureHandlerRootView>
