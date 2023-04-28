@@ -110,7 +110,6 @@ const CustomButton: React.FC<Props> = ({
   };
 
   return (
-    // <Box>
     <TouchableOpacity onPress={onPress} disabled={disabled}>
       {buttonType === 'textOnly' ? (
         <Text
@@ -132,7 +131,6 @@ const CustomButton: React.FC<Props> = ({
         </Box>
       )}
     </TouchableOpacity>
-    // </Box>
   );
 };
 

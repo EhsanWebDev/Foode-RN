@@ -9,17 +9,12 @@ const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(async () => {
       const user = await getData('user');
-      console.log({user});
       if (user) {
         dispatch(setUser(user));
       }
-      // if (!user) {
-      //   navigation.navigate('AuthStack');
-      //   return;
-      // }
       navigation.navigate('AppTabs');
     }, 1500);
-  }, [navigation]);
+  }, [navigation, dispatch]);
 
   return (
     <View

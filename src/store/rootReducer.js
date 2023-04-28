@@ -1,10 +1,10 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import themeReducer from '../theme/theme.slice';
 import userSlice from '../screens/Auth/userSlice';
+import storeSlice from '../screens/Home/Store/redux/storeSlice';
 
 const rootReducer = combineReducers({
-  // theme: themeReducer,
   user: userSlice,
+  store: storeSlice,
 });
 
 export default rootReducer;

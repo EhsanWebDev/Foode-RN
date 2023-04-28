@@ -38,7 +38,6 @@ const DrawerContent = ({navigation}) => {
   const handleLogout = async () => {
     dispatch(logoutUser({}));
     removeData('user');
-    navigation.navigate('AuthStack');
   };
 
   return (
@@ -65,7 +64,7 @@ const DrawerContent = ({navigation}) => {
           />
         </Box>
 
-        <Box flex={1} justifyContent="flex-end">
+        <Box flex={1} justifyContent="flex-end" mb="s">
           {user && (
             <CustomButton
               buttonType="outlined"
