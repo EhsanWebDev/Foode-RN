@@ -40,6 +40,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const Home = ({navigation}) => {
   const {user} = useReduxSelector(store => store.user);
+  const {cartItems} = useReduxSelector(store => store.cart);
   const {colors} = useAppTheme();
 
   const handleUserIconPress = () => {
@@ -88,7 +89,7 @@ const Home = ({navigation}) => {
               top={-6}
               right={-8}>
               <Text variant="body_sm_bold" color="text">
-                3
+                {cartItems.length}
               </Text>
             </Box>
           </TouchableOpacity>

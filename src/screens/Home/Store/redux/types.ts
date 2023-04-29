@@ -5,6 +5,18 @@ export type galleryType = {
   status: loadingStates;
   error: errorType;
 };
+export type menuType = {
+  data: [];
+  status: loadingStates;
+  error: errorType;
+};
+export type productDetailsType = {
+  data: {};
+  status: loadingStates;
+  error: errorType;
+};
 export type storeTypes = {
   gallery: galleryType;
+  menu: menuType;
+  product: productDetailsType;
 };

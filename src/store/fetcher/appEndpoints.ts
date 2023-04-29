@@ -4,4 +4,7 @@ export const apiEndpoints = {
   forgotPassword: '/forgot-password',
 
   GET_storeGallery: '/get-store-banners',
+  GET_storeItems: '/items',
+
+  GET_productDetails: '/product-details',
 };

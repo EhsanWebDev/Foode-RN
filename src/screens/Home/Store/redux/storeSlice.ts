@@ -1,10 +1,20 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {storeTypes} from './types';
-import {getStoreGallery} from './actions';
+import {getProductDetails, getStoreData, getStoreGallery} from './actions';
 
 const INITIAL_STATE: storeTypes = {
   gallery: {
     data: [],
+    status: 'idle',
+    error: null,
+  },
+  menu: {
+    data: [],
+    status: 'idle',
+    error: null,
+  },
+  product: {
+    data: {},
     status: 'idle',
     error: null,
   },
@@ -15,6 +25,33 @@ const storeSlice = createSlice({
   reducers: {},
 
   extraReducers(builder) {
+    // ? Store Data
+    builder.addCase(getStoreData.pending, store => {
+      store.menu.status = 'loading';
+    });
+    builder.addCase(getStoreData.fulfilled, (store, action) => {
+      store.menu.status = 'completed';
+      store.menu.data = action.payload;
+    });
+    builder.addCase(getStoreData.rejected, (store, action) => {
+      store.menu.status = 'rejected';
+      store.menu.error = action.payload;
+    });
+
+    // ? Product Details
+    builder.addCase(getProductDetails.pending, store => {
+      store.product.status = 'loading';
+    });
+    builder.addCase(getProductDetails.fulfilled, (store, action) => {
+      store.product.status = 'completed';
+      store.product.data = action.payload;
+    });
+    builder.addCase(getProductDetails.rejected, (store, action) => {
+      store.product.status = 'rejected';
+      store.product.error = action.payload;
+    });
+
+    // ? Gallery
     builder.addCase(getStoreGallery.pending, store => {
       store.gallery.status = 'loading';
     });
@@ -28,5 +65,7 @@ const storeSlice = createSlice({
     });
   },
 });
+
+export const selectStoreData = state => state.store.menu;
 
 export default storeSlice.reducer;

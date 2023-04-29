@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, Modal, ScrollView} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {dimensions} from '../../../../utils/constants';
 import {useReduxDispatch, useReduxSelector} from '../../../../store';
 import {getStoreGallery} from '../redux/actions';
 import {ActivityIndicator} from 'react-native-paper';
+import Image from '../../../../components/Image/Image';
+import {RefreshControl} from 'react-native';
 
-const GalleryImage = ({
-  image = require(`./../../../../assets/images/burgers/1.jpg`),
-}) => {
+const GalleryImage = ({image = ''}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -25,8 +19,8 @@ const GalleryImage = ({
       <TouchableOpacity onPress={showModal}>
         <Box mb="s_m">
           <Image
-            source={image}
-            style={{
+            uri={image}
+            imageStyles={{
               width: scale(110),
               height: verticalScale(90),
               borderRadius: 8,
@@ -66,12 +60,13 @@ const Galleries = () => {
   const dispatch = useReduxDispatch();
   const {data, status} = useReduxSelector(store => store.store.gallery);
 
-  useEffect(() => {
-    // if (status === 'idle') {
+  const fetchAPI = () => {
     dispatch(getStoreGallery());
-    // }
-
-    return () => {};
+  };
+  useEffect(() => {
+    if (status === 'idle') {
+      fetchAPI();
+    }
   }, []);
 
   return (
@@ -81,7 +76,13 @@ const Galleries = () => {
           <ActivityIndicator />
         </Box>
       ) : (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={status === 'loading'}
+              onRefresh={fetchAPI}
+            />
+          }>
           <Box
             flex={1}
             mx="xs"
@@ -91,25 +92,8 @@ const Galleries = () => {
             justifyContent="space-evenly"
             flexWrap="wrap">
             {data?.data?.map((item, index) => (
-              <GalleryImage
-                key={index}
-                image={{
-                  uri: item,
-                }}
-              />
+              <GalleryImage key={index} image={item} />
             ))}
-            {/* <GalleryImage />
-            <GalleryImage
-              image={require(`./../../../../assets/images/burgers/2.jpg`)}
-            />
-            <GalleryImage
-              image={require(`./../../../../assets/images/burgers/3.jpg`)}
-            />
-            <GalleryImage />
-            <GalleryImage
-              image={require(`./../../../../assets/images/burgers/2.jpg`)}
-            />
-            <GalleryImage /> */}
           </Box>
         </ScrollView>
       )}
