@@ -14,6 +14,8 @@ import Header from '../../../../components/AppComponents/Header/Header';
 import Image from '../../../../components/Image/Image';
 import {useAppTheme} from '../../../../utils/hooks';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import showToast from '../../../../utils/toast';
+import {addToCart} from '../../Cart/cartSlice';
 
 const ProductDetails = ({navigation, route}) => {
   const {params} = route || {};
@@ -50,26 +52,23 @@ const ProductDetails = ({navigation, route}) => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" />
+      {/* <StatusBar backgroundColor={colors.primary} /> */}
       <Box>
-        <View
+        {/* <View
           style={{
             width: dimensions.width,
             backgroundColor: colors.primary,
             height: statusBarHeight,
           }}
-        />
+        /> */}
         <Image
           uri={product_image}
           imageStyles={{
             width: dimensions.width,
-            height: verticalScale(dimensions.height / 3.5),
+            height: verticalScale(dimensions.height / 3),
           }}
         />
-        <Box
-          position="absolute"
-          top={Platform.OS === 'android' ? 16 : 54}
-          left={12}>
+        <Box position="absolute" top={16} left={12}>
           <IconButton icon="close" onPress={navigation.goBack} />
         </Box>
       </Box>
@@ -77,9 +76,9 @@ const ProductDetails = ({navigation, route}) => {
         <Box
           backgroundColor="mainBackground"
           flex={1}
-          borderTopLeftRadius={20}
-          borderTopRightRadius={20}
-          style={{marginTop: -40}}>
+          borderTopLeftRadius={32}
+          borderTopRightRadius={32}
+          style={{marginTop: -30}}>
           <Box flex={1} mx="m" mt="l">
             <Text variant="header">{product_name}</Text>
             <Text variant="title_bold" color="primary">
@@ -88,8 +87,19 @@ const ProductDetails = ({navigation, route}) => {
             <Text variant="body_sm" mt="s">
               {product_description}
             </Text>
-            <Box flex={1} justifyContent="flex-end" mb="xs">
-              <CustomButton label="Add to cart" onPress={() => {}} />
+            <Box flex={1} justifyContent="flex-end" mb="s">
+              <CustomButton
+                label="Add to cart"
+                onPress={() => {
+                  showToast({
+                    message: `${product_name} added to the cart`,
+                    type: 'success',
+
+                    visibilityTime: 1000,
+                  });
+                  dispatch(addToCart({...items}));
+                }}
+              />
             </Box>
           </Box>
         </Box>

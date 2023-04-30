@@ -155,28 +155,30 @@ const Cart = ({navigation}) => {
         ListFooterComponent={ListFooterComponent}
         ListEmptyComponent={ListEmptyComponent}
       />
-      <Card variant="secondary" py="m" px="m" mb="s">
-        <Box
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          mx="s">
-          <Text variant="title" color="text">
-            Total
-          </Text>
-          <Text variant="title_bold" color="text">
-            ${resultString}
-          </Text>
-        </Box>
+      {cartItems?.length > 0 && (
+        <Card variant="secondary" py="m" px="m" mb="s">
+          <Box
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mx="s">
+            <Text variant="title" color="text">
+              Total
+            </Text>
+            <Text variant="title_bold" color="text">
+              ${resultString}
+            </Text>
+          </Box>
 
-        <CustomButton
-          mt="m"
-          label="Place My Order"
-          backgroundColor="mainBackground"
-          buttonType="outlined"
-          onPress={() => navigation.navigate('Checkout')}
-        />
-      </Card>
+          <CustomButton
+            mt="m"
+            label="Place My Order"
+            backgroundColor="mainBackground"
+            buttonType="outlined"
+            onPress={() => navigation.navigate('Checkout')}
+          />
+        </Card>
+      )}
     </ScreenContainer>
   );
 };

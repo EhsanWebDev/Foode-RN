@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useRef, useState} from 'react';
+
 import ScreenContainer from '../../../../../components/AppComponents/Container/ScreenContainer';
 import Box from '../../../../../components/View/CustomView';
 import Text from '../../../../../components/Text/CustomText';
@@ -14,6 +14,8 @@ import {apiEndpoints} from '../../../../../store/fetcher/appEndpoints';
 import {useReduxSelector} from '../../../../../store';
 import Icon from 'react-native-vector-icons/Feather';
 import {useAppTheme} from '../../../../../utils/hooks';
+import showToast from '../../../../../utils/toast';
+import {handleApiErrors} from '../../../../../utils/utils';
 
 const initial_values = {
   people: '',
@@ -39,25 +41,38 @@ const BookSeat = ({navigation}) => {
   const [loading, setLoading] = useState(false);
 
   const {colors} = useAppTheme();
+  const formRef = useRef();
 
   const {user} = useReduxSelector(store => store.user);
-  console.log({user});
 
   const handleBooking = async (values: bookingValues) => {
-    const {booking_date, booking_instruction, booking_timing, people} = values;
-    setLoading(true);
-    const {} = user || {};
+    if (user) {
+      setLoading(true);
 
-    //   try {
-    //       const response = await api.post(apiEndpoints.POST_bookTable, {
-    //         booking_date,
-    //         booking_instruction,
-    //         booking_timing,
-    //         people,
-    //       });
-    //   } catch (error) {
+      const {data} = user || {};
+      const {name, email, phone_number} = data || {};
 
-    //   }
+      try {
+        const response = await api.post(apiEndpoints.POST_bookTable, {
+          booking_name: name,
+          booking_email: email,
+          booking_phone: phone_number,
+          ...values,
+        });
+        setLoading(false);
+        const {data} = response;
+        const {message} = data || {};
+
+        showToast({
+          message,
+          type: 'success',
+        });
+        formRef.current?.resetForm();
+      } catch (error) {
+        handleApiErrors(error);
+        setLoading(false);
+      }
+    }
   };
   if (!user) {
     return (
@@ -88,6 +103,7 @@ const BookSeat = ({navigation}) => {
     <ScreenContainer>
       <Header label="Reserve a Table" onBackPress={navigation.goBack} />
       <Formik
+        innerRef={formRef}
         initialValues={initial_values}
         validationSchema={tableBookingSchema}
         onSubmit={handleBooking}>
@@ -180,7 +196,4 @@ const BookSeat = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {},
-});
 export default BookSeat;

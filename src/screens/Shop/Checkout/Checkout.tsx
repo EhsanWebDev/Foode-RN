@@ -10,9 +10,19 @@ import {globalUnits} from '../../../theme/globalStyles';
 import IconButton from '../../../components/Button/IconButton/IconButton';
 import {Divider} from 'react-native-paper';
 import CustomButton from '../../../components/Button/CustomButton';
+import {useReduxSelector} from '../../../store';
+import {selectCartTotalPrice} from '../Cart/cartSlice';
+import RadioButton from '../../../components/RadioButton/RadioButton';
 
 const Checkout = ({navigation}) => {
   const {colors} = useAppTheme();
+  const {cartItems} = useReduxSelector(store => store.cart);
+  const totalPrice = useReduxSelector(selectCartTotalPrice);
+
+  const deliveryFee = 4.0;
+  const result = parseFloat(totalPrice) + deliveryFee;
+  const resultString = result.toFixed(2);
+
   return (
     <ScreenContainer>
       <Box>
@@ -87,7 +97,15 @@ const Checkout = ({navigation}) => {
                 </Box>
               </Box>
             </Box>
-            <Box flexDirection="row" alignItems="center" p="s_m">
+            <Box px="s_m" pb="s_m">
+              <RadioButton
+                title="Cash on delivery"
+                checked
+                onCheck={() => {}}
+              />
+            </Box>
+            <Divider />
+            {/* <Box flexDirection="row" alignItems="center" p="s_m">
               <IconButton
                 style={{
                   width: globalUnits.icon_LG,
@@ -100,8 +118,9 @@ const Checkout = ({navigation}) => {
               <Text ml="xs" variant="body_sm_bold" color="primary">
                 Add a payment method
               </Text>
-            </Box>
+            </Box> */}
           </Card>
+          {/* Summary */}
           <Card variant="primary" mt="l">
             <Box p="s_m">
               <Box flexDirection="row" alignItems="center">
@@ -115,14 +134,26 @@ const Checkout = ({navigation}) => {
                   Order summary
                 </Text>
               </Box>
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-                paddingVertical="s_m">
-                <Text variant={'body_sm'}>1 x Burger Deal</Text>
-                <Text variant={'body_sm'}>12$</Text>
+              <Box marginVertical="s_m">
+                {cartItems.map(item => {
+                  const {id, details, quantity} = item || {};
+                  const {name, price} = details?.[0] || {};
+                  return (
+                    <Box
+                      key={id}
+                      flexDirection="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      paddingVertical="xs">
+                      <Text variant={'body_sm'}>
+                        {quantity} x {name}
+                      </Text>
+                      <Text variant={'body_sm'}>${price}</Text>
+                    </Box>
+                  );
+                })}
               </Box>
+
               <Divider />
               <Box
                 flexDirection="row"
@@ -130,7 +161,7 @@ const Checkout = ({navigation}) => {
                 justifyContent="space-between"
                 mt="s">
                 <Text variant={'body_sm'}>Subtotal</Text>
-                <Text variant={'body_sm'}>12$</Text>
+                <Text variant={'body_sm'}>{totalPrice}$</Text>
               </Box>
               <Box
                 flexDirection="row"
@@ -138,7 +169,7 @@ const Checkout = ({navigation}) => {
                 justifyContent="space-between"
                 mt="s">
                 <Text variant={'body_sm'}>Delivery fee</Text>
-                <Text variant={'body_sm'}>2$</Text>
+                <Text variant={'body_sm'}>4.00$</Text>
               </Box>
             </Box>
           </Card>
@@ -151,7 +182,7 @@ const Checkout = ({navigation}) => {
           </Text>
         </Box>
       </Box>
-      <Box flex={1} justifyContent="flex-end" mb="s">
+      <Box flex={1} justifyContent="flex-end" mb="xxs">
         <Card variant="secondary" py="m" px="m" mb="s">
           <Box
             flexDirection="row"
@@ -165,7 +196,7 @@ const Checkout = ({navigation}) => {
               </Text>
             </Text>
             <Text variant="title_bold" color="text">
-              $14
+              ${resultString}
             </Text>
           </Box>
 

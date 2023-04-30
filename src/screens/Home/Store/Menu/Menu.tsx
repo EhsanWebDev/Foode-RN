@@ -12,7 +12,6 @@ import {selectStoreData} from '../redux/storeSlice';
 import MenuItem from './MenuItem/MenuItem';
 import {addToCart} from '../../../Shop/Cart/cartSlice';
 import showToast from '../../../../utils/toast';
-import {ProductType} from './MenuItem/types';
 
 const Menu = () => {
   const nav = useNavigation();

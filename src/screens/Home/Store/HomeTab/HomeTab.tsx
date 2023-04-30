@@ -29,9 +29,7 @@ const HomeTab = () => {
   return (
     <ScrollView>
       <Box mt="xs" mx="m">
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => nav.navigate('ProductDetails')}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
           <Card
             height={verticalScale(140)}
             variant="primary"

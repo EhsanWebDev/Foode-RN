@@ -46,12 +46,12 @@ const RootNavigation = () => {
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen
         name="ProductDetails"
-        options={{presentation: 'fullScreenModal'}}
+        // options={{presentation: 'fullScreenModal'}}
         component={ProductDetails}
       />
       <AppStack.Screen
         name="BookSeat"
-        options={{presentation: 'fullScreenModal'}}
+        // options={{presentation: 'fullScreenModal'}}
         component={BookSeat}
       />
       <AppStack.Screen

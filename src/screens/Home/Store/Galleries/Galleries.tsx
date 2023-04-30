@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, Modal, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {dimensions} from '../../../../utils/constants';
@@ -7,7 +13,6 @@ import {useReduxDispatch, useReduxSelector} from '../../../../store';
 import {getStoreGallery} from '../redux/actions';
 import {ActivityIndicator} from 'react-native-paper';
 import Image from '../../../../components/Image/Image';
-import {RefreshControl} from 'react-native';
 
 const GalleryImage = ({image = ''}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,9 +26,9 @@ const GalleryImage = ({image = ''}) => {
           <Image
             uri={image}
             imageStyles={{
-              width: scale(110),
-              height: verticalScale(90),
-              borderRadius: 8,
+              width: scale(100),
+              height: verticalScale(120),
+              borderRadius: 4,
             }}
           />
         </Box>
@@ -84,7 +89,6 @@ const Galleries = () => {
             />
           }>
           <Box
-            flex={1}
             mx="xs"
             mt="l"
             flexDirection="row"

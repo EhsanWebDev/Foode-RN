@@ -60,8 +60,6 @@ const Input: React.FC<InputProps & RestyleProps> = ({
     useState<boolean>(false);
   const [checked, setChecked] = useState('first');
 
-  console.log({val: rest.value});
-
   return (
     <Box {...props}>
       {label && (
