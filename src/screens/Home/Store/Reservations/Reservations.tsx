@@ -6,23 +6,25 @@ import {verticalScale} from 'react-native-size-matters';
 import Text from '../../../../components/Text/CustomText';
 import CustomButton from '../../../../components/Button/CustomButton';
 
-const Reservations = () => {
-  useEffect(() => {
-    console.log('Mounted Reser');
-  }, []);
+const Reservations = ({navigation}) => {
   return (
     <Box mx="m">
       <Card
-        height={verticalScale(130)}
+        height={verticalScale(120)}
         variant="primary"
         marginVertical="l"
         justifyContent="center">
-        <Box py="m">
+        <Box>
           <Box alignItems="center">
-            <Text variant="body_sm_bold">Book a Table</Text>
-            <Text variant="body_sm">How many guests will be arriving?</Text>
+            <Text variant="title_bold" mb="m">
+              Book a Table
+            </Text>
+            <Text variant="body_xs" textAlign="center">
+              {` Book a table for the number of guests and 
+specific date and time`}
+            </Text>
           </Box>
-          <Box pl="xl" flexDirection="row" alignItems="center" mt="m">
+          {/* <Box pl="xl" flexDirection="row" alignItems="center" mt="m">
             <CustomButton
               label="1"
               buttonType="outlined"
@@ -65,12 +67,12 @@ const Reservations = () => {
               onPress={() => {}}
               mr="xs"
             />
-          </Box>
+          </Box> */}
           <Box alignItems="center" mt="m">
             <CustomButton
               label="Find Me a Table"
               buttonSize="small"
-              onPress={() => {}}
+              onPress={() => navigation.navigate('BookSeat')}
             />
           </Box>
         </Box>

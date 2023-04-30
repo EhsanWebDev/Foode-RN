@@ -14,7 +14,9 @@ import {
 import {AppFontSizes, AppFonts, Theme} from '../../theme/theme';
 import styles from './styles';
 import DatePicker from 'react-native-styled-datepicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Dialog, Modal, Portal, RadioButton} from 'react-native-paper';
+import moment from 'moment';
 
 type RestyleProps = BoxProps<Theme>;
 
@@ -34,6 +36,7 @@ interface InputProps extends TextInputProps {
   showIcon?: boolean;
   onIconPress?: () => void;
   inputMode?: 'input' | 'date-picker' | 'dropdown';
+  pickerMode?: 'date' | 'time';
   error?: errorObject;
 }
 
@@ -44,6 +47,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
   showIcon,
   iconName = 'mail',
   inputMode = 'input',
+  pickerMode = 'date',
   onIconPress,
   error,
   ...rest
@@ -56,6 +60,8 @@ const Input: React.FC<InputProps & RestyleProps> = ({
     useState<boolean>(false);
   const [checked, setChecked] = useState('first');
 
+  console.log({val: rest.value});
+
   return (
     <Box {...props}>
       {label && (
@@ -64,17 +70,20 @@ const Input: React.FC<InputProps & RestyleProps> = ({
         </Text>
       )}
 
-      <Portal>
+      {/* <Portal>
         <Modal
           visible={showDatePicker}
           onDismiss={() => setShowDatePicker(show => !show)}
-          contentContainerStyle={{
-            backgroundColor: colors.mainBackground,
-            marginHorizontal: theme.spacing.m,
-            paddingBottom: theme.spacing.m,
-            borderRadius: theme.spacing.s,
-          }}>
+          contentContainerStyle={
+            {
+              // backgroundColor: colors.mainBackground,
+              // marginHorizontal: theme.spacing.m,
+              // paddingBottom: theme.spacing.m,
+              // borderRadius: theme.spacing.s,
+            }
+          }>
           <Box>
+          
             <DatePicker
               onChange={(date: any) => console.log(date)}
               calendarHeaderTextStyles={styles.calenderHeaderText}
@@ -85,7 +94,18 @@ const Input: React.FC<InputProps & RestyleProps> = ({
             />
           </Box>
         </Modal>
-      </Portal>
+      </Portal> */}
+      <DateTimePickerModal
+        date={new Date()}
+        minimumDate={pickerMode === 'date' ? new Date() : null}
+        isVisible={showDatePicker}
+        mode={pickerMode}
+        onConfirm={date => {
+          rest.onChangeText(date);
+          setShowDatePicker(show => !show);
+        }}
+        onCancel={() => setShowDatePicker(show => !show)}
+      />
 
       <Box>
         <Portal>
@@ -149,7 +169,9 @@ const Input: React.FC<InputProps & RestyleProps> = ({
             flexDirection="row"
             alignItems="center"
             borderRadius={24}>
-            <Text color="gray">{rest.placeholder}</Text>
+            <Text variant="input_bold" color="gray">
+              {rest.value ? rest.value : rest.placeholder}
+            </Text>
             {showIcon && (
               <TouchableOpacity onPress={onIconPress}>
                 <Icon name={iconName} size={20} color={colors.muted} />

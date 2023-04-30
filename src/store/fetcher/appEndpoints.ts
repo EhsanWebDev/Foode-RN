@@ -7,4 +7,5 @@ export const apiEndpoints = {
   GET_storeItems: '/items',
 
   GET_productDetails: '/product-details',
+  POST_bookTable: '/table-booking',
 };

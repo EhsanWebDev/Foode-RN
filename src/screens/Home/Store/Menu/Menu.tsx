@@ -11,6 +11,8 @@ import {useReduxDispatch, useReduxSelector} from '../../../../store';
 import {selectStoreData} from '../redux/storeSlice';
 import MenuItem from './MenuItem/MenuItem';
 import {addToCart} from '../../../Shop/Cart/cartSlice';
+import showToast from '../../../../utils/toast';
+import {ProductType} from './MenuItem/types';
 
 const Menu = () => {
   const nav = useNavigation();
@@ -57,7 +59,15 @@ const Menu = () => {
               onPress={() =>
                 nav.navigate('ProductDetails', {productId: item?.id})
               }
-              onPressAdd={() => dispatch(addToCart({...item}))}
+              onPressAdd={() => {
+                showToast({
+                  message: `${item.product_name} added to the cart`,
+                  type: 'success',
+                  position: 'bottom',
+                  visibilityTime: 1000,
+                });
+                dispatch(addToCart({...item}));
+              }}
             />
           )}
           renderSectionHeader={({section: {title}}) => {

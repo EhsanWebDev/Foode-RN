@@ -12,6 +12,7 @@ import Profile from '../screens/UserProfile/Profile/Profile';
 import TrackOrder from '../screens/Shop/Order/TrackOrder';
 import Settings from '../screens/Common/Settings';
 import Splash from '../screens/Common/Splash';
+import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,6 +48,11 @@ const RootNavigation = () => {
         name="ProductDetails"
         options={{presentation: 'fullScreenModal'}}
         component={ProductDetails}
+      />
+      <AppStack.Screen
+        name="BookSeat"
+        options={{presentation: 'fullScreenModal'}}
+        component={BookSeat}
       />
       <AppStack.Screen
         name="Profile"

@@ -1554,6 +1554,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.0.1.tgz#a8245ec61faa2761954f284c01d9abce32199bf8"
+  integrity sha512-EllGpk6kbEUCvBDDTnHNLJhfkPOI2Yy+KWj3ImOeM9lAA6CkmFlj/mXGCEbfD/Ddu1U7egO/AwqOmG/Bx3IcEQ==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-2.0.0.tgz#35dcc529a274803fc4e0a6b3d6c274551fb91774"
@@ -7399,6 +7406,13 @@ react-native-image-crop-picker@0.38.0:
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.38.0.tgz#3f67a0ec40618e3cd6e05d3e7b90e70d01eaddf8"
   integrity sha512-FaLASXOP7R23pi20vMiVlXl0Y7cwTdl7y7yBqrlrsSH9gl9ibsU5y4mYWPYRbe8x9F/3zPGUE+1F0Gj/QF/peg==
+
+react-native-modal-datetime-picker@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-15.0.0.tgz#3c2b0a63467a3391dbc202871aa2807bc1a0d8d0"
+  integrity sha512-cHeFEYHUhyIk+Mt9C6RVseg/VMGR4XcxdU9SibF5RMCXiXhrwMkFy7203xg1S331pzCF/Oqhvi4Jh0pYMrTFtQ==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-pager-view@^6.2.0:
   version "6.2.0"
