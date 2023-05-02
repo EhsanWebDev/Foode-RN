@@ -38,9 +38,6 @@ const Menu = () => {
   return (
     <Box flex={1} mx="s">
       <Box flex={1}>
-        <Text variant="header" mt="m">
-          Categories
-        </Text>
         <SectionList
           stickySectionHeadersEnabled={false}
           showsVerticalScrollIndicator={false}
@@ -71,13 +68,10 @@ const Menu = () => {
           )}
           renderSectionHeader={({section: {title}}) => {
             return (
-              <Box
-                borderBottomColor="primary"
-                borderBottomWidth={2}
-                alignSelf="flex-start">
+              <Box alignSelf="flex-start">
                 <Text
                   variant="body_bold"
-                  mt="l"
+                  marginVertical="l"
                   textTransform="uppercase"
                   letterSpacing={2}>
                   {title}
@@ -85,6 +79,11 @@ const Menu = () => {
               </Box>
             );
           }}
+          ListEmptyComponent={() => (
+            <Box flex={1} justifyContent="center" alignItems="center" mt="xl">
+              <Text variant="body_sm">No Data</Text>
+            </Box>
+          )}
         />
       </Box>
     </Box>

@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StatusBar, Platform, View} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import Text from '../../../../components/Text/CustomText';
 import IconButton from '../../../../components/Button/IconButton/IconButton';
-import {StatusBarHeight, dimensions} from '../../../../utils/constants';
+import {dimensions} from '../../../../utils/constants';
 import {verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../../../components/Button/CustomButton';
 import {ActivityIndicator} from 'react-native-paper';
@@ -12,20 +12,27 @@ import {getProductDetails} from '../../../Home/Store/redux/actions';
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../../components/AppComponents/Header/Header';
 import Image from '../../../../components/Image/Image';
-import {useAppTheme} from '../../../../utils/hooks';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import showToast from '../../../../utils/toast';
 import {addToCart} from '../../Cart/cartSlice';
+import CartItemActions from '../../../../components/AppComponents/CartItemActions/CartItemActions';
 
 const ProductDetails = ({navigation, route}) => {
   const {params} = route || {};
   const {productId} = params || {};
-  const {colors} = useAppTheme();
-  const insets = useSafeAreaInsets();
+
   const dispatch = useReduxDispatch();
   const {data, status} = useReduxSelector(store => store.store.product);
+  const {cartItems} = useReduxSelector(store => store.cart);
 
-  const statusBarHeight = insets.top;
+  const existingProduct = (cartItems || []).find(
+    product => product.id === productId,
+  );
+  const {quantity: existingQuantity} = existingProduct || {};
+
+  const [quantity, setQuantity] = useState(
+    existingQuantity ? existingQuantity : 1,
+  );
+  const [isDec, setIsDec] = useState(false);
 
   const fetchAPI = () => {
     dispatch(getProductDetails({productId}));
@@ -88,18 +95,36 @@ const ProductDetails = ({navigation, route}) => {
               {product_description}
             </Text>
             <Box flex={1} justifyContent="flex-end" mb="s">
-              <CustomButton
-                label="Add to cart"
-                onPress={() => {
-                  showToast({
-                    message: `${product_name} added to the cart`,
-                    type: 'success',
-
-                    visibilityTime: 1000,
-                  });
-                  dispatch(addToCart({...items}));
-                }}
-              />
+              <Box flexDirection="row" alignItems="center">
+                <CartItemActions
+                  onDecrement={() => {
+                    setQuantity(q => (q > 1 ? q - 1 : 1));
+                    setIsDec(true);
+                  }}
+                  onIncrement={() => {
+                    setQuantity(q => q + 1);
+                    setIsDec(false);
+                  }}
+                  quantity={quantity}
+                />
+                <Box flex={1}>
+                  <CustomButton
+                    label="Add to cart"
+                    ml="s"
+                    onPress={() => {
+                      showToast({
+                        message: `${product_name} ${
+                          isDec ? 'removed from' : 'added to'
+                        }  the cart`,
+                        type: isDec ? 'info' : 'success',
+                        visibilityTime: 1000,
+                      });
+                      dispatch(addToCart({...items, quantity}));
+                      navigation.goBack();
+                    }}
+                  />
+                </Box>
+              </Box>
             </Box>
           </Box>
         </Box>

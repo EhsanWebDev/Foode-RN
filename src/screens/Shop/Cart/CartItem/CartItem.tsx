@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {CartProduct} from '../types';
 import {useReduxDispatch} from '../../../../store';
 import {Swipeable} from 'react-native-gesture-handler';
@@ -9,24 +9,8 @@ import Image from '../../../../components/Image/Image';
 import Text from '../../../../components/Text/CustomText';
 import {decrementQuantity, incrementQuantity} from '../cartSlice';
 import IconButton from '../../../../components/Button/IconButton/IconButton';
+import CartItemActions from '../../../../components/AppComponents/CartItemActions/CartItemActions';
 
-const CartItemAction = ({isAdd = false, onPress}) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <Box
-        backgroundColor={isAdd ? 'primary' : 'primaryLight'}
-        height={24}
-        width={24}
-        alignItems="center"
-        justifyContent="center"
-        borderRadius={6}>
-        <Text variant="title_bold" color={isAdd ? 'text' : 'primary'}>
-          {isAdd ? '+' : '-'}
-        </Text>
-      </Box>
-    </TouchableOpacity>
-  );
-};
 const renderRightActions = (onPress, productId) => {
   return (
     <Box
@@ -86,16 +70,11 @@ const CartItem: FC<CartItem> = ({item, onPress}) => {
               </Text>
             </Box>
           </Box>
-          <Box flexDirection="row" alignItems="center">
-            <CartItemAction onPress={() => dispatch(decrementQuantity(id))} />
-            <Text variant="body_sm_bold" marginHorizontal="s">
-              {quantity}
-            </Text>
-            <CartItemAction
-              isAdd
-              onPress={() => dispatch(incrementQuantity(id))}
-            />
-          </Box>
+          <CartItemActions
+            onDecrement={() => dispatch(decrementQuantity(id))}
+            onIncrement={() => dispatch(incrementQuantity(id))}
+            quantity={quantity}
+          />
         </Box>
       </Card>
     </Swipeable>

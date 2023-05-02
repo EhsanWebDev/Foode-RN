@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView,
   View,
+  Alert,
 } from 'react-native';
 import Box from '../../../components/View/CustomView';
 import {dimensions} from '../../../utils/constants';
@@ -203,7 +204,6 @@ const Profile = ({navigation}) => {
 
   return (
     <Box flex={1}>
-      <StatusBar barStyle="light-content" />
       <Box>
         <Image
           source={require('./../../../assets/images/u1.jpg')}
@@ -212,15 +212,12 @@ const Profile = ({navigation}) => {
             height: verticalScale(dimensions.height / 3.5),
           }}
         />
-        <Box
-          position="absolute"
-          top={Platform.OS === 'android' ? 16 : 54}
-          left={16}>
+        <Box position="absolute" top={16} left={16}>
           <IconButton icon="close" onPress={navigation.goBack} />
         </Box>
       </Box>
 
-      <SafeAreaView style={{flex: 1}}>
+      <Box flex={1} backgroundColor="mainBackground">
         <Box
           backgroundColor="mainBackground"
           flex={1}
@@ -236,7 +233,13 @@ const Profile = ({navigation}) => {
                 <Text variant="header">{name ?? '(Not Set)'}</Text>
                 <Text variant="body_sm_bold">{email ?? '(Not Set)'}</Text>
               </Box>
-              <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
+              <IconButton
+                onPress={() => {
+                  navigation.navigate('UpdateProfile');
+                }}
+                icon="pencil"
+                iconFamily="MaterialCommunityIcons"
+              />
             </Box>
             <Box
               flexDirection="row"
@@ -264,7 +267,7 @@ const Profile = ({navigation}) => {
         <Box mx="l" mb="l">
           <CustomButton label="Sign out" onPress={handleLogout} />
         </Box>
-      </SafeAreaView>
+      </Box>
     </Box>
   );
 };

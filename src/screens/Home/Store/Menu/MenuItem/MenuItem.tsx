@@ -30,10 +30,10 @@ const MenuItem: FC<MenuProps> = ({item, onPress, onPressAdd}) => {
             <Text variant="title_bold" color="title">
               {name ?? ''}
             </Text>
-            <Text numberOfLines={2} variant="body_sm" color="textMuted" mt="xs">
+            <Text numberOfLines={2} variant="body_sm" color="textMuted" mt="s">
               {product_description ?? ''}
             </Text>
-            <Text variant="body_sm_bold" mt="xs" color="primary">
+            <Text variant="body_sm_bold" mt="s" color="primary">
               ${price ?? ''}
             </Text>
           </Box>

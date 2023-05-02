@@ -13,6 +13,7 @@ import TrackOrder from '../screens/Shop/Order/TrackOrder';
 import Settings from '../screens/Common/Settings';
 import Splash from '../screens/Common/Splash';
 import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
+import UpdateProfile from '../screens/UserProfile/Profile/UpdateProfile';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -44,21 +45,10 @@ const RootNavigation = () => {
       <AppStack.Screen name="Checkout" component={Checkout} />
       <AppStack.Screen name="TrackOrder" component={TrackOrder} />
       <AppStack.Screen name="Settings" component={Settings} />
-      <AppStack.Screen
-        name="ProductDetails"
-        // options={{presentation: 'fullScreenModal'}}
-        component={ProductDetails}
-      />
-      <AppStack.Screen
-        name="BookSeat"
-        // options={{presentation: 'fullScreenModal'}}
-        component={BookSeat}
-      />
-      <AppStack.Screen
-        name="Profile"
-        options={{presentation: 'fullScreenModal'}}
-        component={Profile}
-      />
+      <AppStack.Screen name="ProductDetails" component={ProductDetails} />
+      <AppStack.Screen name="BookSeat" component={BookSeat} />
+      <AppStack.Screen name="Profile" component={Profile} />
+      <AppStack.Screen name="UpdateProfile" component={UpdateProfile} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
     </AppStack.Navigator>
   );
