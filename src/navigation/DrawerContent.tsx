@@ -52,11 +52,14 @@ const DrawerContent = ({navigation}) => {
             icon="home"
             onPress={() => navigation.navigate('Home')}
           />
-          <DrawerButton
-            label="Track Order"
-            icon="truck"
-            onPress={() => navigation.navigate('TrackOrder')}
-          />
+          {user && (
+            <DrawerButton
+              label="Track Order"
+              icon="truck"
+              onPress={() => navigation.navigate('TrackOrder')}
+            />
+          )}
+
           <DrawerButton
             label="Settings"
             icon="cog"

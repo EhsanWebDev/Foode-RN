@@ -38,3 +38,27 @@ export const placeOrder = createAsyncThunk(
     }
   },
 );
+export const getOrderList = createAsyncThunk(
+  'order/orderList',
+  async (params: userId, {rejectWithValue}) => {
+    const {user_id} = params;
+    try {
+      const response = await api.get(apiEndpoints.GET_orderList, {
+        headers: {
+          'user-id': user_id,
+        },
+      });
+
+      const {data} = response || {};
+      const {status, message} = data || {};
+
+      if (status === 500) {
+        handleApiErrors(data);
+        return rejectWithValue(message);
+      }
+      return response.data?.data;
+    } catch (error) {
+      console.log({error});
+    }
+  },
+);

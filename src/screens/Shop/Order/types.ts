@@ -32,10 +32,13 @@ export type orderProcessType = {
   status: loadingStates;
   error: boolean | string;
 };
-
-export type orderReducerType = {
-  order: object | undefined | null;
-  orderProcess: orderProcessType;
+export type orderListType = {
+  orderList: [] | null;
   status: loadingStates;
   error: boolean | string;
+};
+
+export type orderReducerType = {
+  orderList: orderListType;
+  orderProcess: orderProcessType;
 };

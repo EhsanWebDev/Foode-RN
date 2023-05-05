@@ -8,5 +8,7 @@ export const apiEndpoints = {
 
   GET_productDetails: '/product-details',
   POST_bookTable: '/table-booking',
+
   POST_placeOrder: '/order-create',
+  GET_orderList: '/order-lists',
 };
