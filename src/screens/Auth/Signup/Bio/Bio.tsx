@@ -73,7 +73,8 @@ const Bio: React.FC = ({navigation}) => {
         const {status, message} = response;
         handleApiErrors({message});
         if (status === 200) {
-          dispatch(login({email: values.email, password: values.password}));
+          navigation.goBack();
+          // dispatch(login({email: values.email, password: values.password}));
         }
       })
       .catch(e => handleApiErrors({message: e}));

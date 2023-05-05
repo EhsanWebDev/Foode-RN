@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'https://seashell.chaslay.com/api/v1/customer-api';
-const headers = {
+export const baseURL = 'https://seashell.chaslay.com/api/v1/customer-api';
+const commonHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
 };
@@ -9,11 +9,14 @@ const headers = {
 const api = axios.create({
   baseURL,
   timeout: 10000,
-  headers,
+  headers: commonHeaders,
 });
 
 export const setToken = (token: string) => {
   api.defaults.headers.common = {Authorization: `Bearer ${token}`};
+};
+export const setHeaders = headers => {
+  api.defaults.headers = headers;
 };
 
 export default api;

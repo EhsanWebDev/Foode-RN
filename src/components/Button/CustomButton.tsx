@@ -11,6 +11,7 @@ import {
 import {Theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
 import {ActivityIndicator} from 'react-native-paper';
+import {useAppTheme} from '../../utils/hooks';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
@@ -41,6 +42,7 @@ const CustomButton: React.FC<Props> = ({
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
+  const {colors} = useAppTheme();
   const roundedFull = {
     ...defaultStyles,
     backgroundColor: 'primary',
@@ -120,7 +122,9 @@ const CustomButton: React.FC<Props> = ({
       ) : (
         <Box {...getStyles()} {...props}>
           {loading ? (
-            <ActivityIndicator color="white" />
+            <ActivityIndicator
+              color={buttonType === 'contained' ? 'white' : colors.primary}
+            />
           ) : (
             <Text
               variant={buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'}

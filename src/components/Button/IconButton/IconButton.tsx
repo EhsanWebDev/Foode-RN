@@ -1,6 +1,12 @@
 import {useTheme} from '@shopify/restyle';
 import React, {FC} from 'react';
-import {Pressable, StyleProp, ViewStyle, StyleSheet} from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  ViewStyle,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

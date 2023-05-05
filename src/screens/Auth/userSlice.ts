@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {loginType} from './types';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import {addressType, loginType} from './types';
 import {forgotPassword, login, signup} from './actions';
 
 const INITIAL_STATE: loginType = {
@@ -10,6 +10,11 @@ const INITIAL_STATE: loginType = {
   forgotPass_status: 'idle',
   signUp_status: 'idle',
   error: '',
+  userAddress: {
+    addressSelected: false,
+    city: '',
+    streetAddress: '',
+  },
 };
 
 const userSlice = createSlice({
@@ -23,6 +28,11 @@ const userSlice = createSlice({
     logoutUser: (state, action) => {
       state.user = null;
       state.login_status = 'idle';
+    },
+    setUserAddress: (state, action: PayloadAction<addressType>) => {
+      state.userAddress.addressSelected = true;
+      state.userAddress.city = action.payload.city;
+      state.userAddress.streetAddress = action.payload.streetAddress;
     },
   },
   extraReducers(builder) {
@@ -65,6 +75,6 @@ const userSlice = createSlice({
   },
 });
 
-export const {setUser, logoutUser} = userSlice.actions;
+export const {setUser, logoutUser, setUserAddress} = userSlice.actions;
 
 export default userSlice.reducer;

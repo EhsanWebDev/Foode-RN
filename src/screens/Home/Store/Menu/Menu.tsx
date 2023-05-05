@@ -56,13 +56,7 @@ const Menu = () => {
                 nav.navigate('ProductDetails', {productId: item?.id})
               }
               onPressAdd={() => {
-                showToast({
-                  message: `${item.product_name} added to the cart`,
-                  type: 'success',
-                  position: 'bottom',
-                  visibilityTime: 1000,
-                });
-                dispatch(addToCart({...item}));
+                nav.navigate('ProductDetails', {productId: item?.id});
               }}
             />
           )}
@@ -71,7 +65,8 @@ const Menu = () => {
               <Box alignSelf="flex-start">
                 <Text
                   variant="body_bold"
-                  marginVertical="l"
+                  marginTop="l"
+                  mb="s"
                   textTransform="uppercase"
                   letterSpacing={2}>
                   {title}

@@ -14,6 +14,8 @@ import Settings from '../screens/Common/Settings';
 import Splash from '../screens/Common/Splash';
 import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
 import UpdateProfile from '../screens/UserProfile/Profile/UpdateProfile';
+import ManageAddresses from '../screens/UserProfile/Address/ManageAddresses';
+import AddAddress from '../screens/UserProfile/Address/AddAddress';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,6 +51,7 @@ const RootNavigation = () => {
       <AppStack.Screen name="BookSeat" component={BookSeat} />
       <AppStack.Screen name="Profile" component={Profile} />
       <AppStack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <AppStack.Screen name="AddAddress" component={AddAddress} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
     </AppStack.Navigator>
   );

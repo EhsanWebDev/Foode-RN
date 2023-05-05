@@ -38,7 +38,6 @@ const loginSchema = Yup.object().shape({
 const Login = ({navigation}: LoginScreenNavigationProp) => {
   const dispatch = useReduxDispatch();
   const {user, login_status} = useReduxSelector(state => state.user);
-  console.log({user, login_status});
 
   const [showPass, setShowPass] = useState(false);
 

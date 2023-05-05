@@ -1,5 +1,11 @@
 import {loadingStates} from '../../store/types';
 
+export type addressType = {
+  addressSelected?: boolean;
+  city: string;
+  streetAddress: string;
+};
+
 export type loginType = {
   user: object | undefined | null;
   token: string;
@@ -8,6 +14,7 @@ export type loginType = {
   signUp_status: loadingStates;
   login_status: loadingStates;
   error: boolean | string;
+  userAddress: addressType;
 };
 
 export type loginPayload = {

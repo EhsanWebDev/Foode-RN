@@ -67,32 +67,6 @@ const Input: React.FC<InputProps & RestyleProps> = ({
           {label} {required && <Text color="error">*</Text>}
         </Text>
       )}
-
-      {/* <Portal>
-        <Modal
-          visible={showDatePicker}
-          onDismiss={() => setShowDatePicker(show => !show)}
-          contentContainerStyle={
-            {
-              // backgroundColor: colors.mainBackground,
-              // marginHorizontal: theme.spacing.m,
-              // paddingBottom: theme.spacing.m,
-              // borderRadius: theme.spacing.s,
-            }
-          }>
-          <Box>
-          
-            <DatePicker
-              onChange={(date: any) => console.log(date)}
-              calendarHeaderTextStyles={styles.calenderHeaderText}
-              selectedDateStyles={{
-                backgroundColor: colors.primary,
-                borderColor: colors.primary,
-              }}
-            />
-          </Box>
-        </Modal>
-      </Portal> */}
       <DateTimePickerModal
         date={new Date()}
         minimumDate={pickerMode === 'date' ? new Date() : null}
@@ -180,9 +154,13 @@ const Input: React.FC<InputProps & RestyleProps> = ({
       ) : (
         <Card
           variant="inputCard"
-          height={globalUnits.inputHeight}
+          height={
+            props.multiline
+              ? globalUnits.inputHeight + 32
+              : globalUnits.inputHeight
+          }
           justifyContent="space-between"
-          borderRadius={24}>
+          borderRadius={props.multiline ? 12 : 24}>
           <Box
             height={'100%'}
             flexDirection="row"
@@ -190,7 +168,8 @@ const Input: React.FC<InputProps & RestyleProps> = ({
             borderWidth={error?.error ? 1 : 0}
             borderColor="error"
             paddingHorizontal="m"
-            borderRadius={24}>
+            paddingVertical={props.multiline ? 's' : 'none'}
+            borderRadius={props.multiline ? 12 : 24}>
             <TextInput
               style={[
                 styles.input,
