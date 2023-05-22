@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -17,6 +17,9 @@ import Menu from './Store/Menu/Menu';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
+import LinearGradient from 'react-native-linear-gradient';
+import {dimensions} from '../../utils/constants';
+import {scale, verticalScale} from 'react-native-size-matters';
 
 const imagesData = [
   {
@@ -52,53 +55,79 @@ const Home = ({navigation}) => {
   };
 
   return (
-    <Box flex={1} backgroundColor="mainBackground" pt="m">
-      <Box
-        mx="m"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center">
-        <Box flex={1} flexDirection="row" alignItems="center">
-          <TouchableOpacity onPress={handleUserIconPress}>
-            <Icon
-              name="md-person-circle"
-              size={globalUnits.icon_LG + 4}
-              color={colors.title}
-            />
-          </TouchableOpacity>
-
-          <Text variant="body_sm_bold" ml={'xs'}>
-            San Francisco, California.
+    <Box flex={1} backgroundColor="mainBackground">
+      <LinearGradient
+        colors={['#F86932', '#FDA430']}
+        start={{x: 0.75, y: 0.65}}
+        end={{x: 1, y: 0}}
+        style={{
+          paddingTop: verticalScale(44),
+          height: verticalScale(280),
+        }}>
+        <Box
+          mx="m"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center">
+          <Box flex={1} flexDirection="row" alignItems="center">
+            <TouchableOpacity onPress={handleUserIconPress}>
+              <Icon
+                name="md-person-circle"
+                size={scale(globalUnits.icon_LG * 1.5)}
+                color={colors.text}
+              />
+            </TouchableOpacity>
+            <Box flexDirection="row" alignItems="center">
+              <Text variant="body_sm_bold" ml={'xs'} color="text">
+                Jolie Martin{' '}
+              </Text>
+              <Icon
+                name="chevron-down"
+                size={globalUnits.icon_LG - 6}
+                color={colors.text}
+              />
+            </Box>
+          </Box>
+          <Box>
+            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+              <Icon
+                name="ios-cart"
+                size={globalUnits.icon_LG}
+                color={colors.text}
+              />
+              <Box
+                position="absolute"
+                backgroundColor="text"
+                width={20}
+                height={20}
+                justifyContent="center"
+                alignItems="center"
+                borderRadius={20}
+                top={-6}
+                right={-8}>
+                <Text variant="body_sm_bold">{cartItems.length}</Text>
+              </Box>
+            </TouchableOpacity>
+          </Box>
+        </Box>
+        <Box mt="l" pb="xl" mx="m">
+          <Text variant="header" color="text">
+            Hey, Jolie
+          </Text>
+          <Text variant="header" color="text">
+            Good Morning! <Icon name="sunny-sharp" color="white" size={20} />
+          </Text>
+          <Text mt="s" mb="xl" variant="body" color="text">
+            What do you want to eat today?
           </Text>
         </Box>
-        <Box>
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-            <Icon
-              name="ios-cart"
-              size={globalUnits.icon_LG}
-              color={colors.title}
-            />
-            <Box
-              position="absolute"
-              backgroundColor="primary"
-              width={20}
-              height={20}
-              justifyContent="center"
-              alignItems="center"
-              borderRadius={20}
-              top={-6}
-              right={-8}>
-              <Text variant="body_sm_bold" color="text">
-                {cartItems.length}
-              </Text>
-            </Box>
-          </TouchableOpacity>
+      </LinearGradient>
+      <View style={{marginTop: -120}}>
+        <Box mt="l">
+          <ImageCarousel imagesData={imagesData} />
         </Box>
-      </Box>
+      </View>
 
-      <Box mt="xl">
-        <ImageCarousel imagesData={imagesData} />
-      </Box>
       <Box flex={1} mt="s">
         <Tab.Navigator
           tabBar={props => <TabBar {...props} />}

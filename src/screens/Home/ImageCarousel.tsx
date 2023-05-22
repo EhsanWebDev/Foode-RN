@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import {dimensions} from '../../utils/constants';
 import Box from '../../components/View/CustomView';
 import {useAppTheme} from '../../utils/hooks';
-import {verticalScale} from 'react-native-size-matters';
+import {scale, verticalScale} from 'react-native-size-matters';
 import {useSharedValue} from 'react-native-reanimated';
 import PaginationItem from '../../components/AppComponents/PaginationItem/PaginationItem';
 
@@ -21,6 +21,9 @@ const ImageCarousel = ({imagesData = []}: Props) => {
   const {spacing, colors} = useAppTheme();
 
   const progressValue = useSharedValue<number>(0);
+
+  const [currentIndex, setCurrentIndex] = useState(1);
+
   return (
     <>
       <Carousel
@@ -31,13 +34,13 @@ const ImageCarousel = ({imagesData = []}: Props) => {
         width={dimensions.width}
         height={verticalScale(dimensions.width / 2.5)}
         data={imagesData}
-        scrollAnimationDuration={1000}
-        onSnapToItem={index => console.log('current index:', index)}
+        scrollAnimationDuration={200}
+        onSnapToItem={index => setCurrentIndex(index + 1)}
         renderItem={({item}) => (
           <Box
             style={{
               flex: 1,
-              marginHorizontal: spacing.m,
+              marginHorizontal: spacing.l,
             }}>
             <Image
               key={item.id}
@@ -45,8 +48,8 @@ const ImageCarousel = ({imagesData = []}: Props) => {
                 uri: item.image,
               }}
               style={{
-                height: verticalScale(dimensions.width / 2.5),
-                borderRadius: 8,
+                height: verticalScale(160),
+                borderRadius: 12,
               }}
             />
           </Box>
@@ -56,20 +59,26 @@ const ImageCarousel = ({imagesData = []}: Props) => {
         <Box
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: 35,
+            justifyContent: 'center',
+            width: 125,
+            alignItems: 'center',
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: -10,
+            backgroundColor: 'white',
+            borderTopRightRadius: 8,
+            borderTopLeftRadius: 8,
+            paddingTop: 6,
           }}>
           {imagesData.map((item, index) => {
             return (
               <PaginationItem
-                backgroundColor={colors.primary}
-                inActiveColor={colors.gray}
+                backgroundColor={colors.secondary}
+                inActiveColor={colors.inactive}
                 animValue={progressValue}
                 index={index}
                 key={item.id}
                 length={imagesData.length}
+                currentIndex={currentIndex}
               />
             );
           })}

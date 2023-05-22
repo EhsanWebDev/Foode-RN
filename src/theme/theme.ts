@@ -32,8 +32,9 @@ const palette = {
   input: '#EAEEF2',
   inputPlaceholder: '#DCE0E3',
 
-  black: '#272E39',
+  black: '#2D3748',
   white: '#FFFFFF',
+  lightGray: '#ECEDEE',
 
   green: '#23A757',
   indigo: '#2E5AAC',
@@ -52,6 +53,7 @@ const theme = createTheme({
 
     secondary: palette.black,
     muted: palette.muted,
+    inactive: palette.lightGray,
 
     error: palette.red,
     gray: palette.gray,

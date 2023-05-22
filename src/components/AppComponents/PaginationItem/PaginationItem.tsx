@@ -5,7 +5,12 @@ import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
+  withTiming,
 } from 'react-native-reanimated';
+import Text from '../../Text/CustomText';
+
+const width = 30;
+const height = 14;
 
 const PaginationItem: React.FC<{
   index: number;
@@ -14,9 +19,16 @@ const PaginationItem: React.FC<{
   animValue: Animated.SharedValue<number>;
   isRotate?: boolean;
   inActiveColor?: string;
+  currentIndex?: string | number;
 }> = props => {
-  const {animValue, index, length, backgroundColor, inActiveColor} = props;
-  const width = 8;
+  const {
+    animValue,
+    index,
+    length,
+    backgroundColor,
+    inActiveColor,
+    currentIndex,
+  } = props;
 
   const animStyle = useAnimatedStyle(() => {
     let inputRange = [index - 1, index, index + 1];
@@ -40,31 +52,42 @@ const PaginationItem: React.FC<{
       ],
     };
   }, [animValue, index, length]);
+
+  const isCurrentItemActive = index === currentIndex - 1;
+
+  console.log({isCurrentItemActive, index});
+
   return (
     <View
       style={[
         {
           backgroundColor: inActiveColor,
-          width,
-          height: width,
+          width: isCurrentItemActive ? width : 10,
+          height: isCurrentItemActive ? height : 10,
+          marginRight: 12,
         },
         styles.container,
       ]}>
       <Animated.View
         style={[
           {
-            borderRadius: 50,
             backgroundColor,
             flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 1,
           },
           animStyle,
-        ]}
-      />
+        ]}>
+        <Text variant="body_xs_bold" color="text">
+          {currentIndex} / {length}
+        </Text>
+      </Animated.View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {borderRadius: 4, overflow: 'hidden'},
+  container: {borderRadius: 6, overflow: 'hidden'},
 });
 export default PaginationItem;

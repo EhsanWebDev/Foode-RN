@@ -15,19 +15,19 @@ const App = () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={styles.container}>
-        <SafeAreaProvider>
-          <SafeAreaView style={styles.container}>
-            <NavigationContainer>
-              <ThemeProvider theme={theme}>
-                <PaperProvider>
-                  <RootNavigation />
-                </PaperProvider>
-              </ThemeProvider>
-            </NavigationContainer>
-            <Toast />
-            <StatusBar barStyle="default" />
-          </SafeAreaView>
-        </SafeAreaProvider>
+        {/* <SafeAreaProvider> */}
+        {/* <SafeAreaView style={styles.container}> */}
+        <NavigationContainer>
+          <ThemeProvider theme={theme}>
+            <PaperProvider>
+              <RootNavigation />
+            </PaperProvider>
+          </ThemeProvider>
+        </NavigationContainer>
+        <Toast />
+        <StatusBar barStyle="light-content" />
+        {/* </SafeAreaView> */}
+        {/* </SafeAreaProvider> */}
       </GestureHandlerRootView>
     </Provider>
   );
