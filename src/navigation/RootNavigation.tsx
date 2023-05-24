@@ -16,6 +16,7 @@ import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
 import UpdateProfile from '../screens/UserProfile/Profile/UpdateProfile';
 import ManageAddresses from '../screens/UserProfile/Address/ManageAddresses';
 import AddAddress from '../screens/UserProfile/Address/AddAddress';
+import AppTabsNavigation from './AppTabsNavigation';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -31,7 +32,7 @@ const MyDrawer = () => {
           width: dimensions.width / 1.2,
         },
       }}>
-      <Drawer.Screen name="MainAppStack" component={Home} />
+      <Drawer.Screen name="MainAppStack" component={AppTabsNavigation} />
     </Drawer.Navigator>
   );
 };

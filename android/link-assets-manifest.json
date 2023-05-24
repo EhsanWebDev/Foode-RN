@@ -2,6 +2,14 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/Lexend-Regular.ttf",
+      "sha1": "6c2aa93d8e5b5f5d831452a101c87bae0a0f913d"
+    },
+    {
+      "path": "src/assets/fonts/Lexend-SemiBold.ttf",
+      "sha1": "f07c0674e3ef0d9aabdef002f6a7bd96d17fd5bf"
+    },
+    {
       "path": "src/assets/fonts/Poppins-Bold.ttf",
       "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
     },

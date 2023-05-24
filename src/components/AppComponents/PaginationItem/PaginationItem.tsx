@@ -75,12 +75,11 @@ const PaginationItem: React.FC<{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 1,
           },
           animStyle,
         ]}>
         <Text variant="body_xs_bold" color="text">
-          {currentIndex} / {length}
+          {currentIndex}/{length}
         </Text>
       </Animated.View>
     </View>

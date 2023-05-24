@@ -1,13 +1,18 @@
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useTheme} from '@shopify/restyle';
-import React from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+
 import {Theme} from '../theme/theme';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/Home/Home';
 import Text from '../components/Text/CustomText';
 import Box from '../components/View/CustomView';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {
+  HomeIcon,
+  OrderIcon,
+  TableIcon,
+  UserIcon,
+  VoucherIcon,
+} from '../assets/icons/tabbar/Icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,29 +22,39 @@ const Settings = () => (
   </Box>
 );
 
-const AppTabsNavigation = props => {
+const AppTabsNavigation = () => {
   const theme = useTheme<Theme>();
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarLabel: () => null,
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.muted,
+        tabBarStyle: {
+          height: 90,
+        },
       }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({color}) => <Icon name="home" size={20} color={color} />,
+          tabBarIcon: ({color}) => <HomeIcon color={color} />,
+          tabBarLabel: ({focused}) => (
+            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+              HOME
+            </Text>
+          ),
         }}
       />
       <Tab.Screen
         name="Settings"
         component={Settings}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="settings" size={20} color={color} />
+          tabBarIcon: ({color}) => <OrderIcon color={color} />,
+          tabBarLabel: ({focused}) => (
+            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+              ORDER
+            </Text>
           ),
         }}
       />
@@ -47,8 +62,11 @@ const AppTabsNavigation = props => {
         name="Tab (1)"
         component={Settings}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="airplane" size={20} color={color} />
+          tabBarIcon: ({color}) => <TableIcon color={color} />,
+          tabBarLabel: ({focused}) => (
+            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+              RESERVATION
+            </Text>
           ),
         }}
       />
@@ -57,7 +75,26 @@ const AppTabsNavigation = props => {
         component={Settings}
         options={{
           tabBarIcon: ({color}) => (
-            <Icon name="person" size={20} color={color} />
+            <VoucherIcon name="person" size={20} color={color} />
+          ),
+          tabBarLabel: ({focused}) => (
+            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+              OFFERS
+            </Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Tab (22)"
+        component={Settings}
+        options={{
+          tabBarIcon: ({color}) => (
+            <UserIcon name="person" size={20} color={color} />
+          ),
+          tabBarLabel: ({focused}) => (
+            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+              PROFILE
+            </Text>
           ),
         }}
       />

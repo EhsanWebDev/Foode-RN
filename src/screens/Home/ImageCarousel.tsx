@@ -48,7 +48,7 @@ const ImageCarousel = ({imagesData = []}: Props) => {
                 uri: item.image,
               }}
               style={{
-                height: verticalScale(160),
+                height: verticalScale(180),
                 borderRadius: 12,
               }}
             />

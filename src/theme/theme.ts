@@ -2,15 +2,15 @@ import {createTheme} from '@shopify/restyle';
 import {moderateScale} from 'react-native-size-matters';
 
 export enum AppFonts {
-  Primary_Light = 'SourceSansPro-Light',
-  Primary_Regular = 'SourceSansPro-Regular',
-  Primary_SemiBold = 'SourceSansPro-SemiBold',
-  Primary_Bold = 'SourceSansPro-Bold',
+  Primary_Light = 'Poppins-Light',
+  Primary_Regular = 'Poppins-Regular',
+  Primary_SemiBold = 'Poppins-SemiBold',
+  Primary_Bold = 'Poppins-Bold',
 
-  Secondary_Light = 'Poppins-Light',
-  Secondary_Regular = 'Poppins-Regular',
-  Secondary_SemiBold = 'Poppins-SemiBold',
-  Secondary_Bold = 'Poppins-Bold',
+  Secondary_Light = 'Lexend-Regular',
+  Secondary_Regular = 'Lexend-Regular',
+  Secondary_SemiBold = 'Lexend-SemiBold',
+  Secondary_Bold = 'Lexend-SemiBold',
 }
 export enum AppFontSizes {
   _header = 22,
@@ -22,7 +22,7 @@ export enum AppFontSizes {
 }
 
 const palette = {
-  primary: '#F44360',
+  primary: '#F86932',
   primary_light: '#FEECEF',
 
   red: '#E04243',
@@ -78,54 +78,50 @@ const theme = createTheme({
     completed: palette.indigo,
   },
   textVariants: {
-    default: {
+    defaults: {
       color: 'title',
     },
     header: {
       fontSize: moderateScale(AppFontSizes._header),
       fontFamily: AppFonts.Primary_Bold,
-      color: 'title',
     },
     body: {
       fontSize: moderateScale(AppFontSizes._regular),
-      color: 'title',
       fontFamily: AppFonts.Primary_Regular,
     },
     body_bold: {
       fontSize: moderateScale(AppFontSizes._regular),
-      color: 'title',
       fontFamily: AppFonts.Primary_Bold,
     },
     title: {
       fontSize: moderateScale(AppFontSizes._title),
-      color: 'title',
       fontFamily: AppFonts.Primary_Regular,
     },
     title_bold: {
       fontSize: moderateScale(AppFontSizes._title),
-      color: 'title',
       fontFamily: AppFonts.Primary_Bold,
     },
     body_sm: {
       fontSize: moderateScale(AppFontSizes._sm),
-      color: 'title',
       fontFamily: AppFonts.Primary_Regular,
     },
     body_sm_bold: {
       fontSize: moderateScale(AppFontSizes._sm),
-      color: 'title',
       fontFamily: AppFonts.Primary_Bold,
     },
     body_xs: {
       fontSize: moderateScale(AppFontSizes._xs),
-      color: 'title',
       fontFamily: AppFonts.Primary_Regular,
     },
     body_xs_bold: {
       fontSize: moderateScale(AppFontSizes._xs),
-      color: 'title',
       fontFamily: AppFonts.Primary_Bold,
     },
+    body_xs_2: {
+      fontSize: moderateScale(AppFontSizes._xs),
+      fontFamily: AppFonts.Secondary_Regular,
+    },
+
     input: {
       fontSize: moderateScale(AppFontSizes._input),
       color: 'inputText',
@@ -135,16 +131,6 @@ const theme = createTheme({
       fontSize: moderateScale(AppFontSizes._input),
       color: 'inputText',
       fontFamily: AppFonts.Secondary_SemiBold,
-    },
-    Normal: {
-      fontSize: 16,
-      color: 'title',
-    },
-    SM: {
-      fontSize: 12,
-    },
-    XS: {
-      fontSize: 10,
     },
   },
   spacing: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Platform, TouchableOpacity, View} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -61,11 +61,12 @@ const Home = ({navigation}) => {
         start={{x: 0.75, y: 0.65}}
         end={{x: 1, y: 0}}
         style={{
-          paddingTop: verticalScale(44),
-          height: verticalScale(280),
+          paddingTop:
+            Platform.OS === 'ios' ? verticalScale(44) : verticalScale(12),
+          height: verticalScale(300),
         }}>
         <Box
-          mx="m"
+          mx="l"
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center">
@@ -110,7 +111,7 @@ const Home = ({navigation}) => {
             </TouchableOpacity>
           </Box>
         </Box>
-        <Box mt="l" pb="xl" mx="m">
+        <Box mt="l" pb="xl" mx="l">
           <Text variant="header" color="text">
             Hey, Jolie
           </Text>
@@ -128,7 +129,11 @@ const Home = ({navigation}) => {
         </Box>
       </View>
 
-      <Box flex={1} mt="s">
+      <Box>
+        <HomeTab />
+      </Box>
+
+      {/* <Box flex={1} mt="s">
         <Tab.Navigator
           tabBar={props => <TabBar {...props} />}
           sceneContainerStyle={{
@@ -140,7 +145,7 @@ const Home = ({navigation}) => {
           <Tab.Screen name="About" component={About} />
           <Tab.Screen name="Galleries" component={Galleries} />
         </Tab.Navigator>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -67,6 +67,8 @@
 		<string>SourceSansPro-Light.ttf</string>
 		<string>SourceSansPro-Regular.ttf</string>
 		<string>SourceSansPro-SemiBold.ttf</string>
+		<string>Lexend-Regular.ttf</string>
+		<string>Lexend-SemiBold.ttf</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app need to require your location info</string>
