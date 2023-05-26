@@ -13,6 +13,8 @@ import {
   UserIcon,
   VoucherIcon,
 } from '../assets/icons/tabbar/Icons';
+import {Platform, SafeAreaView} from 'react-native';
+import {verticalScale} from 'react-native-size-matters';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +33,12 @@ const AppTabsNavigation = () => {
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.muted,
         tabBarStyle: {
-          height: 90,
+          height: verticalScale(Platform.OS === 'ios' ? 70 : 50),
+
+          paddingTop: 8,
+        },
+        tabBarItemStyle: {
+          paddingBottom: 2,
         },
       }}>
       <Tab.Screen
@@ -40,7 +47,10 @@ const AppTabsNavigation = () => {
         options={{
           tabBarIcon: ({color}) => <HomeIcon color={color} />,
           tabBarLabel: ({focused}) => (
-            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+            <Text
+              variant="body_xs_2"
+              pb="xxs"
+              color={focused ? 'primary' : 'title'}>
               HOME
             </Text>
           ),
@@ -52,7 +62,10 @@ const AppTabsNavigation = () => {
         options={{
           tabBarIcon: ({color}) => <OrderIcon color={color} />,
           tabBarLabel: ({focused}) => (
-            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+            <Text
+              variant="body_xs_2"
+              pb="xxs"
+              color={focused ? 'primary' : 'title'}>
               ORDER
             </Text>
           ),
@@ -64,7 +77,11 @@ const AppTabsNavigation = () => {
         options={{
           tabBarIcon: ({color}) => <TableIcon color={color} />,
           tabBarLabel: ({focused}) => (
-            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+            <Text
+              numberOfLines={1}
+              variant="body_xs_2"
+              pb="xxs"
+              color={focused ? 'primary' : 'title'}>
               RESERVATION
             </Text>
           ),
@@ -78,7 +95,10 @@ const AppTabsNavigation = () => {
             <VoucherIcon name="person" size={20} color={color} />
           ),
           tabBarLabel: ({focused}) => (
-            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+            <Text
+              variant="body_xs_2"
+              pb="xxs"
+              color={focused ? 'primary' : 'title'}>
               OFFERS
             </Text>
           ),
@@ -92,7 +112,10 @@ const AppTabsNavigation = () => {
             <UserIcon name="person" size={20} color={color} />
           ),
           tabBarLabel: ({focused}) => (
-            <Text variant="body_xs_2" color={focused ? 'primary' : 'title'}>
+            <Text
+              variant="body_xs_2"
+              pb="xxs"
+              color={focused ? 'primary' : 'title'}>
               PROFILE
             </Text>
           ),

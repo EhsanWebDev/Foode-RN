@@ -13,18 +13,18 @@ type SectionHeaderProps = {
 
 const SectionHeader = ({label, onPress = () => {}}: SectionHeaderProps) => {
   const {colors} = useAppTheme();
-  const {primary} = colors || {};
+  const {mainForeground} = colors || {};
   return (
     <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-      <Text variant="body_bold">{label}</Text>
+      <Text variant="header2">{label}</Text>
       <TouchableOpacity onPress={onPress}>
         <Box
           p="xs"
           borderRadius={globalUnits.borderRadius_xs}
-          backgroundColor="primaryLight">
+          backgroundColor="inactive">
           <Icon
             name={'ios-arrow-forward'}
-            color={primary}
+            color={mainForeground}
             size={globalUnits.icon_LG}
           />
         </Box>

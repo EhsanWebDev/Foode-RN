@@ -13,10 +13,8 @@ import {
 } from '@shopify/restyle';
 import {AppFontSizes, AppFonts, Theme} from '../../theme/theme';
 import styles from './styles';
-import DatePicker from 'react-native-styled-datepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Dialog, Modal, Portal, RadioButton} from 'react-native-paper';
-import moment from 'moment';
 
 type RestyleProps = BoxProps<Theme>;
 

@@ -5,11 +5,10 @@ import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
-  withTiming,
 } from 'react-native-reanimated';
 import Text from '../../Text/CustomText';
 
-const width = 30;
+const width = 26;
 const height = 14;
 
 const PaginationItem: React.FC<{
@@ -54,8 +53,6 @@ const PaginationItem: React.FC<{
   }, [animValue, index, length]);
 
   const isCurrentItemActive = index === currentIndex - 1;
-
-  console.log({isCurrentItemActive, index});
 
   return (
     <View

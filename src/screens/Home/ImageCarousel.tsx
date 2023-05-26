@@ -4,7 +4,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import {dimensions} from '../../utils/constants';
 import Box from '../../components/View/CustomView';
 import {useAppTheme} from '../../utils/hooks';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 import {useSharedValue} from 'react-native-reanimated';
 import PaginationItem from '../../components/AppComponents/PaginationItem/PaginationItem';
 
@@ -32,7 +32,7 @@ const ImageCarousel = ({imagesData = []}: Props) => {
           (progressValue.value = absoluteProgress)
         }
         width={dimensions.width}
-        height={verticalScale(dimensions.width / 2.5)}
+        height={moderateVerticalScale(180)}
         data={imagesData}
         scrollAnimationDuration={200}
         onSnapToItem={index => setCurrentIndex(index + 1)}
@@ -48,8 +48,8 @@ const ImageCarousel = ({imagesData = []}: Props) => {
                 uri: item.image,
               }}
               style={{
-                height: verticalScale(180),
-                borderRadius: 12,
+                height: moderateVerticalScale(180),
+                borderRadius: 8,
               }}
             />
           </Box>
@@ -60,13 +60,13 @@ const ImageCarousel = ({imagesData = []}: Props) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            width: 125,
+            width: moderateScale(125),
             alignItems: 'center',
             alignSelf: 'center',
-            marginTop: -10,
+            marginTop: moderateVerticalScale(-6),
             backgroundColor: 'white',
-            borderTopRightRadius: 8,
-            borderTopLeftRadius: 8,
+            borderTopRightRadius: 12,
+            borderTopLeftRadius: 12,
             paddingTop: 6,
           }}>
           {imagesData.map((item, index) => {

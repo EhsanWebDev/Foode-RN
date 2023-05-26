@@ -1,5 +1,5 @@
 import {createTheme} from '@shopify/restyle';
-import {moderateScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 export enum AppFonts {
   Primary_Light = 'Poppins-Light',
@@ -13,11 +13,14 @@ export enum AppFonts {
   Secondary_Bold = 'Lexend-SemiBold',
 }
 export enum AppFontSizes {
-  _header = 22,
+  _header = 24,
+  _header1 = 18,
+
   _regular = 16,
   _title = 14,
   _sm = 12,
   _xs = 10,
+
   _input = 13,
 }
 
@@ -26,7 +29,7 @@ const palette = {
   primary_light: '#FEECEF',
 
   red: '#E04243',
-  slate: '#56616F',
+  slate: '#818791',
   muted: '#878E96',
   gray: 'darkgray',
   input: '#EAEEF2',
@@ -34,7 +37,7 @@ const palette = {
 
   black: '#2D3748',
   white: '#FFFFFF',
-  lightGray: '#ECEDEE',
+  lightGray: '#F2F4F5',
 
   green: '#23A757',
   indigo: '#2E5AAC',
@@ -47,6 +50,7 @@ const palette = {
 const theme = createTheme({
   colors: {
     mainBackground: palette.white,
+    mainForeground: palette.black,
 
     primary: palette.primary,
     primaryLight: palette.primary_light,
@@ -83,6 +87,10 @@ const theme = createTheme({
     },
     header: {
       fontSize: moderateScale(AppFontSizes._header),
+      fontFamily: AppFonts.Primary_Bold,
+    },
+    header2: {
+      fontSize: moderateScale(AppFontSizes._header1),
       fontFamily: AppFonts.Primary_Bold,
     },
     body: {
@@ -141,8 +149,11 @@ const theme = createTheme({
     s_m: 12,
     m: 16,
     l: 20,
+    'l+': 24,
     xl: 40,
     header: 30,
+    cardPaddingX: scale(15),
+    cardPaddingY: verticalScale(14),
   },
   breakpoints: {
     phone: 0,
@@ -170,8 +181,17 @@ const theme = createTheme({
       backgroundColor: 'cardPrimaryBackground',
     },
     secondary: {
-      borderRadius: 12,
-      backgroundColor: 'primary',
+      borderRadius: 8,
+      backgroundColor: 'inactive',
+      shadowColor: 'muted',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.15,
+      shadowRadius: 0.84,
+
+      elevation: 2,
     },
     inputCard: {
       backgroundColor: 'cardPrimaryBackground',

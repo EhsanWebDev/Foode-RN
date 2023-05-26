@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, TouchableOpacity, View} from 'react-native';
+import {Platform, ScrollView, TouchableOpacity, View} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -19,7 +19,11 @@ import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
 import LinearGradient from 'react-native-linear-gradient';
 import {dimensions} from '../../utils/constants';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {
+  moderateVerticalScale,
+  scale,
+  verticalScale,
+} from 'react-native-size-matters';
 
 const imagesData = [
   {
@@ -56,82 +60,85 @@ const Home = ({navigation}) => {
 
   return (
     <Box flex={1} backgroundColor="mainBackground">
-      <LinearGradient
-        colors={['#F86932', '#FDA430']}
-        start={{x: 0.75, y: 0.65}}
-        end={{x: 1, y: 0}}
-        style={{
-          paddingTop:
-            Platform.OS === 'ios' ? verticalScale(44) : verticalScale(12),
-          height: verticalScale(300),
-        }}>
-        <Box
-          mx="l"
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center">
-          <Box flex={1} flexDirection="row" alignItems="center">
-            <TouchableOpacity onPress={handleUserIconPress}>
-              <Icon
-                name="md-person-circle"
-                size={scale(globalUnits.icon_LG * 1.5)}
-                color={colors.text}
-              />
-            </TouchableOpacity>
-            <Box flexDirection="row" alignItems="center">
-              <Text variant="body_sm_bold" ml={'xs'} color="text">
-                Jolie Martin{' '}
-              </Text>
-              <Icon
-                name="chevron-down"
-                size={globalUnits.icon_LG - 6}
-                color={colors.text}
-              />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <LinearGradient
+          colors={['#F86932', '#FDA430']}
+          start={{x: 0.75, y: 0.45}}
+          end={{x: 1, y: 0}}
+          style={{
+            paddingTop:
+              Platform.OS === 'ios'
+                ? moderateVerticalScale(40)
+                : moderateVerticalScale(8),
+            height: moderateVerticalScale(300),
+          }}>
+          <Box
+            mx="l"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center">
+            <Box flex={1} flexDirection="row" alignItems="center">
+              <TouchableOpacity onPress={handleUserIconPress}>
+                <Icon
+                  name="md-person-circle"
+                  size={scale(globalUnits.icon_LG * 1.5)}
+                  color={colors.text}
+                />
+              </TouchableOpacity>
+              <Box flexDirection="row" alignItems="center">
+                <Text variant="title" ml={'xs'} color="text">
+                  Jolie Martin{' '}
+                </Text>
+                <Icon
+                  name="chevron-down"
+                  size={globalUnits.icon_LG - 6}
+                  color={colors.text}
+                />
+              </Box>
+            </Box>
+            <Box>
+              <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                <Icon
+                  name="ios-cart"
+                  size={globalUnits.icon_LG}
+                  color={colors.text}
+                />
+                <Box
+                  position="absolute"
+                  backgroundColor="text"
+                  width={20}
+                  height={20}
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius={20}
+                  top={-6}
+                  right={-8}>
+                  <Text variant="body_sm_bold">{cartItems.length}</Text>
+                </Box>
+              </TouchableOpacity>
             </Box>
           </Box>
-          <Box>
-            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-              <Icon
-                name="ios-cart"
-                size={globalUnits.icon_LG}
-                color={colors.text}
-              />
-              <Box
-                position="absolute"
-                backgroundColor="text"
-                width={20}
-                height={20}
-                justifyContent="center"
-                alignItems="center"
-                borderRadius={20}
-                top={-6}
-                right={-8}>
-                <Text variant="body_sm_bold">{cartItems.length}</Text>
-              </Box>
-            </TouchableOpacity>
+          <Box mt="l" mx="l">
+            <Text variant="header" color="text">
+              {`Hey, Jolie
+Good Morning! `}
+              <Icon name="sunny-sharp" color="white" size={24} />
+            </Text>
+            {/* <Text variant="header" color="text"></Text> */}
+            <Text mt="s" mb="xl" variant="title" color="text">
+              What do you want to eat today?
+            </Text>
           </Box>
+        </LinearGradient>
+        <View style={{marginTop: moderateVerticalScale(-70)}}>
+          <Box>
+            <ImageCarousel imagesData={imagesData} />
+          </Box>
+        </View>
+        <Box flex={1}>
+          <HomeTab />
         </Box>
-        <Box mt="l" pb="xl" mx="l">
-          <Text variant="header" color="text">
-            Hey, Jolie
-          </Text>
-          <Text variant="header" color="text">
-            Good Morning! <Icon name="sunny-sharp" color="white" size={20} />
-          </Text>
-          <Text mt="s" mb="xl" variant="body" color="text">
-            What do you want to eat today?
-          </Text>
-        </Box>
-      </LinearGradient>
-      <View style={{marginTop: -120}}>
-        <Box mt="l">
-          <ImageCarousel imagesData={imagesData} />
-        </Box>
-      </View>
-
-      <Box>
-        <HomeTab />
-      </Box>
+      </ScrollView>
 
       {/* <Box flex={1} mt="s">
         <Tab.Navigator

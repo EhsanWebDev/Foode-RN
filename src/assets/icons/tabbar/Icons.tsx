@@ -104,12 +104,12 @@ export const UserIcon = () => (
     </G>
   </Svg>
 );
-export const HomeIcon = ({color = '#818791'}) => (
+export const HomeIcon = ({color = '#818791', size = 28}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width="28"
-    height="28"
-    viewBox="0 0 28 28">
+    width={size}
+    height={size}
+    viewBox={`0 0 ${size} ${size}`}>
     <G
       id="Group_64650"
       data-name="Group 64650"
