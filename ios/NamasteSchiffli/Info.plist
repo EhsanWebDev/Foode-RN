@@ -69,6 +69,7 @@
 		<string>SourceSansPro-SemiBold.ttf</string>
 		<string>Lexend-Regular.ttf</string>
 		<string>Lexend-SemiBold.ttf</string>
+		<string>Poppins-Medium.ttf</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app need to require your location info</string>

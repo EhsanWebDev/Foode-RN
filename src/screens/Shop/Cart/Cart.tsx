@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, ScrollView, StatusBar, TouchableOpacity} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
@@ -16,6 +17,30 @@ import {useAppTheme} from '../../../utils/hooks';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {removeFromCart, selectCartTotalPrice} from './cartSlice';
 import CartItem from './CartItem/CartItem';
+import {AppFonts} from '../../../theme/theme';
+import {Divider} from 'react-native-paper';
+import {
+  moderateVerticalScale,
+  scale,
+  verticalScale,
+} from 'react-native-size-matters';
+import IconButton from '../../../components/Button/IconButton/IconButton';
+import CartButton from '../../../components/Button/CartButton';
+import {globalUnits} from '../../../theme/globalStyles';
+import {dimensions} from '../../../utils/constants';
+
+const recentOrdersData = [
+  {
+    id: 1,
+    name: 'Philly Cheese Steak Sandwich',
+    price: 'CHF 15.90',
+  },
+  {
+    id: 2,
+    name: 'Philly Cheese Steak Sandwich',
+    price: 'CHF 15.90',
+  },
+];
 
 const ListFooterComponent = () => {
   const {colors} = useAppTheme();
@@ -26,42 +51,34 @@ const ListFooterComponent = () => {
     return null;
   }
   return (
-    <Box py="m" mx="xs">
-      <Box
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center">
-        <Text variant="title_bold">Subtotal</Text>
-        <Text variant="title_bold">${totalPrice}</Text>
-      </Box>
-      <Box
-        mt="s_m"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center">
-        <Text variant="body_sm">Delivery Fee</Text>
-        <Text variant="body_sm">$3</Text>
-      </Box>
-      <Box
-        mt="xs"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center">
-        <Text variant="body_sm">Plateform Fee</Text>
-        <Text variant="body_sm">$1</Text>
-      </Box>
-      <Box mt={'s'} flexDirection="row" alignItems="center">
-        <IconMaterial
-          name="ballot-recount-outline"
-          size={20}
-          color={colors.primary}
-        />
-        <CustomButton
-          buttonType="textOnly"
-          label="Apply a voucher"
-          ml="s_m"
-          color="primary"
-        />
+    <Box>
+      <Divider style={{height: 12, backgroundColor: '#EBEBEB'}} />
+      <Box marginVertical="s" mx="l">
+        <Text variant="body_bold">Recommendations</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {recentOrdersData.map(item => (
+            <Box key={item.id}>
+              <Box
+                width={scale(180)}
+                height={verticalScale(110)}
+                mr="s_m"
+                mt="m"
+                backgroundColor="completed"
+                position="relative"
+                borderRadius={10}>
+                <Box position="absolute" right={10} bottom={10}>
+                  <IconButton icon="add" roundness="small" size="medium" />
+                </Box>
+              </Box>
+              <Box width="80%" mt="s">
+                <Text variant="title">{item.name}</Text>
+                <Text mt="s" variant="title" color="textMuted">
+                  {item.price}
+                </Text>
+              </Box>
+            </Box>
+          ))}
+        </ScrollView>
       </Box>
     </Box>
   );
@@ -91,94 +108,125 @@ const Cart = ({navigation}) => {
 
   return (
     <ScreenContainer>
-      <Header label="Your Cart" onBackPress={navigation.goBack} />
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown
-        closeOnPressMask={false}
-        animationType="fade"
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0,0,0,0.7)',
-          },
-          container: {
-            borderTopLeftRadius: 35,
-            borderTopRightRadius: 35,
-          },
-          draggableIcon: {
-            backgroundColor: colors.gray,
-          },
-        }}>
-        <Box flex={1} p="l">
-          <Box alignItems="center">
-            <Icon name="trash" size={28} color={colors.primary} />
-            <Text variant="body_sm_bold" mt="m">
-              Are your sure you want to delete this cart item?
-            </Text>
-          </Box>
-          <Box flexDirection="row" alignItems="center" mt="xl">
-            <Box flex={1} mr="m">
-              <CustomButton
-                label="Cancel"
-                onPress={() => refRBSheet?.current?.close()}
-                buttonType="outlined"
-                buttonSize="full"
-              />
+      <StatusBar barStyle="default" />
+      <Box flex={1}>
+        <Header label="Your Order" onBackPress={navigation.goBack} />
+        <Box flex={1} mt="l">
+          <RBSheet
+            ref={refRBSheet}
+            closeOnDragDown
+            closeOnPressMask={false}
+            animationType="fade"
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0,0,0,0.7)',
+              },
+              container: {
+                borderTopLeftRadius: 35,
+                borderTopRightRadius: 35,
+              },
+              draggableIcon: {
+                backgroundColor: colors.gray,
+              },
+            }}>
+            <Box flex={1} p="l">
+              <Box alignItems="center">
+                <Icon name="trash" size={28} color={colors.primary} />
+                <Text variant="body_sm_bold" mt="m">
+                  Are your sure you want to delete this cart item?
+                </Text>
+              </Box>
+              <Box flexDirection="row" alignItems="center" mt="xl">
+                <Box flex={1} mr="m">
+                  <CustomButton
+                    label="Cancel"
+                    onPress={() => refRBSheet?.current?.close()}
+                    buttonType="outlined"
+                    buttonSize="full"
+                  />
+                </Box>
+                <Box flex={1}>
+                  <CustomButton
+                    label="Yes, delete"
+                    onPress={() => {
+                      dispatch(removeFromCart(tempProductId));
+                      setTempProductId(0);
+                      refRBSheet?.current?.close();
+                    }}
+                  />
+                </Box>
+              </Box>
             </Box>
-            <Box flex={1}>
-              <CustomButton
-                label="Yes, delete"
-                onPress={() => {
-                  dispatch(removeFromCart(tempProductId));
-                  setTempProductId(0);
-                  refRBSheet?.current?.close();
-                }}
-              />
+          </RBSheet>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            renderItem={null}
+            data={[{}]}
+            ListHeaderComponent={() => (
+              <Box mx="l" flex={1}>
+                <Text variant="body">Order Items</Text>
+                <FlatList
+                  style={{marginTop: 16}}
+                  contentContainerStyle={{maxHeight: 120}}
+                  showsVerticalScrollIndicator={false}
+                  data={cartItems}
+                  renderItem={({item}) => (
+                    <CartItem
+                      item={item}
+                      onPress={(productId: number) => {
+                        setTempProductId(productId);
+                        refRBSheet?.current?.open();
+                      }}
+                    />
+                  )}
+                  keyExtractor={item => item.id?.toString()}
+                  ListEmptyComponent={ListEmptyComponent}
+                />
+              </Box>
+            )}
+            ListFooterComponent={ListFooterComponent}
+          />
+        </Box>
+
+        <Box borderTopColor="border" borderTopWidth={2}>
+          <Box mx="l" mt="l+" mb="l">
+            <TouchableOpacity>
+              <Box
+                mb="xxl"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between">
+                <Box flexDirection="row" alignItems="center">
+                  <Box>
+                    <Icon2
+                      name="message-text"
+                      size={globalUnits.icon_MD}
+                      color={colors.primary}
+                    />
+                  </Box>
+                  <Box ml="size8">
+                    <Text variant="body_sm">
+                      Add a message for the restaurant{' '}
+                    </Text>
+                    <Text variant="body_xs">
+                      Special request, allergies, dietary restrictions?
+                    </Text>
+                  </Box>
+                </Box>
+                <Icon
+                  name="chevron-forward"
+                  size={globalUnits.icon_MD}
+                  color={colors.muted}
+                />
+              </Box>
+            </TouchableOpacity>
+
+            <Box>
+              <CartButton label="GO TO CHECKOUT" />
             </Box>
           </Box>
         </Box>
-      </RBSheet>
-      <FlatList
-        style={{marginTop: 30}}
-        showsVerticalScrollIndicator={false}
-        data={cartItems}
-        renderItem={({item}) => (
-          <CartItem
-            item={item}
-            onPress={(productId: number) => {
-              setTempProductId(productId);
-              refRBSheet?.current?.open();
-            }}
-          />
-        )}
-        keyExtractor={item => item.id?.toString()}
-        ListFooterComponent={ListFooterComponent}
-        ListEmptyComponent={ListEmptyComponent}
-      />
-      {cartItems?.length > 0 && (
-        <Card variant="secondary" py="m" px="m" mb="s">
-          <Box
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            mx="s">
-            <Text variant="title" color="text">
-              Total
-            </Text>
-            <Text variant="title_bold" color="text">
-              ${resultString}
-            </Text>
-          </Box>
-
-          <CustomButton
-            mt="m"
-            label="Place My Order"
-            backgroundColor="mainBackground"
-            buttonType="outlined"
-            onPress={() => navigation.navigate('Checkout')}
-          />
-        </Card>
-      )}
+      </Box>
     </ScreenContainer>
   );
 };

@@ -13,9 +13,7 @@ const ScreenContainer: FC<ScreenProps> = ({children}) => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: colors.mainBackground}]}>
-      <Box flex={1} mx="m" mt="m">
-        {children}
-      </Box>
+      <Box flex={1}>{children}</Box>
     </SafeAreaView>
   );
 };

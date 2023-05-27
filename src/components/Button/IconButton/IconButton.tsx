@@ -52,14 +52,14 @@ const IconButton: FC<IconButtonProps> = ({
       ? globalUnits.icon_LG
       : (size === 'medium' || size === 'small') && globalUnits.icon_MD;
 
-  const buttonSize = size === 'big' ? 54 : size === 'medium' ? 42 : 28;
+  const buttonSize = size === 'big' ? 54 : size === 'medium' ? 36 : 28;
 
   const theme = useTheme<Theme>();
   const {colors} = theme;
 
   const variantStyles = StyleSheet.create({
     containedButton: {
-      backgroundColor: inverse ? colors.primary : colors.primaryLight,
+      backgroundColor: inverse ? colors.primary : colors.mainBackground,
     },
     textButton: {
       backgroundColor: 'transparent',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   smallRoundness: {
-    borderRadius: 10,
+    borderRadius: 12,
   },
   shadow: {
     ...shadow,

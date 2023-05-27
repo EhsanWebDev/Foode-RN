@@ -4,6 +4,7 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 export enum AppFonts {
   Primary_Light = 'Poppins-Light',
   Primary_Regular = 'Poppins-Regular',
+  Primary_Medium = 'Poppins-Medium',
   Primary_SemiBold = 'Poppins-SemiBold',
   Primary_Bold = 'Poppins-Bold',
 
@@ -14,6 +15,7 @@ export enum AppFonts {
 }
 export enum AppFontSizes {
   _header = 24,
+  _top_header = 20,
   _header1 = 18,
 
   _regular = 16,
@@ -25,17 +27,17 @@ export enum AppFontSizes {
 }
 
 const palette = {
-  primary: '#F86932',
+  primary: '#F86730',
   primary_light: '#FEECEF',
 
   red: '#E04243',
-  slate: '#818791',
-  muted: '#878E96',
-  gray: 'darkgray',
+  slate: '#909090',
+  muted: '#B0B0B0',
+  gray: 'rgba(235, 235, 235, 1)',
   input: '#EAEEF2',
   inputPlaceholder: '#DCE0E3',
 
-  black: '#2D3748',
+  black: '#101828',
   white: '#FFFFFF',
   lightGray: '#F2F4F5',
 
@@ -58,10 +60,10 @@ const theme = createTheme({
     secondary: palette.black,
     muted: palette.muted,
     inactive: palette.lightGray,
+    border: palette.gray,
+    headerBorder: palette.gray,
 
     error: palette.red,
-    gray: palette.gray,
-
     inputBorder: palette.input,
     inputText: palette.black,
     inputPlaceholder: palette.inputPlaceholder,
@@ -87,43 +89,47 @@ const theme = createTheme({
     },
     header: {
       fontSize: moderateScale(AppFontSizes._header),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
+    },
+    topHeader: {
+      fontSize: moderateScale(AppFontSizes._top_header),
+      fontFamily: AppFonts.Primary_Medium,
     },
     header2: {
       fontSize: moderateScale(AppFontSizes._header1),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
     },
     body: {
       fontSize: moderateScale(AppFontSizes._regular),
-      fontFamily: AppFonts.Primary_Regular,
+      fontFamily: AppFonts.Primary_Medium,
     },
     body_bold: {
       fontSize: moderateScale(AppFontSizes._regular),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
     },
     title: {
       fontSize: moderateScale(AppFontSizes._title),
-      fontFamily: AppFonts.Primary_Regular,
+      fontFamily: AppFonts.Primary_Medium,
     },
     title_bold: {
       fontSize: moderateScale(AppFontSizes._title),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
     },
     body_sm: {
       fontSize: moderateScale(AppFontSizes._sm),
-      fontFamily: AppFonts.Primary_Regular,
+      fontFamily: AppFonts.Primary_Medium,
     },
     body_sm_bold: {
       fontSize: moderateScale(AppFontSizes._sm),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
     },
     body_xs: {
       fontSize: moderateScale(AppFontSizes._xs),
-      fontFamily: AppFonts.Primary_Regular,
+      fontFamily: AppFonts.Primary_Medium,
     },
     body_xs_bold: {
       fontSize: moderateScale(AppFontSizes._xs),
-      fontFamily: AppFonts.Primary_Bold,
+      fontFamily: AppFonts.Primary_SemiBold,
     },
     body_xs_2: {
       fontSize: moderateScale(AppFontSizes._xs),
@@ -145,12 +151,15 @@ const theme = createTheme({
     none: 0,
     xxs: 2,
     xs: 4,
-    s: 8,
+    size6: 6,
+    size8: 8,
+    s: 10,
     s_m: 12,
     m: 16,
     l: 20,
     'l+': 24,
     xl: 40,
+    xxl: 64,
     header: 30,
     cardPaddingX: scale(15),
     cardPaddingY: verticalScale(14),

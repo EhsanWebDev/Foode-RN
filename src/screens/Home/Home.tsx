@@ -2,6 +2,8 @@ import React from 'react';
 import {Platform, ScrollView, TouchableOpacity, View} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
+import {moderateVerticalScale, scale} from 'react-native-size-matters';
 
 import Box from '../../components/View/CustomView';
 import Text from '../../components/Text/CustomText';
@@ -12,18 +14,10 @@ import {useReduxSelector} from '../../store';
 import Galleries from './Store/Galleries/Galleries';
 import About from './Store/About/About';
 import Reservations from './Store/Reservations/Reservations';
-
 import Menu from './Store/Menu/Menu';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
-import LinearGradient from 'react-native-linear-gradient';
-import {dimensions} from '../../utils/constants';
-import {
-  moderateVerticalScale,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters';
 
 const imagesData = [
   {
@@ -60,6 +54,19 @@ const Home = ({navigation}) => {
 
   return (
     <Box flex={1} backgroundColor="mainBackground">
+      {/* <Box flex={1} mt="s">
+        <Tab.Navigator
+          tabBar={props => <TabBar {...props} />}
+          sceneContainerStyle={{
+            backgroundColor: colors.mainBackground,
+          }}>
+          <Tab.Screen name="Home" component={HomeTab} />
+          <Tab.Screen name="Menu" component={Menu} />
+          <Tab.Screen name="Reservations" component={Reservations} />
+          <Tab.Screen name="About" component={About} />
+          <Tab.Screen name="Galleries" component={Galleries} />
+        </Tab.Navigator>
+      </Box> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient
           colors={['#F86932', '#FDA430']}
@@ -124,7 +131,6 @@ const Home = ({navigation}) => {
 Good Morning! `}
               <Icon name="sunny-sharp" color="white" size={24} />
             </Text>
-            {/* <Text variant="header" color="text"></Text> */}
             <Text mt="s" mb="xl" variant="title" color="text">
               What do you want to eat today?
             </Text>
@@ -135,24 +141,11 @@ Good Morning! `}
             <ImageCarousel imagesData={imagesData} />
           </Box>
         </View>
+
         <Box flex={1}>
           <HomeTab />
         </Box>
       </ScrollView>
-
-      {/* <Box flex={1} mt="s">
-        <Tab.Navigator
-          tabBar={props => <TabBar {...props} />}
-          sceneContainerStyle={{
-            backgroundColor: colors.mainBackground,
-          }}>
-          <Tab.Screen name="Home" component={HomeTab} />
-          <Tab.Screen name="Menu" component={Menu} />
-          <Tab.Screen name="Reservations" component={Reservations} />
-          <Tab.Screen name="About" component={About} />
-          <Tab.Screen name="Galleries" component={Galleries} />
-        </Tab.Navigator>
-      </Box> */}
     </Box>
   );
 };

@@ -4,7 +4,7 @@ import {useTheme} from '@shopify/restyle';
 
 import Box from '../../View/CustomView';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {Theme} from '../../../theme/theme';
+import {AppFonts, Theme} from '../../../theme/theme';
 import Text from '../../Text/CustomText';
 import {globalUnits} from '../../../theme/globalStyles';
 
@@ -17,32 +17,34 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   label = '',
-  iconName = 'chevron-back',
+  iconName = 'chevron-down',
   showBackIcon = true,
   onBackPress,
 }) => {
   const theme = useTheme<Theme>();
   const {colors} = theme || {};
-  const {primary} = colors || {};
+  const {mainForeground} = colors || {};
 
   return (
-    <Box flexDirection="row" alignItems="center">
+    <Box
+      flexDirection="row"
+      alignItems="center"
+      borderBottomColor="headerBorder"
+      borderBottomWidth={1}
+      p="m">
       {showBackIcon && (
         <TouchableOpacity onPress={onBackPress}>
-          <Box
-            p="xs"
-            borderRadius={globalUnits.borderRadius_xs}
-            backgroundColor="primaryLight">
+          <Box p="xs" borderRadius={globalUnits.borderRadius_xs}>
             <IonIcon
               name={iconName}
-              color={primary}
+              color={mainForeground}
               size={globalUnits.icon_LG}
             />
           </Box>
         </TouchableOpacity>
       )}
       <Box flex={1} alignItems="center" mr={showBackIcon ? 'header' : 'none'}>
-        <Text variant="header">{label}</Text>
+        <Text variant="topHeader">{label}</Text>
       </Box>
     </Box>
   );

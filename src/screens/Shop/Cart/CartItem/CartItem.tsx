@@ -47,41 +47,45 @@ const CartItem: FC<CartItem> = ({item, onPress}) => {
   const {price} = details[0] || {};
 
   return (
-    <Swipeable renderRightActions={() => renderRightActions(onPress, id)}>
-      <Card flex={1} variant="primary" paddingVertical="s" px="s" mb="l">
-        <Box flexDirection="row" justifyContent="space-between">
-          <Box flex={1} flexDirection="row" alignItems="center">
-            <Image
-              uri={product_image}
-              imageStyles={{width: 60, height: 60, borderRadius: 8}}
-            />
-            <Box ml="m" flex={0.7}>
-              <Box>
-                <Text variant="title_bold" numberOfLines={1}>
-                  {product_name}
-                </Text>
-                <Text variant="body_xs" color="textMuted" numberOfLines={1}>
-                  {product_description}
-                </Text>
-              </Box>
-
-              <Text variant="body_sm_bold" color="primary">
-                ${price}
+    <Box
+      flex={1}
+      p="s"
+      mb="m"
+      borderBottomColor="headerBorder"
+      borderBottomWidth={1}>
+      <Box flexDirection="row" justifyContent="space-between">
+        <Box flex={1} flexDirection="row" alignItems="center">
+          <Box flex={0.9}>
+            <Box>
+              <Text
+                variant="title"
+                textTransform="capitalize"
+                numberOfLines={1}>
+                {product_name}
+              </Text>
+              <Text
+                variant="body_sm"
+                color="textMuted"
+                textTransform="capitalize"
+                marginVertical="xs"
+                numberOfLines={1}>
+                {product_description}
               </Text>
             </Box>
+
+            <Text variant="body_sm" color="primary">
+              CHF {price}
+            </Text>
           </Box>
-          <CartItemActions
-            onDecrement={() => dispatch(decrementQuantity(id))}
-            onIncrement={() => dispatch(incrementQuantity(id))}
-            quantity={quantity}
-          />
         </Box>
-      </Card>
-    </Swipeable>
+        <CartItemActions
+          onDecrement={() => dispatch(decrementQuantity(id))}
+          onIncrement={() => dispatch(incrementQuantity(id))}
+          quantity={quantity}
+        />
+      </Box>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {},
-});
 export default CartItem;

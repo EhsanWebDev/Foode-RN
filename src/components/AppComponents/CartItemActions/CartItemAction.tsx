@@ -1,22 +1,19 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import Box from '../../View/CustomView';
-import Text from '../../Text/CustomText';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import {globalUnits} from '../../../theme/globalStyles';
+import {useAppTheme} from '../../../utils/hooks';
 
 const CartItemAction = ({isAdd = false, onPress}) => {
+  const {colors} = useAppTheme();
   return (
     <TouchableOpacity onPress={onPress}>
-      <Box
-        backgroundColor={isAdd ? 'primary' : 'primaryLight'}
-        height={24}
-        width={24}
-        alignItems="center"
-        justifyContent="center"
-        borderRadius={6}>
-        <Text variant="title_bold" color={isAdd ? 'text' : 'primary'}>
-          {isAdd ? '+' : '-'}
-        </Text>
-      </Box>
+      <Icon
+        name={isAdd ? 'add' : 'remove'}
+        color={colors.primary}
+        size={globalUnits.icon_MD}
+      />
     </TouchableOpacity>
   );
 };
