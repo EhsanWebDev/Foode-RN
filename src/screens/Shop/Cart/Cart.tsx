@@ -1,14 +1,13 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {FlatList, ScrollView, StatusBar, TouchableOpacity} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../components/AppComponents/Header/Header';
-import Card from '../../../components/Card/Card';
+
 import Box from '../../../components/View/CustomView';
 import Text from '../../../components/Text/CustomText';
 import CustomButton from '../../../components/Button/CustomButton';
@@ -17,17 +16,16 @@ import {useAppTheme} from '../../../utils/hooks';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {removeFromCart, selectCartTotalPrice} from './cartSlice';
 import CartItem from './CartItem/CartItem';
-import {AppFonts} from '../../../theme/theme';
+
 import {Divider} from 'react-native-paper';
-import {
-  moderateVerticalScale,
-  scale,
-  verticalScale,
-} from 'react-native-size-matters';
+import {scale, verticalScale} from 'react-native-size-matters';
 import IconButton from '../../../components/Button/IconButton/IconButton';
 import CartButton from '../../../components/Button/CartButton';
 import {globalUnits} from '../../../theme/globalStyles';
-import {dimensions} from '../../../utils/constants';
+
+import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheetInput from '../../../components/TextInput/BottomSheetInput';
+import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
 
 const recentOrdersData = [
   {
@@ -105,6 +103,18 @@ const Cart = ({navigation}) => {
   const resultString = result.toFixed(2);
 
   const [tempProductId, setTempProductId] = useState<number>(0);
+  const [message, setMessage] = useState<string>('');
+
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['1%', '50%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    bottomSheetRef.current?.snapToIndex(index);
+  }, []);
 
   return (
     <ScreenContainer>
@@ -190,43 +200,63 @@ const Cart = ({navigation}) => {
 
         <Box borderTopColor="border" borderTopWidth={2}>
           <Box mx="l" mt="l+" mb="l">
-            <TouchableOpacity>
-              <Box
-                mb="xxl"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between">
-                <Box flexDirection="row" alignItems="center">
-                  <Box>
-                    <Icon2
-                      name="message-text"
-                      size={globalUnits.icon_MD}
-                      color={colors.primary}
-                    />
-                  </Box>
-                  <Box ml="size8">
-                    <Text variant="body_sm">
-                      Add a message for the restaurant{' '}
-                    </Text>
-                    <Text variant="body_xs">
-                      Special request, allergies, dietary restrictions?
-                    </Text>
-                  </Box>
-                </Box>
-                <Icon
-                  name="chevron-forward"
-                  size={globalUnits.icon_MD}
-                  color={colors.muted}
-                />
-              </Box>
-            </TouchableOpacity>
+            <ActionBar
+              title="Add a message for the restaurant"
+              subTitle="Special request, allergies, dietary restrictions?"
+              onPress={() => handleSheetChanges(1)}
+            />
 
-            <Box>
-              <CartButton label="GO TO CHECKOUT" />
+            <Box mt="xxl">
+              <CartButton
+                onPress={() => navigation.navigate('Checkout')}
+                label="GO TO CHECKOUT"
+              />
             </Box>
           </Box>
         </Box>
       </Box>
+      <BottomSheet
+        enablePanDownToClose
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        keyboardBlurBehavior="restore"
+        handleComponent={() => (
+          <Box width={60} height={4} bg="inactive2" alignSelf="center" mt="s" />
+        )}>
+        <Box flex={1} marginVertical="l" px="m">
+          <Box>
+            <Text variant="body_bold">Add Message</Text>
+
+            <Box mt="m">
+              <Text variant="title">
+                Special request, allergies, dietary restrictions?
+              </Text>
+              <Text mt="size8" variant="body_xs" color="textMuted">
+                Please note that your message to the venue may also be seen by
+                the courier partner delivering your order
+              </Text>
+            </Box>
+
+            <Box mt="l+">
+              <BottomSheetInput
+                value={message}
+                onChangeText={text => setMessage(text)}
+                blurOnSubmit
+                placeholder="Write your message here"
+                multiline
+              />
+
+              <Box alignItems="flex-end" mt="xs">
+                <Text variant="body_xs" color="textMuted">
+                  {message.length} / 400
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </BottomSheet>
     </ScreenContainer>
   );
 };

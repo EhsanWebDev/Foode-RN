@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import moment from 'moment';
 import {unwrapResult} from '@reduxjs/toolkit';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -23,11 +23,22 @@ import {placeOrder} from '../Order/actions';
 
 import {handleApiErrors} from '../../../utils/utils';
 import {StackActions} from '@react-navigation/native';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {dimensions} from '../../../utils/constants';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
+import {PackageIcon, ScooterIcon} from '../../../assets/icons/tabbar/Icons';
+import styles from './styles';
+import CheckoutTab from '../../../components/AppComponents/TabView/CheckoutTab';
+import CartButton from '../../../components/Button/CartButton';
 
 const Checkout = ({navigation}) => {
   const {colors} = useAppTheme();
   const refRBSheet = useRef();
   const dispatch = useReduxDispatch();
+
+  const [tabIndex, setTabIndex] = useState(1);
 
   const {cartItems} = useReduxSelector(store => store.cart);
   const {user, userAddress} = useReduxSelector(store => store.user);
@@ -110,247 +121,76 @@ const Checkout = ({navigation}) => {
     refRBSheet.current.close();
     navigation.navigate('AuthStack');
   };
-
+  const {width} = dimensions;
   return (
     <ScreenContainer>
-      <Box>
-        <Header label="Checkout" onBackPress={navigation.goBack} />
-        <Box mt="l">
-          {/* Address */}
-          <Card variant="primary">
-            <Box p="s_m">
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between">
-                <Box flexDirection="row" alignItems="center">
-                  <Icon
-                    name="location"
-                    color={colors.primary}
-                    size={globalUnits.icon_LG}
-                  />
+      <Header
+        label="Checkout"
+        iconName="chevron-back"
+        onBackPress={navigation.goBack}
+      />
 
-                  <Text ml="s" variant="body_bold">
-                    Delivery address
-                  </Text>
-                </Box>
-                <IconButton
-                  variant="text"
-                  icon="pencil"
-                  iconFamily="MaterialCommunityIcons"
-                  style={{
-                    width: globalUnits.icon_LG,
-                    height: globalUnits.icon_LG,
-                  }}
-                  onPress={() => navigation.navigate('AddAddress')}
-                />
-              </Box>
-              <Box mt="s">
-                {addressSelected ? (
-                  <Text variant="body_sm" numberOfLines={3}>
-                    <Text variant="body_sm_bold" letterSpacing={0.6}>
-                      City
-                    </Text>
-                    {`: ${city}
-`}
-                    <Text variant="body_sm_bold" letterSpacing={0.6}>
-                      Street address
-                    </Text>
-                    {`: ${streetAddress}`}
-                  </Text>
-                ) : (
-                  <Text variant="body_sm">
-                    Please select a delivery address
-                  </Text>
-                )}
-              </Box>
-            </Box>
-            <Divider />
-            <Box flexDirection="row" alignItems="center" p="s_m">
-              <IconButton
-                style={{
-                  width: globalUnits.icon_LG,
-                  height: globalUnits.icon_LG,
-                }}
-                icon="add"
-                variant="text"
-                size="big"
-              />
-              <Text ml="xs" variant="body_sm_bold" color="primary">
-                Add delivery instructions for your rider
-              </Text>
-            </Box>
-          </Card>
-          <Card variant="primary" mt="l">
-            <Box p="s_m">
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between">
-                <Box flexDirection="row" alignItems="center">
-                  <Icon
-                    name="wallet"
-                    color={colors.primary}
-                    size={globalUnits.icon_LG}
-                  />
-
-                  <Text ml="s" variant="body_bold">
-                    Payment method
-                  </Text>
-                </Box>
-              </Box>
-            </Box>
-            <Box px="s_m" pb="s_m">
-              <RadioButton
-                title="Cash on delivery"
-                checked
-                onCheck={() => {}}
-              />
-            </Box>
-            <Divider />
-            {/* <Box flexDirection="row" alignItems="center" p="s_m">
-              <IconButton
-                style={{
-                  width: globalUnits.icon_LG,
-                  height: globalUnits.icon_LG,
-                }}
-                icon="add"
-                variant="text"
-                size="big"
-              />
-              <Text ml="xs" variant="body_sm_bold" color="primary">
-                Add a payment method
-              </Text>
-            </Box> */}
-          </Card>
-          {/* Summary */}
-          <Card variant="primary" mt="l">
-            <Box p="s_m">
-              <Box flexDirection="row" alignItems="center">
-                <Icon
-                  name="receipt"
-                  color={colors.primary}
-                  size={globalUnits.icon_LG}
-                />
-
-                <Text ml="s" variant="body_bold">
-                  Order summary
-                </Text>
-              </Box>
-              <Box marginVertical="s_m">
-                {cartItems.map(item => {
-                  const {id, details, quantity} = item || {};
-                  const {name, price} = details?.[0] || {};
-                  return (
-                    <Box
-                      key={id}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingVertical="xs">
-                      <Text variant={'body_sm'}>
-                        {quantity} x {name}
-                      </Text>
-                      <Text variant={'body_sm'}>${price}</Text>
-                    </Box>
-                  );
-                })}
-              </Box>
-
-              <Divider />
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-                mt="s">
-                <Text variant={'body_sm'}>Subtotal</Text>
-                <Text variant={'body_sm'}>{totalPrice}$</Text>
-              </Box>
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-                mt="s">
-                <Text variant={'body_sm'}>Delivery fee</Text>
-                <Text variant={'body_sm'}>4.00$</Text>
-              </Box>
-            </Box>
-          </Card>
-
-          <Text variant="body_sm" mt="l">
-            By completing this order I accept{' '}
-            <Text variant="body_sm_bold" color="primary">
-              Terms and Conditions
-            </Text>
-          </Text>
+      <Box flex={1} style={styles.mapContainer}>
+        <Box
+          width={width}
+          height={moderateVerticalScale(250)}
+          style={[styles.mapOverflow, {borderColor: colors.primary}]}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            region={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}
+          />
         </Box>
       </Box>
-      <Box flex={1} justifyContent="flex-end" mb="xxs">
-        <Card variant="secondary" py="m" px="m" mb="s">
-          <Box
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            mx="s">
-            <Text variant="title" color="text">
-              Total{' '}
-              <Text variant="body_sm" color="text">
-                (inc. VAT)
-              </Text>
-            </Text>
-            <Text variant="title_bold" color="text">
-              ${resultString}
-            </Text>
-          </Box>
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown
-            animationType="fade"
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0,0,0,0.7)',
-              },
-              container: {
-                borderTopLeftRadius: 35,
-                borderTopRightRadius: 35,
-              },
-              draggableIcon: {
-                backgroundColor: colors.gray,
-              },
-            }}>
-            <Box flex={1} p="l">
-              <Box alignItems="center">
-                <Icon name="person" size={28} color={colors.primary} />
-                <Text variant="body_sm_bold" mt="m">
-                  You need to login in order to place an order.
-                </Text>
-              </Box>
-              <Box flexDirection="row" alignItems="center" mt="xl">
-                {/* <Box flex={1} mr="m">
-                  <CustomButton
-                    label="As a guest"
-                    onPress={() => refRBSheet?.current?.close()}
-                    buttonType="outlined"
-                    buttonSize="full"
-                  />
-                </Box> */}
-                <Box flex={1}>
-                  <CustomButton label="Login" onPress={handleSignIn} />
-                </Box>
-              </Box>
-            </Box>
-          </RBSheet>
 
-          <CustomButton
-            mt="m"
-            label="Complete Order"
-            backgroundColor="mainBackground"
-            buttonType="outlined"
-            onPress={handleCheckout}
-            loading={status === 'loading'}
-            disabled={status === 'loading'}
-          />
-        </Card>
+      <ScrollView style={{flex: 1, marginTop: moderateVerticalScale(-60)}}>
+        <View style={styles.container}>
+          <View style={styles.rowSB}>
+            <View style={styles.cutOutItem} />
+            <View style={styles.cutOutCenter}>
+              <View style={[styles.triangle, styles.rightTriangle]} />
+              <View style={[styles.triangle, styles.leftTriangle]} />
+              <View style={styles.centerBar} />
+            </View>
+            <View style={styles.cutOutItemRight} />
+          </View>
+
+          <Box px="l" py="size26" bg="mainBackground">
+            <Box mb="size26">
+              <CheckoutTab
+                activeTab={tabIndex}
+                onTabPress={(index: number) => setTabIndex(index)}
+              />
+            </Box>
+
+            <ActionBar
+              title="Add a message for the restaurant"
+              subTitle="Special request, allergies, dietary restrictions?"
+              onPress={() => {}}
+            />
+          </Box>
+          <Divider style={{height: 8, backgroundColor: '#EBEBEB'}} />
+        </View>
+        <Box px="l" marginVertical="xxl">
+          <Text variant="body">Hello</Text>
+        </Box>
+      </ScrollView>
+      <Box>
+        <Box mx="l" mb="l" pt="s">
+          <ActionBar title="Terms of service and purchase" onPress={() => {}} />
+
+          <Box mt="l">
+            <CartButton
+              onPress={() => navigation.navigate('Checkout')}
+              label="PROCEED PAYMENT"
+            />
+          </Box>
+        </Box>
       </Box>
     </ScreenContainer>
   );

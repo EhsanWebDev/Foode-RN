@@ -140,7 +140,9 @@ const CartButton: React.FC<Props> = ({
                   borderRadius={16}
                   justifyContent="center"
                   alignItems="center">
-                  <Text variant="title_bold">2</Text>
+                  <Text variant="title_bold" color="primary">
+                    2
+                  </Text>
                 </Box>
                 <Text
                   ml="size8"

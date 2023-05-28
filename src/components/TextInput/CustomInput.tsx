@@ -150,15 +150,16 @@ const Input: React.FC<InputProps & RestyleProps> = ({
           </Card>
         </TouchableOpacity>
       ) : (
-        <Card
-          variant="inputCard"
+        <Box
           height={
             props.multiline
-              ? globalUnits.inputHeight + 32
+              ? globalUnits.inputHeight + 42
               : globalUnits.inputHeight
           }
           justifyContent="space-between"
-          borderRadius={props.multiline ? 12 : 24}>
+          borderRadius={props.multiline ? 12 : 24}
+          borderColor={'border'}
+          borderWidth={1}>
           <Box
             height={'100%'}
             flexDirection="row"
@@ -172,7 +173,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
               style={[
                 styles.input,
                 {
-                  fontFamily: AppFonts.Secondary_SemiBold,
+                  fontFamily: AppFonts.Primary_Medium,
                   fontSize: AppFontSizes._input,
                   color: colors.inputText,
                 },
@@ -190,7 +191,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
               </TouchableOpacity>
             )}
           </Box>
-        </Card>
+        </Box>
       )}
       {error?.error && (
         <Text variant="body_xs_bold" ml={'m'} mt="xs" color="error">

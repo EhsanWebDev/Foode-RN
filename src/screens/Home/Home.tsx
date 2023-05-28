@@ -54,19 +54,6 @@ const Home = ({navigation}) => {
 
   return (
     <Box flex={1} backgroundColor="mainBackground">
-      {/* <Box flex={1} mt="s">
-        <Tab.Navigator
-          tabBar={props => <TabBar {...props} />}
-          sceneContainerStyle={{
-            backgroundColor: colors.mainBackground,
-          }}>
-          <Tab.Screen name="Home" component={HomeTab} />
-          <Tab.Screen name="Menu" component={Menu} />
-          <Tab.Screen name="Reservations" component={Reservations} />
-          <Tab.Screen name="About" component={About} />
-          <Tab.Screen name="Galleries" component={Galleries} />
-        </Tab.Navigator>
-      </Box> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient
           colors={['#F86932', '#FDA430']}

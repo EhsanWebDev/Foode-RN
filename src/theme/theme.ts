@@ -23,7 +23,7 @@ export enum AppFontSizes {
   _sm = 12,
   _xs = 10,
 
-  _input = 13,
+  _input = 14,
 }
 
 const palette = {
@@ -40,6 +40,7 @@ const palette = {
   black: '#101828',
   white: '#FFFFFF',
   lightGray: '#F2F4F5',
+  lightGray2: '#EBEBEB',
 
   green: '#23A757',
   indigo: '#2E5AAC',
@@ -60,8 +61,10 @@ const theme = createTheme({
     secondary: palette.black,
     muted: palette.muted,
     inactive: palette.lightGray,
+    inactive2: palette.lightGray2,
     border: palette.gray,
     headerBorder: palette.gray,
+    gray: palette.slate,
 
     error: palette.red,
     inputBorder: palette.input,
@@ -158,6 +161,7 @@ const theme = createTheme({
     m: 16,
     l: 20,
     'l+': 24,
+    size26: 26,
     xl: 40,
     xxl: 64,
     header: 30,
