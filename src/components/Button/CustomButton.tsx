@@ -12,6 +12,8 @@ import {Theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
 import {ActivityIndicator} from 'react-native-paper';
 import {useAppTheme} from '../../utils/hooks';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {globalUnits} from '../../theme/globalStyles';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
@@ -30,6 +32,8 @@ type Props = RestyleProps & {
   disabled?: boolean;
   buttonSize?: 'full' | 'small' | 'xSmall';
   loading?: boolean;
+  showLeftIcon?: boolean;
+  showRightIcon?: boolean;
 };
 
 const CustomButton: React.FC<Props> = ({
@@ -39,6 +43,8 @@ const CustomButton: React.FC<Props> = ({
   disabled,
   buttonSize = 'full',
   loading,
+  showLeftIcon,
+  showRightIcon,
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -52,18 +58,20 @@ const CustomButton: React.FC<Props> = ({
   };
   const outlinedFull = {
     ...defaultStyles,
-    backgroundColor: 'mainBackground',
+    backgroundColor: 'primaryLight',
     paddingVertical: 's_m',
     opacity: disabled ? 0.7 : 1,
     borderColor: 'primary',
+    borderRadius: 12,
   };
   const outlinedSmall = {
     ...defaultStyles,
-    backgroundColor: 'mainBackground',
-    paddingVertical: 's',
+    backgroundColor: 'primaryLight',
+    paddingVertical: 'size6',
+    paddingHorizontal: 'size8',
     opacity: disabled ? 0.7 : 1,
-    borderColor: 'primary',
-    width: 80,
+    borderRadius: 5,
+    borderWidth: 0,
   };
   const outlinedXSmall = {
     ...defaultStyles,
@@ -126,11 +134,29 @@ const CustomButton: React.FC<Props> = ({
               color={buttonType === 'contained' ? 'white' : colors.primary}
             />
           ) : (
-            <Text
-              variant={buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'}
-              color={buttonType === 'outlined' ? 'primary' : 'text'}>
-              {label}
-            </Text>
+            <Box flexDirection="row">
+              {showLeftIcon && (
+                <Icon
+                  name="add"
+                  size={globalUnits.icon_MD}
+                  color={colors.primary}
+                />
+              )}
+              <Text
+                variant={buttonSize === 'full' ? 'title_bold' : 'body_sm'}
+                color={buttonType === 'outlined' ? 'primary' : 'text'}
+                mr={showRightIcon ? 's' : 'none'}
+                ml={showLeftIcon ? 's' : 'none'}>
+                {label}
+              </Text>
+              {showRightIcon && (
+                <Icon
+                  name="add"
+                  size={globalUnits.icon_MD - 2}
+                  color={colors.primary}
+                />
+              )}
+            </Box>
           )}
         </Box>
       )}

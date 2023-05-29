@@ -28,7 +28,7 @@ export enum AppFontSizes {
 
 const palette = {
   primary: '#F86730',
-  primary_light: '#FEECEF',
+  primary_light: '#FFF1EA',
 
   red: '#E04243',
   slate: '#909090',

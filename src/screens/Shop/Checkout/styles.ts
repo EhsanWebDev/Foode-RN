@@ -17,11 +17,25 @@ const styles = StyleSheet.create({
   },
 
   cutOutCenter: {
-    width: width / 2.7,
-    height: 14,
+    width: width / 2.6,
+    height: 15,
     backgroundColor: 'transparent',
     alignSelf: 'center',
     paddingTop: 4,
+  },
+  cutOutItem: {
+    width: width / 3.1,
+    height: 15,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderTopLeftRadius: 8,
+  },
+  cutOutItemRight: {
+    width: width / 3.1,
+    height: 15,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderTopRightRadius: 8,
   },
   triangle: {
     position: 'absolute',
@@ -56,20 +70,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
   },
-  cutOutItem: {
-    width: width / 3.2,
-    height: 14,
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    borderTopLeftRadius: 8,
-  },
-  cutOutItemRight: {
-    width: width / 3.2,
-    height: 14,
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    borderTopRightRadius: 8,
-  },
+
   mapContainer: {
     position: 'relative',
   },
