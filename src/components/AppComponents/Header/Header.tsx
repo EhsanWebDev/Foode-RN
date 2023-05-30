@@ -12,6 +12,7 @@ interface HeaderProps {
   label?: string;
   iconName?: string;
   showBackIcon?: boolean;
+  rightIcon?: string;
   onBackPress?: () => void;
 }
 
@@ -19,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({
   label = '',
   iconName = 'chevron-down',
   showBackIcon = true,
+  rightIcon,
   onBackPress,
 }) => {
   const theme = useTheme<Theme>();
@@ -43,9 +45,22 @@ const Header: React.FC<HeaderProps> = ({
           </Box>
         </TouchableOpacity>
       )}
-      <Box flex={1} alignItems="center" mr={showBackIcon ? 'header' : 'none'}>
+      <Box
+        flex={1}
+        alignItems="center"
+        mr={showBackIcon && !rightIcon ? 'header' : 'none'}>
         <Text variant="topHeader">{label}</Text>
       </Box>
+
+      {rightIcon && (
+        <Box p="xs" borderRadius={globalUnits.borderRadius_xs}>
+          <IonIcon
+            name={rightIcon}
+            color={mainForeground}
+            size={globalUnits.icon_LG}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

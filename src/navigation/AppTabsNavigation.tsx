@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 
 const Settings = () => (
   <Box>
-    <Text variant="header">Settings</Text>
+    <Text variant="header">Screen</Text>
   </Box>
 );
 

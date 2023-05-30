@@ -14,24 +14,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flex: 1,
   },
 
   cutOutCenter: {
-    width: width / 2.6,
+    flex: 1,
+    flexGrow: 1.8,
     height: 15,
     backgroundColor: 'transparent',
     alignSelf: 'center',
     paddingTop: 4,
   },
   cutOutItem: {
-    width: width / 3.1,
+    flex: 1,
+    flexGrow: 1,
     height: 15,
     backgroundColor: 'white',
     alignSelf: 'center',
     borderTopLeftRadius: 8,
   },
   cutOutItemRight: {
-    width: width / 3.1,
+    flex: 1,
+    flexGrow: 1,
     height: 15,
     backgroundColor: 'white',
     alignSelf: 'center',
@@ -85,6 +89,44 @@ const styles = StyleSheet.create({
   },
   userLocationInfo: {
     borderWidth: 2,
+  },
+  // Callout bubble
+  bubble: {
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderColor: '#ccc',
+    borderWidth: 0.5,
+    padding: 15,
+    width: 150,
+  },
+  // Arrow below the bubble
+  arrow: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+
+    borderWidth: 12,
+    alignSelf: 'center',
+    marginTop: -24,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+
+    borderWidth: 12,
+    alignSelf: 'center',
+    marginTop: -0.5,
+  },
+  // Character name
+  name: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  // Character image
+  image: {
+    width: '100%',
+    height: 80,
   },
 });
 

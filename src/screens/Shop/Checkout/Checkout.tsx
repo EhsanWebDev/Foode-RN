@@ -21,21 +21,24 @@ import {handleApiErrors} from '../../../utils/utils';
 import {StackActions} from '@react-navigation/native';
 import {SafeAreaView, ScrollView, TouchableOpacity, View} from 'react-native';
 import {dimensions} from '../../../utils/constants';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
-import {PackageIcon, ScooterIcon} from '../../../assets/icons/tabbar/Icons';
+
 import styles from './styles';
 import CheckoutTab from '../../../components/AppComponents/TabView/CheckoutTab';
 import CartButton from '../../../components/Button/CartButton';
 import CustomButton from '../../../components/Button/CustomButton';
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetFooter,
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
+import RadioBar from '../../../components/RadioButton/RadioBar';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {Image} from 'react-native';
+import {scale} from 'react-native-size-matters';
 
 const Checkout = ({navigation}) => {
   const {colors} = useAppTheme();
@@ -43,6 +46,7 @@ const Checkout = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const [tabIndex, setTabIndex] = useState(1);
+  const [deliveryOption, setDeliveryOption] = useState(1);
 
   const {cartItems} = useReduxSelector(store => store.cart);
   const {user, userAddress} = useReduxSelector(store => store.user);
@@ -56,17 +60,6 @@ const Checkout = ({navigation}) => {
   const deliveryFee = 4.0;
   const result = parseFloat(totalPrice) + deliveryFee;
   const resultString = result.toFixed(2);
-
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // // variables
-  // const snapPoints = useMemo(() => ['16%'], []);
-
-  // // callbacks
-  // const handleSheetChanges = useCallback((index: number) => {
-  //   bottomSheetRef.current?.snapToIndex(index);
-  // }, []);
 
   const handleCheckout = async () => {
     if (!addressSelected) {
@@ -149,24 +142,49 @@ const Checkout = ({navigation}) => {
   );
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
 
   // variables
   const snapPoints = useMemo(() => ['16%'], []);
+  const deliveryTimeSnapPoints = useMemo(() => ['28%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+  const handleDeliveryTimeModalPress = useCallback(() => {
+    deliveryTimeModalRef.current?.present();
   }, []);
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState('');
+
+  function dateToFromNowDaily(myDate) {
+    // get from-now for this date
+    var fromNow = moment(myDate).format('dddd, DD/MM');
+
+    // ensure the date is displayed with today and yesterday
+    return moment(myDate).calendar(null, {
+      // when the date is closer, specify custom values
+      lastWeek: '[Last] dddd',
+      lastDay: '[Yesterday]',
+      sameDay: '[Today]',
+      nextDay: '[Tomorrow]',
+      nextWeek: 'dddd',
+      // when the date is further away, use from-now functionality
+      sameElse: function () {
+        return '[' + fromNow + ']';
+      },
+    });
+  }
 
   return (
     <ScreenContainer>
       <Header
-        label="Checkout"
+        label="Shriganesha"
         iconName="chevron-back"
         onBackPress={navigation.goBack}
+        rightIcon="information-circle-outline"
       />
 
       <Box flex={1} style={styles.mapContainer}>
@@ -174,7 +192,7 @@ const Checkout = ({navigation}) => {
           width={width}
           height={moderateVerticalScale(220)}
           style={[styles.mapOverflow, {borderColor: colors.primary}]}>
-          {/* <MapView
+          <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={{
@@ -182,12 +200,60 @@ const Checkout = ({navigation}) => {
               longitude: -122.4324,
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
-            }}
-          /> */}
+            }}>
+            <Marker
+              coordinate={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+              }}
+              title="Order will be delivered here">
+              <Callout tooltip>
+                <Box>
+                  <Box
+                    width={scale(200)}
+                    borderRadius={8}
+                    py="size6"
+                    alignItems="center"
+                    bg="mainForeground">
+                    <Text variant="body_sm_bold" color="mainBackground">
+                      Order will be delivered here
+                    </Text>
+                    <Text variant="body_xs" color="mainBackground">
+                      Place the pin concurrently on Map
+                    </Text>
+                  </Box>
+                  <Box
+                    style={styles.arrowBorder}
+                    borderTopColor="mainForeground"
+                  />
+                  <Box style={styles.arrow} borderTopColor="mainForeground" />
+                </Box>
+              </Callout>
+              <View style={{}}>
+                <Image
+                  style={{width: scale(20), height: verticalScale(20)}}
+                  source={require('./../../../assets/images/pin.png')}
+                />
+              </View>
+            </Marker>
+          </MapView>
         </Box>
       </Box>
+      <DateTimePickerModal
+        date={new Date()}
+        minimumDate={new Date()}
+        isVisible={showDatePicker}
+        mode="datetime"
+        onConfirm={date => {
+          setShowDatePicker(false);
+          setSelectedDeliveryDate(date);
+        }}
+        onCancel={() => setShowDatePicker(show => !show)}
+      />
 
-      <ScrollView style={{flex: 1, marginTop: moderateVerticalScale(-150)}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{flex: 1, marginTop: moderateVerticalScale(-140)}}>
         <View style={styles.container}>
           <View style={styles.rowSB}>
             <View style={styles.cutOutItem} />
@@ -240,7 +306,7 @@ const Checkout = ({navigation}) => {
             />
           </Box>
           <Box mt="l" mb="s">
-            <Text mb="xxs" variant="body_bold">
+            <Text mb="size6" variant="body_bold">
               Price in EUR, incl. taxes
             </Text>
 
@@ -281,7 +347,8 @@ const Checkout = ({navigation}) => {
 
           <Box mt="l">
             <CartButton
-              onPress={() => navigation.navigate('Checkout')}
+              // onPress={() => navigation.navigate('Checkout')}
+              onPress={handleDeliveryTimeModalPress}
               label="PROCEED PAYMENT"
             />
           </Box>
@@ -294,7 +361,6 @@ const Checkout = ({navigation}) => {
           index={0}
           backdropComponent={renderBackdrop}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}
           handleComponent={null}
           detached
           bottomInset={12}
@@ -323,6 +389,101 @@ const Checkout = ({navigation}) => {
               buttonType="outlined"
               mt="l"
             />
+          </Box>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
+      <BottomSheetModalProvider>
+        <BottomSheetModal
+          enablePanDownToClose
+          ref={deliveryTimeModalRef}
+          index={0}
+          backdropComponent={renderBackdrop}
+          snapPoints={deliveryTimeSnapPoints}
+          handleComponent={null}
+          detached
+          bottomInset={12}
+          style={{marginHorizontal: 20}}>
+          <Box flex={1} pt="l" px="s">
+            <Box
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mb="size8">
+              <Text variant="title_bold" textTransform="uppercase" color="gray">
+                Delivery Time
+              </Text>
+              <CustomButton
+                label="Done"
+                buttonType="outlined"
+                buttonSize="small"
+                onPress={() => deliveryTimeModalRef.current?.dismiss()}
+              />
+            </Box>
+
+            <Divider />
+            <Box px="s" marginVertical="s">
+              <RadioBar
+                title="As soon as possible"
+                checked={deliveryOption === 1}
+                onPress={() => {
+                  setDeliveryOption(1);
+                }}
+              />
+            </Box>
+            <Divider />
+            <Box px="s" marginVertical="s">
+              <RadioBar
+                checked={deliveryOption === 2}
+                title="Schedule for later"
+                subTitle={
+                  selectedDeliveryDate &&
+                  `${dateToFromNowDaily(selectedDeliveryDate)} ${moment(
+                    selectedDeliveryDate,
+                  ).format('hh:mm A')}`
+                }
+                leftIcon="calendar-outline"
+                onPress={() => {
+                  setDeliveryOption(2);
+                  setShowDatePicker(true);
+                }}
+              />
+            </Box>
+            <Divider />
+
+            {/* <Box
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between">
+              <Box flexDirection="row" alignItems="center">
+                <Box
+                  bg="primaryLight"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius={16}
+                  alignSelf="flex-start"
+                  p="xxs">
+                  <Icon
+                    name="time-outline"
+                    size={globalUnits.icon_XL}
+                    color={colors.primary}
+                  />
+                </Box>
+                <Text variant="title" ml="size8">
+                  As soon as possible
+                </Text>
+              </Box>
+
+              <TouchableOpacity>
+                <Box
+                  width={22}
+                  height={22}
+                  bg="mainBackground"
+                  borderColor="primary"
+                  borderWidth={6}
+                  borderRadius={11}
+                />
+              </TouchableOpacity>
+            </Box> */}
           </Box>
         </BottomSheetModal>
       </BottomSheetModalProvider>

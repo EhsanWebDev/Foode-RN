@@ -17,6 +17,7 @@ export const globalUnits = {
   borderRadius: moderateScale(24),
   borderRadius_xs: moderateScale(8),
 
+  icon_XL: 28,
   icon_LG: 24,
   icon_MD: 20,
   icon_SM: 12,
