@@ -1,200 +1,28 @@
-import React, {useCallback, useMemo, useRef} from 'react';
-import {
-  SafeAreaView,
-  Image,
-  StatusBar,
-  Platform,
-  ScrollView,
-  View,
-  Alert,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Image, StatusBar} from 'react-native';
 import Box from '../../../components/View/CustomView';
-import {dimensions} from '../../../utils/constants';
-import {verticalScale} from 'react-native-size-matters';
-import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 import Text from '../../../components/Text/CustomText';
 import CustomButton from '../../../components/Button/CustomButton';
-import IconButton from '../../../components/Button/IconButton/IconButton';
-import Card from '../../../components/Card/Card';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {useAppTheme} from '../../../utils/hooks';
-import {StretchyScrollView} from 'react-native-stretchy';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {logoutUser} from '../../Auth/userSlice';
 import {removeData} from '../../../utils/storage';
+import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
+import Header from '../../../components/AppComponents/Header/Header';
+
+import ProfileTab from '../../../components/AppComponents/TabView/ProfileTab';
+import ProfileAction from '../../../components/AppComponents/ActionBar/ProfileAction';
 
 const Profile = ({navigation}) => {
   const {colors} = useAppTheme();
   const {user} = useReduxSelector(store => store.user);
   const dispatch = useReduxDispatch();
-  // // ref
-  // const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // // variables
-  // const snapPoints = useMemo(() => [dimensions.height / 1.4], []);
-
-  // // callbacks
-  // const handleSheetChanges = useCallback((index: number) => {
-  //   console.log('handleSheetChanges', index);
-  // }, []);
-
-  const Item = () => (
-    <Card variant="primary" paddingVertical="s" px="s" mb="l">
-      <Box flexDirection="row" justifyContent="space-between">
-        <Box flexDirection="row" alignItems="center">
-          <Image
-            source={require('./../../../assets/images//burgers/1.jpg')}
-            style={{width: 60, height: 60, borderRadius: 8}}
-          />
-          <Box ml="m">
-            <Text variant="title_bold">Cheesy</Text>
-            <Text variant="body_xs" color="textMuted">
-              Double cheese
-            </Text>
-            <Text variant="body_sm_bold" color="primary">
-              $12
-            </Text>
-          </Box>
-        </Box>
-        <Box justifyContent="center" pr="s">
-          <Icon name="heart" size={24} color={colors.primary} />
-        </Box>
-      </Box>
-    </Card>
-  );
-
-  // const Exp = () => (
-  //   <>
-  //     <StatusBar barStyle="light-content" />
-  //     <StretchyScrollView
-  //       backgroundColor="white"
-  //       image={require('./../../../assets/images/u1.jpg')}
-  //       imageHeight={300}
-  //       foreground={
-  //         <Box flex={1}>
-  //           <Box position="absolute" top={50} left={16}>
-  //             <IconButton icon="arrow-back" onPress={navigation.goBack} />
-  //           </Box>
-  //         </Box>
-  //       }
-  //       onScroll={(position, reachedToTheBottomOfHeader) =>
-  //         console.log(position, reachedToTheBottomOfHeader)
-  //       }>
-  //       <Box
-  //         flex={1}
-  //         backgroundColor="mainBackground"
-  //         borderTopRightRadius={40}
-  //         borderTopLeftRadius={40}
-  //         style={{marginTop: -40}}>
-  //         <Box flex={1}>
-  //           <Box flex={1} mx="m" mt="l">
-  //             <Box
-  //               flexDirection="row"
-  //               justifyContent="space-between"
-  //               alignItems="center">
-  //               <Box>
-  //                 <Text variant="header">Daniel Sebastian</Text>
-  //                 <Text variant="body_sm_bold">
-  //                   daniel.sebastian@domain.com
-  //                 </Text>
-  //               </Box>
-  //               <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
-  //             </Box>
-  //             <Box
-  //               flexDirection="row"
-  //               justifyContent="space-between"
-  //               alignItems="center"
-  //               mt="l">
-  //               <Text variant="body_bold">Favorite</Text>
-  //               <CustomButton
-  //                 label="See all"
-  //                 buttonType="textOnly"
-  //                 buttonSize="small"
-  //                 color="primary"
-  //                 onPress={() => {}}
-  //               />
-  //             </Box>
-
-  //             <Box mt="m">
-  //               <Item />
-  //               <Item />
-  //               <Item />
-  //             </Box>
-  //           </Box>
-  //         </Box>
-  //         <Box flex={1} mx="m">
-  //           <CustomButton label="Sign out" onPress={() => {}} />
-  //         </Box>
-  //       </Box>
-  //     </StretchyScrollView>
-  //   </>
-  // );
-  // const Exp2 = () => (
-  //   <>
-  //     <StatusBar barStyle="light-content" />
-  //     <Box>
-  //       <Image
-  //         source={require('./../../../assets/images/u1.jpg')}
-  //         style={{
-  //           width: dimensions.width,
-  //           height: verticalScale(dimensions.height / 3),
-  //         }}
-  //       />
-  //       <Box
-  //         position="absolute"
-  //         top={Platform.OS === 'android' ? 16 : 54}
-  //         left={16}>
-  //         <IconButton icon="close" onPress={navigation.goBack} />
-  //       </Box>
-  //     </Box>
-
-  //     <BottomSheet
-  //       ref={bottomSheetRef}
-  //       index={0}
-  //       snapPoints={snapPoints}
-  //       onChange={handleSheetChanges}>
-  //       <ScrollView style={{flex: 1}}>
-  //         <Box flex={1} mx="m" mt="l">
-  //           <Box
-  //             flexDirection="row"
-  //             justifyContent="space-between"
-  //             alignItems="center">
-  //             <Box>
-  //               <Text variant="header">Daniel Sebastian</Text>
-  //               <Text variant="body_sm_bold">daniel.sebastian@domain.com</Text>
-  //             </Box>
-  //             <IconButton icon="pencil" iconFamily="MaterialCommunityIcons" />
-  //           </Box>
-  //           <Box
-  //             flexDirection="row"
-  //             justifyContent="space-between"
-  //             alignItems="center"
-  //             mt="l">
-  //             <Text variant="body_bold">Favorites</Text>
-  //             <CustomButton
-  //               label="See all"
-  //               buttonType="textOnly"
-  //               buttonSize="small"
-  //               color="primary"
-  //               onPress={() => {}}
-  //             />
-  //           </Box>
-  //           <Box mt="m">
-  //             <Item />
-  //             <Item />
-  //           </Box>
-  //         </Box>
-  //       </ScrollView>
-
-  //       <Box mx="l" mb="l">
-  //         <CustomButton label="Sign out" onPress={() => {}} />
-  //       </Box>
-  //     </BottomSheet>
-  //   </>
-  // );
   const {data} = user || {};
   const {name, email, created_at} = data || {};
+
+  const [tabIndex, setTabIndex] = useState(1);
 
   const handleLogout = async () => {
     dispatch(logoutUser({}));
@@ -203,72 +31,94 @@ const Profile = ({navigation}) => {
   };
 
   return (
-    <Box flex={1}>
-      <Box>
-        <Image
-          source={require('./../../../assets/images/u1.jpg')}
-          style={{
-            width: dimensions.width,
-            height: verticalScale(dimensions.height / 3.5),
-          }}
-        />
-        <Box position="absolute" top={16} left={16}>
-          <IconButton icon="close" onPress={navigation.goBack} />
-        </Box>
-      </Box>
+    <ScreenContainer>
+      <StatusBar barStyle="default" />
+      <Header
+        label="My Profile"
+        iconName="chevron-back"
+        onBackPress={navigation.goBack}
+        rightIcon="cog-outline"
+        rightIconFamily="MaterialCommunityIcons"
+        showBottomBorder={false}
+      />
 
-      <Box flex={1} backgroundColor="mainBackground">
-        <Box
-          backgroundColor="mainBackground"
-          flex={1}
-          borderTopLeftRadius={20}
-          borderTopRightRadius={20}
-          style={{marginTop: -40}}>
-          <Box flex={1} mx="m" mt="l">
-            <Box
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center">
-              <Box>
-                <Text variant="header">{name ?? '(Not Set)'}</Text>
-                <Text variant="body_sm_bold">{email ?? '(Not Set)'}</Text>
-              </Box>
-              <IconButton
-                onPress={() => {
-                  navigation.navigate('UpdateProfile');
-                }}
-                icon="pencil"
-                iconFamily="MaterialCommunityIcons"
+      <Box flex={1}>
+        <Box flex={1} backgroundColor="mainBackground">
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mt="m"
+            mx="m">
+            <Box flexDirection="row" alignItems="center">
+              <Image
+                source={require('./../../../assets/images/Profile.png')}
+                style={{width: 70, height: 70, borderRadius: 35}}
               />
-            </Box>
-            <Box
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-              mt="l">
-              <Text variant="body_bold">Favorites</Text>
-              <CustomButton
-                label="See all"
-                buttonType="textOnly"
-                buttonSize="small"
-                color="primary"
-                onPress={() => {}}
-              />
-            </Box>
-            <ScrollView>
-              <Box mt="m">
-                <Item />
-                <Item />
+              <Box ml="size8">
+                <Text variant="body_bold">Rajat Malviya</Text>
+                <Text variant="body_sm" color="muted">
+                  Private Member
+                </Text>
               </Box>
-            </ScrollView>
+            </Box>
+            <CustomButton
+              label="Edit"
+              buttonSize="small"
+              buttonType="outlined"
+              showLeftIcon
+              iconName="pencil"
+              iconFamily="MaterialCommunityIcons"
+              onPress={() => {}}
+            />
+          </Box>
+          <ProfileTab
+            activeTab={tabIndex}
+            onTabPress={index => setTabIndex(index)}
+          />
+          <Box
+            backgroundColor="mainBackground"
+            flex={1}
+            borderTopLeftRadius={12}
+            borderTopRightRadius={12}
+            style={{marginTop: -12}}>
+            <Box flex={1} mx="m">
+              {tabIndex === 1 ? (
+                <Box>
+                  <Box mt="s">
+                    <ProfileAction title="Name" titleValue="Raja Malviya" />
+                  </Box>
+                  <Box mt="s">
+                    <ProfileAction
+                      title="Email"
+                      titleValue="rajat.g123@gmail.com"
+                    />
+                  </Box>
+                  <Box mt="s">
+                    <ProfileAction
+                      title="Mobile Number"
+                      titleValue="+91 987 654 4210"
+                    />
+                  </Box>
+                </Box>
+              ) : (
+                <Box>
+                  <Box mt="s">
+                    <ProfileAction title="Order History" />
+                  </Box>
+                  <Box mt="s">
+                    <ProfileAction title="Rewards" />
+                  </Box>
+                  <Box mt="s">
+                    <ProfileAction title="Points" />
+                  </Box>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Box>
-
-        <Box mx="l" mb="l">
-          <CustomButton label="Sign out" onPress={handleLogout} />
-        </Box>
       </Box>
-    </Box>
+    </ScreenContainer>
   );
 };
 

@@ -15,6 +15,7 @@ import {
 } from '../assets/icons/tabbar/Icons';
 import {Platform, SafeAreaView} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
+import Profile from '../screens/UserProfile/Profile/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +35,6 @@ const AppTabsNavigation = () => {
         tabBarInactiveTintColor: theme.colors.muted,
         tabBarStyle: {
           height: verticalScale(Platform.OS === 'ios' ? 70 : 50),
-
           paddingTop: 8,
         },
         tabBarItemStyle: {
@@ -105,8 +105,8 @@ const AppTabsNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Tab (22)"
-        component={Settings}
+        name="ProfileTab"
+        component={Profile}
         options={{
           tabBarIcon: ({color}) => (
             <UserIcon name="person" size={20} color={color} />

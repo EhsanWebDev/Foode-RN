@@ -12,11 +12,23 @@ import {Theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
 import {ActivityIndicator} from 'react-native-paper';
 import {useAppTheme} from '../../utils/hooks';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import {globalUnits} from '../../theme/globalStyles';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
+
+export type IconLibrary = {
+  [key: string]: () => React.ComponentType<any>;
+};
+
+const ICON_LIBRARIES: IconLibrary = {
+  IonIcon: () => IonIcon,
+  MaterialCommunityIcons: () => MaterialCommunityIcons,
+  // add more libraries as needed
+};
 
 let defaultStyles = {
   borderRadius: 24,
@@ -34,6 +46,8 @@ type Props = RestyleProps & {
   loading?: boolean;
   showLeftIcon?: boolean;
   showRightIcon?: boolean;
+  iconName?: string;
+  iconFamily?: 'IonIcon' | 'MaterialCommunityIcons';
 };
 
 const CustomButton: React.FC<Props> = ({
@@ -45,10 +59,14 @@ const CustomButton: React.FC<Props> = ({
   loading,
   showLeftIcon,
   showRightIcon,
+  iconName = 'add',
+  iconFamily = 'IonIcon',
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
   const {colors} = useAppTheme();
+  const Icon = ICON_LIBRARIES[iconFamily]();
+
   const roundedFull = {
     ...defaultStyles,
     backgroundColor: 'primary',
@@ -134,10 +152,10 @@ const CustomButton: React.FC<Props> = ({
               color={buttonType === 'contained' ? 'white' : colors.primary}
             />
           ) : (
-            <Box flexDirection="row">
+            <Box flexDirection="row" alignItems="center">
               {showLeftIcon && (
                 <Icon
-                  name="add"
+                  name={iconName}
                   size={globalUnits.icon_MD}
                   color={colors.primary}
                 />
@@ -145,13 +163,13 @@ const CustomButton: React.FC<Props> = ({
               <Text
                 variant={buttonSize === 'full' ? 'title_bold' : 'body_sm'}
                 color={buttonType === 'outlined' ? 'primary' : 'text'}
-                mr={showRightIcon ? 's' : 'none'}
-                ml={showLeftIcon ? 's' : 'none'}>
+                mr={showRightIcon ? 'size8' : 'none'}
+                ml={showLeftIcon ? 'size8' : 'none'}>
                 {label}
               </Text>
               {showRightIcon && (
                 <Icon
-                  name="add"
+                  name={iconName}
                   size={globalUnits.icon_MD - 2}
                   color={colors.primary}
                 />
