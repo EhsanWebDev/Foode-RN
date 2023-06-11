@@ -49,7 +49,7 @@ const VerifyCode = ({navigation}: VerifyCodeScreenNavigationProp) => {
     <ScreenContainer>
       <Header onBackPress={navigation.goBack} label="Verify Code" />
 
-      <Box justifyContent="center" marginHorizontal="s" mt="xl">
+      <Box justifyContent="center" marginHorizontal="s" mt="xl" mx="l">
         <Text variant="body">Enter your code</Text>
 
         <CodeField

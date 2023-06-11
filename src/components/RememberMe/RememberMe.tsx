@@ -10,7 +10,7 @@ import {TouchableOpacity} from 'react-native';
 const RememberMe = ({checked, onCheck}) => {
   const theme = useTheme<Theme>();
   return (
-    <Box flexDirection="row" alignItems="center" mt="l" ml="m">
+    <Box flexDirection="row" alignItems="center" mt="l">
       <TouchableOpacity onPress={onCheck}>
         <Icon
           name={checked ? 'check-circle' : 'checkbox-blank-circle-outline'}

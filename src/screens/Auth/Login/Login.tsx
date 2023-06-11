@@ -24,8 +24,8 @@ type loginValues = {
 };
 
 const initial_values = {
-  email: '',
-  password: '',
+  email: 'Dev1@me.co',
+  password: '123123',
   rememberMe: false,
 };
 
@@ -62,7 +62,7 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
         <Image source={require('../../../assets/images/logo.png')} />
       </Box>
 
-      <Box flex={2.5} mt="xl">
+      <Box flex={2.5} mt="xl" mx="l">
         <Formik
           initialValues={initial_values}
           validationSchema={loginSchema}

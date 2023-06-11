@@ -60,11 +60,11 @@ const Input: React.FC<InputProps & RestyleProps> = ({
 
   return (
     <Box {...props}>
-      {label && (
+      {/* {label && (
         <Text marginBottom="s" ml="m" variant="body_sm_bold" color="textMuted">
           {label} {required && <Text color="error">*</Text>}
         </Text>
-      )}
+      )} */}
       <DateTimePickerModal
         date={new Date()}
         minimumDate={pickerMode === 'date' ? new Date() : null}
@@ -157,18 +157,16 @@ const Input: React.FC<InputProps & RestyleProps> = ({
               : globalUnits.inputHeight
           }
           justifyContent="space-between"
-          borderRadius={props.multiline ? 12 : 24}
-          borderColor={'border'}
+          borderRadius={props.multiline ? 12 : 10}
+          borderColor={error?.error ? 'error' : 'inactive2'}
           borderWidth={1}>
           <Box
             height={'100%'}
             flexDirection="row"
             alignItems="center"
-            borderWidth={error?.error ? 1 : 0}
-            borderColor="error"
             paddingHorizontal="m"
             paddingVertical={props.multiline ? 's' : 'none'}
-            borderRadius={props.multiline ? 12 : 24}>
+            borderRadius={props.multiline ? 12 : 10}>
             <TextInput
               style={[
                 styles.input,

@@ -16,7 +16,7 @@ const ResetPassword = ({navigation}) => {
   return (
     <ScreenContainer>
       <Header label="Reset password" onBackPress={navigation.goBack} />
-      <Box mt="xl">
+      <Box mt="xl" mx="l">
         <Text variant="body" ml="s_m">
           Create a new password
         </Text>

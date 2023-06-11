@@ -43,7 +43,7 @@ const RegisteredCredentials = ({navigation}) => {
           setFieldTouched,
           touched,
         }) => (
-          <Box flex={2.5} mt="xl">
+          <Box flex={2.5} mt="xl" mx="l">
             <Input
               required
               label="Email"

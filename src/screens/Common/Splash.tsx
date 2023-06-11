@@ -7,13 +7,17 @@ import {setUser} from '../Auth/userSlice';
 const Splash = ({navigation}) => {
   const dispatch = useReduxDispatch();
   useEffect(() => {
-    setTimeout(async () => {
+    const time = setTimeout(async () => {
       const user = await getData('user');
       if (user) {
         dispatch(setUser(user));
       }
       navigation.navigate('AppTabs');
     }, 1500);
+
+    () => {
+      clearTimeout(time);
+    };
   }, [navigation, dispatch]);
 
   return (

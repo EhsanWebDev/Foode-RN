@@ -13,12 +13,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export type IconLibrary = {
   [key: string]: () => React.ComponentType<any>;
 };
-
 const ICON_LIBRARIES: IconLibrary = {
   IonIcon: () => IonIcon,
   MaterialCommunityIcons: () => MaterialCommunityIcons,
-  // add more libraries as needed
 };
+
+// chevron-back, down
 interface HeaderProps {
   label?: string;
   iconName?: string;
@@ -27,17 +27,19 @@ interface HeaderProps {
   rightIconFamily?: 'IonIcon' | 'MaterialCommunityIcons';
   leftIconFamily?: 'IonIcon' | 'MaterialCommunityIcons';
   onBackPress?: () => void;
+  onRightIconPress?: () => void;
   showBottomBorder?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
   label = '',
-  iconName = 'chevron-down',
+  iconName = 'chevron-back',
   rightIconFamily = 'IonIcon',
   leftIconFamily = 'IonIcon',
   showBackIcon = true,
   rightIcon,
   onBackPress,
+  onRightIconPress,
   showBottomBorder = true,
 }) => {
   const theme = useTheme<Theme>();
@@ -73,13 +75,15 @@ const Header: React.FC<HeaderProps> = ({
       </Box>
 
       {rightIcon && (
-        <Box p="xs" borderRadius={globalUnits.borderRadius_xs}>
-          <RightIcon
-            name={rightIcon}
-            color={mainForeground}
-            size={globalUnits.icon_LG}
-          />
-        </Box>
+        <TouchableOpacity onPress={onRightIconPress}>
+          <Box p="xs" borderRadius={globalUnits.borderRadius_xs}>
+            <RightIcon
+              name={rightIcon}
+              color={mainForeground}
+              size={globalUnits.icon_LG}
+            />
+          </Box>
+        </TouchableOpacity>
       )}
     </Box>
   );

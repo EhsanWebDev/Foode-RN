@@ -73,6 +73,7 @@ const CustomButton: React.FC<Props> = ({
     paddingVertical: 's_m',
     borderColor: 'primary',
     opacity: disabled ? 0.7 : 1,
+    borderRadius: 12,
   };
   const outlinedFull = {
     ...defaultStyles,

@@ -57,7 +57,7 @@ const AppTabsNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="Tab (0)"
         component={Settings}
         options={{
           tabBarIcon: ({color}) => <OrderIcon color={color} />,

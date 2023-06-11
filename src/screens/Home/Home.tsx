@@ -44,9 +44,14 @@ const Home = ({navigation}) => {
   const {cartItems} = useReduxSelector(store => store.cart);
   const {colors} = useAppTheme();
 
+  const {data} = user || {};
+  const {name} = data || {};
+
+  console.log({user});
+
   const handleUserIconPress = () => {
     if (user) {
-      navigation.navigate('Profile');
+      navigation.navigate('ProfileTab');
       return;
     }
     navigation.navigate('AuthStack');
@@ -73,22 +78,25 @@ const Home = ({navigation}) => {
             alignItems="center">
             <Box flex={1} flexDirection="row" alignItems="center">
               <TouchableOpacity onPress={handleUserIconPress}>
-                <Icon
-                  name="md-person-circle"
-                  size={scale(globalUnits.icon_LG * 1.5)}
-                  color={colors.text}
-                />
+                <Box flexDirection="row" alignItems="center">
+                  <Icon
+                    name="md-person-circle"
+                    size={scale(globalUnits.icon_LG * 1.5)}
+                    color={colors.text}
+                  />
+
+                  <Box flexDirection="row" alignItems="center">
+                    <Text variant="title" marginHorizontal="xxs" color="text">
+                      {name ?? 'Login'}
+                    </Text>
+                    <Icon
+                      name="chevron-down"
+                      size={globalUnits.icon_LG - 6}
+                      color={colors.text}
+                    />
+                  </Box>
+                </Box>
               </TouchableOpacity>
-              <Box flexDirection="row" alignItems="center">
-                <Text variant="title" ml={'xs'} color="text">
-                  Jolie Martin{' '}
-                </Text>
-                <Icon
-                  name="chevron-down"
-                  size={globalUnits.icon_LG - 6}
-                  color={colors.text}
-                />
-              </Box>
             </Box>
             <Box>
               <TouchableOpacity onPress={() => navigation.navigate('Cart')}>

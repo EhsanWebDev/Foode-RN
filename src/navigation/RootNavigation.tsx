@@ -10,7 +10,7 @@ import {dimensions} from '../utils/constants';
 import DrawerContent from './DrawerContent';
 import Profile from '../screens/UserProfile/Profile/Profile';
 import TrackOrder from '../screens/Shop/Order/TrackOrder';
-import Settings from '../screens/Common/Settings';
+import Settings from '../screens/Common/Settings/Settings';
 import Splash from '../screens/Common/Splash';
 import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
 import UpdateProfile from '../screens/UserProfile/Profile/UpdateProfile';
@@ -50,7 +50,7 @@ const RootNavigation = () => {
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen name="ProductDetails" component={ProductDetails} />
       <AppStack.Screen name="BookSeat" component={BookSeat} />
-      <AppStack.Screen name="Profile" component={Profile} />
+      {/* <AppStack.Screen name="Profile" component={Profile} /> */}
       <AppStack.Screen name="UpdateProfile" component={UpdateProfile} />
       <AppStack.Screen name="AddAddress" component={AddAddress} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
