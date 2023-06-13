@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView, StatusBar, Platform, View} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import Text from '../../../../components/Text/CustomText';
@@ -15,6 +15,7 @@ import Image from '../../../../components/Image/Image';
 import showToast from '../../../../utils/toast';
 import {addToCart} from '../../Cart/cartSlice';
 import CartItemActions from '../../../../components/AppComponents/CartItemActions/CartItemActions';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 const ProductDetails = ({navigation, route}) => {
   const {params} = route || {};
@@ -41,6 +42,17 @@ const ProductDetails = ({navigation, route}) => {
     fetchAPI();
   }, [productId]);
 
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['70%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   if (status === 'loading') {
     return (
       <ScreenContainer>
@@ -58,7 +70,7 @@ const ProductDetails = ({navigation, route}) => {
   const {price} = details?.[0] || {};
 
   return (
-    <>
+    <Box flex={1}>
       {/* <StatusBar backgroundColor={colors.primary} /> */}
       <Box>
         {/* <View
@@ -75,18 +87,23 @@ const ProductDetails = ({navigation, route}) => {
             height: verticalScale(dimensions.height / 3),
           }}
         />
-        <Box position="absolute" top={16} left={12}>
+        <Box position="absolute" top={46} left={12}>
           <IconButton icon="close" onPress={navigation.goBack} />
         </Box>
       </Box>
-      <SafeAreaView style={{flex: 1}}>
+      {/* <SafeAreaView style={{flex: 1}}> */}
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}>
         <Box
           backgroundColor="mainBackground"
           flex={1}
           borderTopLeftRadius={32}
-          borderTopRightRadius={32}
-          style={{marginTop: -30}}>
-          <Box flex={1} mx="m" mt="l">
+          borderTopRightRadius={32}>
+          <Box flex={1} mx="m" mb="l+">
             <Text variant="header">{product_name}</Text>
             <Text variant="title_bold" color="primary">
               ${price}
@@ -128,8 +145,10 @@ const ProductDetails = ({navigation, route}) => {
             </Box>
           </Box>
         </Box>
-      </SafeAreaView>
-    </>
+      </BottomSheet>
+
+      {/* </SafeAreaView> */}
+    </Box>
   );
 };
 

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {globalUnits} from '../../theme/globalStyles';
 import {useAppTheme} from '../../utils/hooks';
 import Text from '../Text/CustomText';
+import {truncateString} from '../../utils/utils';
 
 type RadioBarProps = {
   title: string;
@@ -44,7 +45,7 @@ const RadioBar = ({
           </Box>
           <Box>
             <Text variant="title" ml="size8">
-              {title}
+              {truncateString(title, 45)}
             </Text>
             {subTitle && (
               <Text variant="body_xs" ml="size8" color="textMuted">

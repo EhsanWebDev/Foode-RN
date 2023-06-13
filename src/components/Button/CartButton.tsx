@@ -31,6 +31,7 @@ type Props = RestyleProps & {
   disabled?: boolean;
   buttonSize?: 'full' | 'small' | 'xSmall';
   loading?: boolean;
+  price?: string | number;
 };
 
 const CartButton: React.FC<Props> = ({
@@ -40,6 +41,7 @@ const CartButton: React.FC<Props> = ({
   disabled,
   buttonSize = 'full',
   loading,
+  price = '',
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -155,7 +157,7 @@ const CartButton: React.FC<Props> = ({
               </Box>
               <Box flexDirection="row" alignItems="center">
                 <Text variant="title" mr="m" color="text">
-                  CHF 120.64
+                  {price !== '' ? `CHF ${price}` : ''}
                 </Text>
                 <Icon
                   name="chevron-forward"

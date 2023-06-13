@@ -11,4 +11,6 @@ export const apiEndpoints = {
 
   POST_placeOrder: '/order-create',
   GET_orderList: '/order-lists',
+
+  GET_Coupons: '/get-coupons',
 };

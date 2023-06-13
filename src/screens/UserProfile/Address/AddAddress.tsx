@@ -46,7 +46,7 @@ const AddAddress = ({navigation}) => {
   return (
     <ScreenContainer>
       <Header label="Add address" onBackPress={navigation.goBack} />
-      <Box mt="l">
+      <Box mt="l" mx="l">
         <Formik
           enableReinitialize
           initialValues={initial_values}

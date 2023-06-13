@@ -79,7 +79,7 @@ const BookSeat = ({navigation}) => {
       <ScreenContainer>
         <Header label="Reserve a Table" onBackPress={navigation.goBack} />
 
-        <Box flex={1}>
+        <Box flex={1} mx="l">
           <Box flex={1} justifyContent="center">
             <Box alignItems="center">
               <Icon name="user-x" size={80} color={colors.primary} />
@@ -116,7 +116,7 @@ const BookSeat = ({navigation}) => {
           errors,
           handleSubmit,
         }) => (
-          <Box flex={1}>
+          <Box flex={1} mx="l">
             <Box mt="l">
               <Input
                 label="Number of guests"

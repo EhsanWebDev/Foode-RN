@@ -98,7 +98,7 @@ const Cart = ({navigation}) => {
   const totalPrice = useReduxSelector(selectCartTotalPrice);
   const dispatch = useReduxDispatch();
 
-  const deliveryFee = 4.0;
+  const deliveryFee = 0.0;
   const result = parseFloat(totalPrice) + deliveryFee;
   const resultString = result.toFixed(2);
 
@@ -208,6 +208,7 @@ const Cart = ({navigation}) => {
 
             <Box mt="xxl">
               <CartButton
+                price={resultString}
                 onPress={() => navigation.navigate('Checkout')}
                 label="GO TO CHECKOUT"
               />

@@ -61,7 +61,7 @@ export const OrderIcon = ({color = '#818791'}) => (
     </G>
   </Svg>
 );
-export const UserIcon = () => (
+export const UserIcon = ({color = '#818791'}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width="28"
@@ -90,7 +90,7 @@ export const UserIcon = () => (
           d="M9,0A9,9,0,1,1,0,9,9,9,0,0,1,9,0Z"
           transform="translate(740 5096)"
           fill="none"
-          stroke="#818791"
+          stroke={color}
           stroke-width="1.5"
         />
         <Path
@@ -98,7 +98,7 @@ export const UserIcon = () => (
           data-name="Path 35493"
           d="M1.536,12.6A9.274,9.274,0,0,1,6.723,9.078a3.474,3.474,0,1,1,4.6,0A9.276,9.276,0,0,1,16.508,12.6a8.41,8.41,0,0,1-1.04,1.575,7.523,7.523,0,0,0-12.892,0A8.4,8.4,0,0,1,1.536,12.6ZM7.284,6.474A1.737,1.737,0,1,0,9.022,4.737,1.74,1.74,0,0,0,7.284,6.474Z"
           transform="translate(739.978 5096.215)"
-          fill="#818791"
+          fill={color}
         />
       </G>
     </G>
@@ -152,7 +152,7 @@ export const HomeIcon = ({color = '#818791', size = 28}) => (
     </G>
   </Svg>
 );
-export const VoucherIcon = () => (
+export const VoucherIcon = ({color = '#818791'}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width="28"
@@ -178,7 +178,7 @@ export const VoucherIcon = () => (
           d="M23.57,16H3V10.256A2.732,2.732,0,1,0,3,4.943V0H23.57V4.99a2.732,2.732,0,1,0,0,5.22V16Z"
           transform="translate(174 1602)"
           fill="none"
-          stroke="#818791"
+          stroke={color}
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="1.5"
@@ -188,13 +188,13 @@ export const VoucherIcon = () => (
           data-name="Line 1352"
           d="M.964,15.429H-.75V12.96H.964Zm0-4.32H-.75V8.64H.964Zm0-4.32H-.75V4.32H.964Zm0-4.32H-.75V0H.964Z"
           transform="translate(190.036 1602.571)"
-          fill="#818791"
+          fill={color}
         />
       </G>
     </G>
   </Svg>
 );
-export const TableIcon = () => (
+export const TableIcon = ({color = '#818791'}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width="28"
@@ -227,7 +227,7 @@ export const TableIcon = () => (
             d="M-400.772,174.262l-.349,9.362h-7.932"
             transform="translate(409.053 -174.262)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -239,7 +239,7 @@ export const TableIcon = () => (
             y2="6.638"
             transform="translate(0.237 9.362)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -251,7 +251,7 @@ export const TableIcon = () => (
             y2="6.638"
             transform="translate(6.243 9.362)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -267,7 +267,7 @@ export const TableIcon = () => (
             x2="8"
             transform="translate(0 -1)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -278,7 +278,7 @@ export const TableIcon = () => (
             y2="9.799"
             transform="translate(4.052 0)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -294,7 +294,7 @@ export const TableIcon = () => (
             d="M-409.053,174.262l.349,9.362h7.932"
             transform="translate(409.053 -174.262)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -306,7 +306,7 @@ export const TableIcon = () => (
             y2="6.638"
             transform="translate(6.306 9.362)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
@@ -318,7 +318,7 @@ export const TableIcon = () => (
             y2="6.638"
             transform="translate(0.3 9.362)"
             fill="none"
-            stroke="#818791"
+            stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"

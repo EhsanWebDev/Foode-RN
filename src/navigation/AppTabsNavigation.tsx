@@ -16,6 +16,8 @@ import {
 import {Platform, SafeAreaView} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import Profile from '../screens/UserProfile/Profile/Profile';
+import Reservations from '../screens/Home/Store/Reservations/Reservations';
+import Menu from '../screens/Home/Store/Menu/Menu';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,8 +59,8 @@ const AppTabsNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Tab (0)"
-        component={Settings}
+        name="OrderTab"
+        component={Menu}
         options={{
           tabBarIcon: ({color}) => <OrderIcon color={color} />,
           tabBarLabel: ({focused}) => (
@@ -72,8 +74,8 @@ const AppTabsNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Tab (1)"
-        component={Settings}
+        name="Reservations"
+        component={Reservations}
         options={{
           tabBarIcon: ({color}) => <TableIcon color={color} />,
           tabBarLabel: ({focused}) => (

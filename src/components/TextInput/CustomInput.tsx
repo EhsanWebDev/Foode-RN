@@ -131,15 +131,21 @@ const Input: React.FC<InputProps & RestyleProps> = ({
             }
             setShowGenderSelection(true);
           }}>
-          <Card
-            variant="inputCard"
+          <Box
+            borderColor={error?.error ? 'error' : 'inactive2'}
+            borderWidth={1}
             paddingHorizontal="m"
             height={globalUnits.inputHeight}
             justifyContent="space-between"
             flexDirection="row"
             alignItems="center"
-            borderRadius={24}>
-            <Text variant="input_bold" color="gray">
+            borderRadius={12}>
+            <Text
+              style={{
+                fontFamily: AppFonts.Primary_Medium,
+                fontSize: AppFontSizes._input,
+                color: colors.gray,
+              }}>
               {rest.value ? rest.value : rest.placeholder}
             </Text>
             {showIcon && (
@@ -147,7 +153,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
                 <Icon name={iconName} size={20} color={colors.muted} />
               </TouchableOpacity>
             )}
-          </Card>
+          </Box>
         </TouchableOpacity>
       ) : (
         <Box

@@ -8,13 +8,12 @@ import {moderateVerticalScale, scale} from 'react-native-size-matters';
 import Box from '../../components/View/CustomView';
 import Text from '../../components/Text/CustomText';
 
-import TabBar from './TabBar';
 import {globalUnits} from '../../theme/globalStyles';
 import {useReduxSelector} from '../../store';
-import Galleries from './Store/Galleries/Galleries';
-import About from './Store/About/About';
-import Reservations from './Store/Reservations/Reservations';
-import Menu from './Store/Menu/Menu';
+// import Galleries from './Store/Galleries/Galleries';
+// import About from './Store/About/About';
+// import Reservations from './Store/Reservations/Reservations';
+// import Menu from './Store/Menu/Menu';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
@@ -122,7 +121,7 @@ const Home = ({navigation}) => {
           </Box>
           <Box mt="l" mx="l">
             <Text variant="header" color="text">
-              {`Hey, Jolie
+              {`Hey, ${name ?? 'Guest'}
 Good Morning! `}
               <Icon name="sunny-sharp" color="white" size={24} />
             </Text>

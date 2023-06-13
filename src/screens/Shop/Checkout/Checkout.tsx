@@ -33,6 +33,8 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
+  useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 
 import RadioBar from '../../../components/RadioButton/RadioBar';
@@ -58,8 +60,10 @@ const Checkout = ({navigation}) => {
   const totalPrice = useReduxSelector(selectCartTotalPrice);
 
   const deliveryFee = 4.0;
-  const result = parseFloat(totalPrice) + deliveryFee;
+  const result = parseFloat(totalPrice) + 0.0;
+  const result2 = parseFloat(totalPrice) + deliveryFee;
   const resultString = result.toFixed(2);
+  const totalPriceWithDelivery = result2.toFixed(2);
 
   const handleCheckout = async () => {
     if (!addressSelected) {
@@ -134,8 +138,10 @@ const Checkout = ({navigation}) => {
     props => (
       <BottomSheetBackdrop
         {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
+        // disappearsOnIndex={-1}
+        // appearsOnIndex={0}
+        animatedIndex={animatedContentHeight}
+        pressBehavior="close"
       />
     ),
     [],
@@ -145,7 +151,15 @@ const Checkout = ({navigation}) => {
   const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['16%'], []);
+  const snapPoints = useMemo(() => ['35%'], []);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const deliveryTimeSnapPoints = useMemo(() => ['28%'], []);
 
   // callbacks
@@ -192,7 +206,7 @@ const Checkout = ({navigation}) => {
           width={width}
           height={moderateVerticalScale(220)}
           style={[styles.mapOverflow, {borderColor: colors.primary}]}>
-          <MapView
+          {/* <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={{
@@ -236,7 +250,7 @@ const Checkout = ({navigation}) => {
                 />
               </View>
             </Marker>
-          </MapView>
+          </MapView> */}
         </Box>
       </Box>
       <DateTimePickerModal
@@ -320,7 +334,7 @@ const Checkout = ({navigation}) => {
               borderTopLeftRadius={10}
               borderTopRightRadius={10}>
               <Text variant="body_sm">Item subtotal</Text>
-              <Text variant="body_sm">CHF 15.90</Text>
+              <Text variant="body_sm">CHF {resultString}</Text>
             </Box>
             <Box
               flexDirection="row"
@@ -331,8 +345,8 @@ const Checkout = ({navigation}) => {
               p="s"
               borderBottomLeftRadius={10}
               borderBottomRightRadius={10}>
-              <Text variant="body_sm_bold">Total</Text>
-              <Text variant="body_sm_bold">CHF 15.90</Text>
+              <Text variant="body_sm_bold">Total (incl. delivery charges)</Text>
+              <Text variant="body_sm_bold">CHF {totalPriceWithDelivery}</Text>
             </Box>
           </Box>
         </Box>
@@ -350,6 +364,7 @@ const Checkout = ({navigation}) => {
               // onPress={() => navigation.navigate('Checkout')}
               onPress={handleDeliveryTimeModalPress}
               label="PROCEED PAYMENT"
+              price={totalPriceWithDelivery}
             />
           </Box>
         </Box>
@@ -360,36 +375,64 @@ const Checkout = ({navigation}) => {
           ref={bottomSheetModalRef}
           index={0}
           backdropComponent={renderBackdrop}
-          snapPoints={snapPoints}
+          // snapPoints={snapPoints}
+          snapPoints={animatedSnapPoints}
+          handleHeight={animatedHandleHeight}
+          contentHeight={animatedContentHeight}
           handleComponent={null}
           detached
           bottomInset={12}
           style={{marginHorizontal: 20}}>
-          <Box flex={1} py="s_m" px="s">
-            <Box
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between">
-              <Text variant="title_bold" color="gray">
-                Location
-              </Text>
-              <TouchableOpacity
-                onPress={() => bottomSheetModalRef.current?.dismiss()}>
-                <Icon
-                  name="close"
-                  size={globalUnits.icon_LG}
-                  color={colors.gray}
-                />
-              </TouchableOpacity>
-            </Box>
+          <BottomSheetScrollView onLayout={handleContentLayout}>
+            <Box flex={1} py="s_m" px="s">
+              <Box
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between">
+                <Text variant="title_bold" color="gray">
+                  Location
+                </Text>
 
-            <CustomButton
-              label="ADD NEW ADDRESS"
-              showLeftIcon
-              buttonType="outlined"
-              mt="l"
-            />
-          </Box>
+                <TouchableOpacity
+                  onPress={() => bottomSheetModalRef.current?.dismiss()}>
+                  <Icon
+                    name="close"
+                    size={globalUnits.icon_LG}
+                    color={colors.gray}
+                  />
+                </TouchableOpacity>
+              </Box>
+              {addressSelected ? (
+                <Box flex={1} marginVertical="m">
+                  <RadioBar
+                    title={`${city}, ${streetAddress}`}
+                    checked
+                    leftIcon="home"
+                    // onPress={() => {
+                    //   setDeliveryOption(1);
+                    // }}
+                  />
+                </Box>
+              ) : (
+                <Box
+                  flex={1}
+                  marginVertical="l"
+                  justifyContent="center"
+                  alignItems="center">
+                  <Text variant="body_sm">Please add a delivery address</Text>
+                </Box>
+              )}
+
+              <Box>
+                <CustomButton
+                  label="ADD NEW ADDRESS"
+                  showLeftIcon
+                  buttonType="outlined"
+                  onPress={() => navigation.navigate('AddAddress')}
+                />
+              </Box>
+            </Box>
+          </BottomSheetScrollView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
       <BottomSheetModalProvider>

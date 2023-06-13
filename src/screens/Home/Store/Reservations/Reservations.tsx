@@ -1,30 +1,36 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, StatusBar} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import Card from '../../../../components/Card/Card';
 import {verticalScale} from 'react-native-size-matters';
 import Text from '../../../../components/Text/CustomText';
 import CustomButton from '../../../../components/Button/CustomButton';
+import Header from '../../../../components/AppComponents/Header/Header';
+import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 
 const Reservations = ({navigation}) => {
   return (
-    <Box mx="m">
-      <Card
-        height={verticalScale(120)}
-        variant="primary"
-        marginVertical="l"
-        justifyContent="center">
-        <Box>
-          <Box alignItems="center">
-            <Text variant="title_bold" mb="m">
-              Book a Table
-            </Text>
-            <Text variant="body_xs" textAlign="center">
-              {` Book a table for the number of guests and 
+    <ScreenContainer>
+      <StatusBar barStyle="default" />
+      <Header label="Reservations" showBackIcon={false} />
+      <Box flex={1} mx="m" justifyContent="center">
+        <Card
+          height={verticalScale(140)}
+          variant="primary"
+          marginVertical="l"
+          justifyContent="center"
+          px="m">
+          <Box>
+            <Box alignItems="center">
+              <Text variant="title_bold" mb="m">
+                Book a Table
+              </Text>
+              <Text variant="body_xs" textAlign="center">
+                {` Book a table for the number of guests and 
 specific date and time`}
-            </Text>
-          </Box>
-          {/* <Box pl="xl" flexDirection="row" alignItems="center" mt="m">
+              </Text>
+            </Box>
+            {/* <Box pl="xl" flexDirection="row" alignItems="center" mt="m">
             <CustomButton
               label="1"
               buttonType="outlined"
@@ -68,16 +74,17 @@ specific date and time`}
               mr="xs"
             />
           </Box> */}
-          <Box alignItems="center" mt="m">
-            <CustomButton
-              label="Find Me a Table"
-              buttonSize="small"
-              onPress={() => navigation.navigate('BookSeat')}
-            />
+            <Box mt="m">
+              <CustomButton
+                label="Find Me a Table"
+                buttonSize="full"
+                onPress={() => navigation.navigate('BookSeat')}
+              />
+            </Box>
           </Box>
-        </Box>
-      </Card>
-    </Box>
+        </Card>
+      </Box>
+    </ScreenContainer>
   );
 };
 
