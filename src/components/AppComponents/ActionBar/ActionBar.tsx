@@ -7,6 +7,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {globalUnits} from '../../../theme/globalStyles';
 import {useAppTheme} from '../../../utils/hooks';
 import Text from '../../Text/CustomText';
+import {truncateString} from '../../../utils/utils';
 
 type ActionBarProps = {
   onPress: () => void;
@@ -33,7 +34,7 @@ const ActionBar = ({
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between">
-        <Box flexDirection="row" alignItems="center">
+        <Box flexDirection="row" alignItems="center" flex={0.9}>
           <Box>
             <Icon2
               name={leftIcon}
@@ -42,10 +43,12 @@ const ActionBar = ({
             />
           </Box>
           <Box ml="s">
-            <Text variant={titleSize}>{title}</Text>
+            <Text variant={titleSize} numberOfLines={1} ellipsizeMode="tail">
+              {title}
+            </Text>
             {subTitle && (
               <Text variant="body_xs" lineHeight={12} color="gray">
-                {subTitle}
+                {truncateString(subTitle, 30)}
               </Text>
             )}
           </Box>

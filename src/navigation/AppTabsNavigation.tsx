@@ -18,6 +18,7 @@ import {verticalScale} from 'react-native-size-matters';
 import Profile from '../screens/UserProfile/Profile/Profile';
 import Reservations from '../screens/Home/Store/Reservations/Reservations';
 import Menu from '../screens/Home/Store/Menu/Menu';
+import Offers from '../screens/Home/Store/Offers/Offers';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,8 +91,8 @@ const AppTabsNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Tab (2)"
-        component={Settings}
+        name="Offers"
+        component={Offers}
         options={{
           tabBarIcon: ({color}) => (
             <VoucherIcon name="person" size={20} color={color} />

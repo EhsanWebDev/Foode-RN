@@ -82,6 +82,7 @@ const CartItem: FC<CartItem> = ({item, onPress}) => {
           onDecrement={() => dispatch(decrementQuantity(id))}
           onIncrement={() => dispatch(incrementQuantity(id))}
           quantity={quantity}
+          itemId={id}
         />
       </Box>
     </Box>

@@ -1,8 +1,7 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, ScrollView, StatusBar, TouchableOpacity} from 'react-native';
+import {FlatList, ScrollView, StatusBar} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
@@ -21,9 +20,12 @@ import {Divider} from 'react-native-paper';
 import {scale, verticalScale} from 'react-native-size-matters';
 import IconButton from '../../../components/Button/IconButton/IconButton';
 import CartButton from '../../../components/Button/CartButton';
-import {globalUnits} from '../../../theme/globalStyles';
 
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 import BottomSheetInput from '../../../components/TextInput/BottomSheetInput';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
 
@@ -50,8 +52,8 @@ const ListFooterComponent = () => {
   }
   return (
     <Box>
-      <Divider style={{height: 12, backgroundColor: '#EBEBEB'}} />
-      <Box marginVertical="s" mx="l">
+      {/* <Divider style={{height: 12, backgroundColor: '#EBEBEB'}} /> */}
+      {/* <Box marginVertical="s" mx="l">
         <Text variant="body_bold">Recommendations</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {recentOrdersData.map(item => (
@@ -77,7 +79,7 @@ const ListFooterComponent = () => {
             </Box>
           ))}
         </ScrollView>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
@@ -93,10 +95,8 @@ const ListEmptyComponent = () => {
 
 const Cart = ({navigation}) => {
   const refRBSheet = useRef();
-  const {colors} = useAppTheme();
   const {cartItems} = useReduxSelector(store => store.cart);
   const totalPrice = useReduxSelector(selectCartTotalPrice);
-  const dispatch = useReduxDispatch();
 
   const deliveryFee = 0.0;
   const result = parseFloat(totalPrice) + deliveryFee;
@@ -106,14 +106,25 @@ const Cart = ({navigation}) => {
   const [message, setMessage] = useState<string>('');
 
   // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior="close"
+      />
+    ),
+    [],
+  );
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '50%'], []);
+  const deliveryTimeSnapPoints = useMemo(() => ['45%'], []);
 
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    bottomSheetRef.current?.snapToIndex(index);
+  const handleDeliveryTimeModalPress = useCallback(() => {
+    deliveryTimeModalRef.current?.present();
   }, []);
 
   return (
@@ -122,52 +133,6 @@ const Cart = ({navigation}) => {
       <Box flex={1}>
         <Header label="Your Order" onBackPress={navigation.goBack} />
         <Box flex={1} mt="l">
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown
-            closeOnPressMask={false}
-            animationType="fade"
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0,0,0,0.7)',
-              },
-              container: {
-                borderTopLeftRadius: 35,
-                borderTopRightRadius: 35,
-              },
-              draggableIcon: {
-                backgroundColor: colors.gray,
-              },
-            }}>
-            <Box flex={1} p="l">
-              <Box alignItems="center">
-                <Icon name="trash" size={28} color={colors.primary} />
-                <Text variant="body_sm_bold" mt="m">
-                  Are your sure you want to delete this cart item?
-                </Text>
-              </Box>
-              <Box flexDirection="row" alignItems="center" mt="xl">
-                <Box flex={1} mr="m">
-                  <CustomButton
-                    label="Cancel"
-                    onPress={() => refRBSheet?.current?.close()}
-                    buttonType="outlined"
-                    buttonSize="full"
-                  />
-                </Box>
-                <Box flex={1}>
-                  <CustomButton
-                    label="Yes, delete"
-                    onPress={() => {
-                      dispatch(removeFromCart(tempProductId));
-                      setTempProductId(0);
-                      refRBSheet?.current?.close();
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </RBSheet>
           <FlatList
             showsVerticalScrollIndicator={false}
             renderItem={null}
@@ -198,66 +163,77 @@ const Cart = ({navigation}) => {
           />
         </Box>
 
-        <Box borderTopColor="border" borderTopWidth={2}>
-          <Box mx="l" mt="l+" mb="l">
-            <ActionBar
-              title="Add a message for the restaurant"
-              subTitle="Special request, allergies, dietary restrictions?"
-              onPress={() => handleSheetChanges(1)}
-            />
-
-            <Box mt="xxl">
-              <CartButton
-                price={resultString}
-                onPress={() => navigation.navigate('Checkout')}
-                label="GO TO CHECKOUT"
-              />
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <BottomSheet
-        enablePanDownToClose
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        keyboardBlurBehavior="restore"
-        handleComponent={() => (
-          <Box width={60} height={4} bg="inactive2" alignSelf="center" mt="s" />
-        )}>
-        <Box flex={1} marginVertical="l" px="m">
-          <Box>
-            <Text variant="body_bold">Add Message</Text>
-
-            <Box mt="m">
-              <Text variant="title">
-                Special request, allergies, dietary restrictions?
-              </Text>
-              <Text mt="size8" variant="body_xs" color="textMuted">
-                Please note that your message to the venue may also be seen by
-                the courier partner delivering your order
-              </Text>
-            </Box>
-
-            <Box mt="l+">
-              <BottomSheetInput
-                value={message}
-                onChangeText={text => setMessage(text)}
-                blurOnSubmit
-                placeholder="Write your message here"
-                multiline
+        {cartItems.length > 0 && (
+          <Box borderTopColor="border" borderTopWidth={2}>
+            <Box mx="l" mt="l+" mb="l">
+              <ActionBar
+                title="Add a message for the restaurant"
+                subTitle="Special request, allergies, dietary restrictions?"
+                onPress={handleDeliveryTimeModalPress}
               />
 
-              <Box alignItems="flex-end" mt="xs">
-                <Text variant="body_xs" color="textMuted">
-                  {message.length} / 400
-                </Text>
+              <Box mt="xxl">
+                <CartButton
+                  price={resultString}
+                  onPress={() => navigation.navigate('Checkout')}
+                  label="GO TO CHECKOUT"
+                  itemsCount={cartItems.length}
+                />
               </Box>
             </Box>
           </Box>
-        </Box>
-      </BottomSheet>
+        )}
+      </Box>
+      <BottomSheetModalProvider>
+        <BottomSheetModal
+          enablePanDownToClose
+          ref={deliveryTimeModalRef}
+          index={0}
+          backdropComponent={renderBackdrop}
+          snapPoints={deliveryTimeSnapPoints}
+          handleComponent={() => (
+            <Box
+              width={60}
+              height={4}
+              bg="inactive2"
+              alignSelf="center"
+              mt="s"
+            />
+          )}
+          keyboardBlurBehavior="restore">
+          <Box flex={1} marginVertical="l" px="m">
+            <Box>
+              <Text variant="body_bold">Add Message</Text>
+
+              <Box mt="m">
+                <Text variant="title">
+                  Special request, allergies, dietary restrictions?
+                </Text>
+                <Text mt="size8" variant="body_xs" color="textMuted">
+                  Please note that your message to the venue may also be seen by
+                  the courier partner delivering your order
+                </Text>
+              </Box>
+
+              <Box mt="l+">
+                <BottomSheetInput
+                  value={message}
+                  onChangeText={text => setMessage(text)}
+                  blurOnSubmit
+                  placeholder="Write your message here"
+                  multiline
+                />
+
+                <Box alignItems="flex-end" mt="xs">
+                  <Text variant="body_xs" color="textMuted">
+                    {message.length} / 400
+                  </Text>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
     </ScreenContainer>
   );
 };

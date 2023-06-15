@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {addressType, loginType} from './types';
-import {forgotPassword, login, signup} from './actions';
+import {addressType, loginType, userAddressType} from './types';
+import {forgotPassword, login, signup, updateUserProfile} from './actions';
 
 const INITIAL_STATE: loginType = {
   user: null,
@@ -11,9 +11,9 @@ const INITIAL_STATE: loginType = {
   signUp_status: 'idle',
   error: '',
   userAddress: {
-    addressSelected: false,
-    city: '',
-    streetAddress: '',
+    isAddressSelected: false,
+    selectedAddress: null,
+    userAddresses: [],
   },
 };
 
@@ -29,10 +29,53 @@ const userSlice = createSlice({
       state.user = null;
       state.login_status = 'idle';
     },
-    setUserAddress: (state, action: PayloadAction<addressType>) => {
-      state.userAddress.addressSelected = true;
-      state.userAddress.city = action.payload.city;
-      state.userAddress.streetAddress = action.payload.streetAddress;
+    setUserAddress: (state, action: PayloadAction<userAddressType>) => {
+      const {id, city, street_address} = action.payload;
+
+      state.userAddress.isAddressSelected = true;
+      state.userAddress.selectedAddress = {
+        city,
+        street_address,
+      };
+
+      const uncheckAll = state.userAddress.userAddresses.map(item => {
+        return {
+          ...item,
+          isSelected: false,
+        };
+      });
+
+      state.userAddress.userAddresses = [
+        ...uncheckAll,
+        {id, city, street_address, isSelected: true},
+      ];
+    },
+    selectUserDeliveryAddress: (
+      state,
+      action: PayloadAction<userAddressType>,
+    ) => {
+      const {id} = action.payload;
+
+      let selectedAddress = {};
+
+      const updatedAddresses = state.userAddress.userAddresses.map(item => {
+        if (item.id === id) {
+          selectedAddress = item;
+          return {
+            ...item,
+            isSelected: true,
+          };
+        }
+        return {
+          ...item,
+          isSelected: false,
+        };
+      });
+
+      console.log({id, updatedAddresses});
+
+      state.userAddress.userAddresses = updatedAddresses;
+      state.userAddress.selectedAddress = selectedAddress;
     },
   },
   extraReducers(builder) {
@@ -61,6 +104,20 @@ const userSlice = createSlice({
       state.error = 'Error while logging in';
     });
 
+    // ? UPDATE PROFILE
+    builder.addCase(updateUserProfile.pending, state => {
+      state.signUp_status = 'loading';
+    });
+    builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+      state.signUp_status = 'completed';
+      console.log({stateInsideBuilder: action.payload, state});
+      // state.user = action.payload;
+    });
+    builder.addCase(updateUserProfile.rejected, state => {
+      state.signUp_status = 'rejected';
+      state.error = 'Error while updating a user info.';
+    });
+
     // ? FORGOT PASSWORD
     builder.addCase(forgotPassword.pending, state => {
       state.forgotPass_status = 'loading';
@@ -75,6 +132,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {setUser, logoutUser, setUserAddress} = userSlice.actions;
+export const {setUser, logoutUser, setUserAddress, selectUserDeliveryAddress} =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -4,6 +4,13 @@ import {forgotPassPayload, loginPayload, signUpPayload} from './types';
 import api from '../../store/fetcher/fetcher';
 import {apiEndpoints} from '../../store/fetcher/appEndpoints';
 
+type updateProfile = {
+  user_id: string;
+  name?: string;
+  email?: string;
+  phone_number?: string;
+};
+
 export const login = createAsyncThunk(
   'user/login',
   async (params: loginPayload, {rejectWithValue}) => {
@@ -58,5 +65,35 @@ export const forgotPassword = createAsyncThunk(
     }
     console.log({response});
     return response.data;
+  },
+);
+export const updateUserProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (params: updateProfile, {rejectWithValue}) => {
+    const {user_id, name, email, phone_number} = params;
+    try {
+      const response = await api.post(
+        apiEndpoints.POST_UPDATE_PROFILE,
+        {name, email, phone_number},
+        {
+          headers: {
+            'user-id': user_id,
+          },
+        },
+      );
+
+      const {data} = response || {};
+      const {status, message} = data || {};
+
+      console.log({response});
+
+      if (status === 500) {
+        handleApiErrors(data);
+        return rejectWithValue(message);
+      }
+      return response.data?.data;
+    } catch (error) {
+      console.log({error});
+    }
   },
 );

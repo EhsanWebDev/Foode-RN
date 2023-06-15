@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useId} from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Box from '../../../components/View/CustomView';
@@ -28,6 +28,8 @@ const AddAddress = ({navigation}) => {
   const {user, userAddress} = useReduxSelector(store => store.user);
   const {city, streetAddress} = userAddress;
 
+  const id = useId();
+
   const initial_values = {
     city,
     street_address: streetAddress,
@@ -36,8 +38,9 @@ const AddAddress = ({navigation}) => {
   const handleAddAddress = (values: addressValues) => {
     dispatch(
       setUserAddress({
+        id: `${values.city},${id}`,
         city: values.city,
-        streetAddress: values.street_address,
+        street_address: values.street_address,
       }),
     );
     navigation.goBack();
@@ -45,8 +48,8 @@ const AddAddress = ({navigation}) => {
 
   return (
     <ScreenContainer>
-      <Header label="Add address" onBackPress={navigation.goBack} />
-      <Box mt="l" mx="l">
+      <Header label="Add delivery address" onBackPress={navigation.goBack} />
+      <Box flex={1} mt="l" mx="l">
         <Formik
           enableReinitialize
           initialValues={initial_values}
@@ -61,41 +64,45 @@ const AddAddress = ({navigation}) => {
             setFieldTouched,
             setFieldValue,
           }) => (
-            <>
-              <Input
-                label="City Name"
-                placeholder="Enter your city name"
-                value={values.city}
-                onChangeText={handleChange('city')}
-                onBlur={() => setFieldTouched('city')}
-                error={{
-                  error: touched.city && errors.city,
-                  errorMsg: errors.city,
-                }}
-              />
-              <Box marginTop="l">
+            <Box flex={1}>
+              <Box flex={1}>
                 <Input
-                  multiline
-                  numberOfLines={4}
-                  label="Street address"
-                  placeholder="Enter Street address"
-                  value={values.street_address}
-                  onChangeText={handleChange('street_address')}
-                  onBlur={() => setFieldTouched('street_address')}
+                  label="City Name"
+                  placeholder="Enter your city name"
+                  value={values.city}
+                  onChangeText={handleChange('city')}
+                  onBlur={() => setFieldTouched('city')}
                   error={{
-                    error: touched.street_address && errors.street_address,
-                    errorMsg: errors.street_address,
+                    error: touched.city && errors.city,
+                    errorMsg: errors.city,
                   }}
                 />
+                <Box marginTop="l">
+                  <Input
+                    multiline
+                    numberOfLines={4}
+                    label="Street address"
+                    placeholder="Enter Street address"
+                    value={values.street_address}
+                    onChangeText={handleChange('street_address')}
+                    onBlur={() => setFieldTouched('street_address')}
+                    error={{
+                      error: touched.street_address && errors.street_address,
+                      errorMsg: errors.street_address,
+                    }}
+                  />
+                </Box>
               </Box>
 
-              <CustomButton
-                label="Save your deliver address"
-                onPress={handleSubmit}
-                mt="xl"
-                disabled={Boolean(!values.city || !values.street_address)}
-              />
-            </>
+              <Box>
+                <CustomButton
+                  label="Save"
+                  onPress={handleSubmit}
+                  mb="xs"
+                  disabled={Boolean(!values.city || !values.street_address)}
+                />
+              </Box>
+            </Box>
           )}
         </Formik>
       </Box>

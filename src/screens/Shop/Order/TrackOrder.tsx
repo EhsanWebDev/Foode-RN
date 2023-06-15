@@ -9,6 +9,8 @@ import Text from '../../../components/Text/CustomText';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {getOrderList} from './actions';
 import moment from 'moment';
+import ContentLoader from 'react-content-loader/native';
+import {Facebook} from 'react-content-loader/native';
 
 type trackOrderItem = {
   address: string;
@@ -118,20 +120,29 @@ const TrackOrder = ({navigation}) => {
   return (
     <ScreenContainer>
       <Header label="Order History" onBackPress={navigation.goBack} />
-      <Box flex={1} mt="l">
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={status === 'loading'}
-              onRefresh={fetchOrders}
-            />
-          }
-          showsVerticalScrollIndicator={false}
-          data={orderList}
-          keyExtractor={item => item?.id?.toString()}
-          renderItem={({item}) => <Item item={item} />}
-        />
-      </Box>
+      {status === 'loading' ? (
+        <Box width="90%" mx="l">
+          <Facebook />
+          <Facebook />
+          <Facebook />
+          <Facebook />
+        </Box>
+      ) : (
+        <Box flex={1} mt="l" mx="s_m">
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={status === 'loading'}
+                onRefresh={fetchOrders}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+            data={orderList}
+            keyExtractor={item => item?.id?.toString()}
+            renderItem={({item}) => <Item item={item} />}
+          />
+        </Box>
+      )}
     </ScreenContainer>
   );
 };

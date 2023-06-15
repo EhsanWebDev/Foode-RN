@@ -96,15 +96,36 @@ const Profile = ({navigation}) => {
                 {tabIndex === 1 ? (
                   <Box>
                     <Box mt="s">
-                      <ProfileAction title="Name" titleValue={name} />
+                      <ProfileAction
+                        title="Name"
+                        titleValue={name}
+                        onPress={() =>
+                          navigation.navigate('UpdateProfile', {
+                            updateEntity: 'name',
+                          })
+                        }
+                      />
                     </Box>
                     <Box mt="s">
-                      <ProfileAction title="Email" titleValue={email} />
+                      <ProfileAction
+                        title="Email"
+                        titleValue={email}
+                        onPress={() =>
+                          navigation.navigate('UpdateProfile', {
+                            updateEntity: 'email',
+                          })
+                        }
+                      />
                     </Box>
                     <Box mt="s">
                       <ProfileAction
                         title="Mobile Number"
                         titleValue={phone_number}
+                        onPress={() =>
+                          navigation.navigate('UpdateProfile', {
+                            updateEntity: 'phone',
+                          })
+                        }
                       />
                     </Box>
                   </Box>

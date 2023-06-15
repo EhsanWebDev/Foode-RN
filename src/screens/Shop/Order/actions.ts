@@ -25,6 +25,8 @@ export const placeOrder = createAsyncThunk(
         },
       );
 
+      console.log({params});
+
       const {data} = response || {};
       const {status, message} = data || {};
 

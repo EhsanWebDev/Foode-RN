@@ -14,6 +14,7 @@ import {addToCart} from '../../../Shop/Cart/cartSlice';
 import showToast from '../../../../utils/toast';
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../../components/AppComponents/Header/Header';
+import MenuLoading from './Loader/MenuLoading';
 
 const Menu = () => {
   const nav = useNavigation();
@@ -40,9 +41,7 @@ const Menu = () => {
       <Header label="Menu" showBackIcon={false} />
 
       {status === 'loading' ? (
-        <Box flex={1} justifyContent="center" alignItems="center">
-          <ActivityIndicator />
-        </Box>
+        <MenuLoading />
       ) : (
         <Box flex={1} mx="s">
           <Box flex={1}>

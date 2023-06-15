@@ -43,7 +43,7 @@ const RadioBar = ({
               style={{alignSelf: 'center'}}
             />
           </Box>
-          <Box>
+          <Box flex={0.92}>
             <Text variant="title" ml="size8">
               {truncateString(title, 45)}
             </Text>

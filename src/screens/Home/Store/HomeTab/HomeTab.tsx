@@ -6,6 +6,7 @@ import {
   ScrollView,
   View,
   Platform,
+  Pressable,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -259,45 +260,51 @@ const HomeTab = () => {
             </Card>
           </Box>
         </Box>
-        <Box
-          mt="l+"
-          height={verticalScale(64)}
-          borderRadius={12}
-          overflow="hidden"
-          position="relative">
-          <LinearGradient
-            colors={['#000', 'transparent']}
-            start={{x: 0.25, y: 0}}
-            end={{x: 0.5, y: 0}}
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '100%',
-              zIndex: 2,
-              justifyContent: 'center',
-            }}>
-            <Box pl="s_m">
-              <Text variant="title" color="mainBackground">
-                Reserve Table
-              </Text>
-            </Box>
-          </LinearGradient>
-          <Image
-            source={require('../../../../assets/images/table.png')}
-            style={{
-              height: '100%',
-              position: 'relative',
-              zIndex: 0,
-              width: '100%',
-              borderRadius: 12,
-            }}
-          />
-        </Box>
+        <Pressable onPress={() => nav.navigate('Reservations')}>
+          <Box
+            mt="l+"
+            height={verticalScale(64)}
+            borderRadius={12}
+            overflow="hidden"
+            position="relative">
+            <LinearGradient
+              colors={['#000', 'transparent']}
+              start={{x: 0.25, y: 0}}
+              end={{x: 0.5, y: 0}}
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '100%',
+                zIndex: 2,
+                justifyContent: 'center',
+              }}>
+              <Box pl="s_m">
+                <Text variant="title" color="mainBackground">
+                  Reserve Table
+                </Text>
+              </Box>
+            </LinearGradient>
+            <Image
+              source={require('../../../../assets/images/table.png')}
+              style={{
+                height: '100%',
+                position: 'relative',
+                zIndex: 0,
+                width: '100%',
+                borderRadius: 12,
+              }}
+            />
+          </Box>
+        </Pressable>
+
         <Box mt="l+">
-          <SectionHeader label="Recent Orders" />
+          <SectionHeader
+            label="Recent Orders"
+            onPress={() => nav.navigate('TrackOrder')}
+          />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {recentOrdersData.map(item => (
               <Box key={item.id} width={scale(180)} mr="s_m" mt="m">

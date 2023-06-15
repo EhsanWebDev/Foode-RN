@@ -29,7 +29,7 @@ import styles from './styles';
 import CheckoutTab from '../../../components/AppComponents/TabView/CheckoutTab';
 import CartButton from '../../../components/Button/CartButton';
 import CustomButton from '../../../components/Button/CustomButton';
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -41,6 +41,7 @@ import RadioBar from '../../../components/RadioButton/RadioBar';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Image} from 'react-native';
 import {scale} from 'react-native-size-matters';
+import {selectUserDeliveryAddress} from '../../Auth/userSlice';
 
 const Checkout = ({navigation}) => {
   const {colors} = useAppTheme();
@@ -50,15 +51,19 @@ const Checkout = ({navigation}) => {
   const [tabIndex, setTabIndex] = useState(1);
   const [deliveryOption, setDeliveryOption] = useState(1);
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(new Date());
+
   const {cartItems} = useReduxSelector(store => store.cart);
   const {user, userAddress} = useReduxSelector(store => store.user);
   const {status} = useReduxSelector(store => store.order.orderProcess);
 
   const {data} = user || {};
   const {uuid} = data || {};
-  const {addressSelected, city, streetAddress} = userAddress;
-  const totalPrice = useReduxSelector(selectCartTotalPrice);
+  const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
+  const {city, street_address} = selectedAddress || {};
 
+  const totalPrice = useReduxSelector(selectCartTotalPrice);
   const deliveryFee = 4.0;
   const result = parseFloat(totalPrice) + 0.0;
   const result2 = parseFloat(totalPrice) + deliveryFee;
@@ -66,7 +71,7 @@ const Checkout = ({navigation}) => {
   const totalPriceWithDelivery = result2.toFixed(2);
 
   const handleCheckout = async () => {
-    if (!addressSelected) {
+    if (!isAddressSelected) {
       showToast({
         message: 'Please select a delivery address',
         type: 'error',
@@ -102,11 +107,17 @@ const Checkout = ({navigation}) => {
       placeOrder({
         user_id: uuid,
 
-        order_type: 'delivery',
-        delivery_time_opiton: 'later',
-        delivery_address: streetAddress,
-        delivery_date: moment().format('YYYY-MM-DD'),
-        delivery_timing: moment().format('HH:MM'),
+        order_type: tabIndex === 1 ? 'delivery' : 'pickup',
+        delivery_time_opiton: deliveryOption === 1 ? 'asap' : 'later',
+        delivery_address: `${street_address}, ${city}`,
+        delivery_date:
+          deliveryOption === 1
+            ? moment().format('YYYY-MM-DD')
+            : moment(selectedDeliveryDate).format('YYYY-MM-DD'),
+        delivery_timing:
+          deliveryOption === 1
+            ? moment().format('HH:MM')
+            : moment(selectedDeliveryDate).format('hh:mm A'),
         order_instruction: 'test',
         payment_option: 'cash',
         delivery_charge: deliveryFee.toFixed(2),
@@ -152,7 +163,7 @@ const Checkout = ({navigation}) => {
 
   // variables
   const snapPoints = useMemo(() => ['35%'], []);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [userAddresses]);
 
   const {
     animatedHandleHeight,
@@ -169,9 +180,6 @@ const Checkout = ({navigation}) => {
   const handleDeliveryTimeModalPress = useCallback(() => {
     deliveryTimeModalRef.current?.present();
   }, []);
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState('');
 
   function dateToFromNowDaily(myDate) {
     // get from-now for this date
@@ -198,6 +206,7 @@ const Checkout = ({navigation}) => {
         label="Shriganesha"
         iconName="chevron-back"
         onBackPress={navigation.goBack}
+        onRightIconPress={() => navigation.navigate('StoreDetails')}
         rightIcon="information-circle-outline"
       />
 
@@ -206,7 +215,7 @@ const Checkout = ({navigation}) => {
           width={width}
           height={moderateVerticalScale(220)}
           style={[styles.mapOverflow, {borderColor: colors.primary}]}>
-          {/* <MapView
+          <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={{
@@ -250,17 +259,18 @@ const Checkout = ({navigation}) => {
                 />
               </View>
             </Marker>
-          </MapView> */}
+          </MapView>
         </Box>
       </Box>
       <DateTimePickerModal
-        date={new Date()}
+        date={selectedDeliveryDate}
         minimumDate={new Date()}
         isVisible={showDatePicker}
         mode="datetime"
         onConfirm={date => {
           setShowDatePicker(false);
           setSelectedDeliveryDate(date);
+          deliveryTimeModalRef.current?.present();
         }}
         onCancel={() => setShowDatePicker(show => !show)}
       />
@@ -288,10 +298,18 @@ const Checkout = ({navigation}) => {
             </Box>
 
             <ActionBar
-              title="Choose a delivery address"
+              title={
+                isAddressSelected
+                  ? 'Select a different delivery address'
+                  : 'Add a delivery address'
+              }
               titleSize="title"
               leftIcon="map-marker-outline"
-              subTitle="Tap here to continue"
+              subTitle={
+                isAddressSelected
+                  ? `${street_address}, ${city}`
+                  : 'Tap here to continue'
+              }
               onPress={handlePresentModalPress}
             />
           </Box>
@@ -365,6 +383,8 @@ const Checkout = ({navigation}) => {
               onPress={handleDeliveryTimeModalPress}
               label="PROCEED PAYMENT"
               price={totalPriceWithDelivery}
+              loading={status === 'loading'}
+              itemsCount={cartItems.length}
             />
           </Box>
         </Box>
@@ -373,7 +393,6 @@ const Checkout = ({navigation}) => {
         <BottomSheetModal
           enablePanDownToClose
           ref={bottomSheetModalRef}
-          index={0}
           backdropComponent={renderBackdrop}
           // snapPoints={snapPoints}
           snapPoints={animatedSnapPoints}
@@ -390,7 +409,7 @@ const Checkout = ({navigation}) => {
                 alignItems="center"
                 justifyContent="space-between">
                 <Text variant="title_bold" color="gray">
-                  Location
+                  Choose your delivery address
                 </Text>
 
                 <TouchableOpacity
@@ -402,17 +421,24 @@ const Checkout = ({navigation}) => {
                   />
                 </TouchableOpacity>
               </Box>
-              {addressSelected ? (
-                <Box flex={1} marginVertical="m">
-                  <RadioBar
-                    title={`${city}, ${streetAddress}`}
-                    checked
-                    leftIcon="home"
-                    // onPress={() => {
-                    //   setDeliveryOption(1);
-                    // }}
-                  />
-                </Box>
+
+              {userAddresses.length > 0 ? (
+                <BottomSheetScrollView style={{flex: 1, maxHeight: 240}}>
+                  <Box flex={1} marginVertical="s">
+                    {userAddresses.map((item, index) => (
+                      <Box key={item.city} marginVertical="xs">
+                        <RadioBar
+                          title={`${item.city}, ${item.street_address}`}
+                          checked={item.isSelected}
+                          leftIcon="home"
+                          onPress={() => {
+                            dispatch(selectUserDeliveryAddress({id: item.id}));
+                          }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
+                </BottomSheetScrollView>
               ) : (
                 <Box
                   flex={1}
@@ -423,12 +449,15 @@ const Checkout = ({navigation}) => {
                 </Box>
               )}
 
-              <Box>
+              <Box pt="s">
                 <CustomButton
                   label="ADD NEW ADDRESS"
                   showLeftIcon
                   buttonType="outlined"
-                  onPress={() => navigation.navigate('AddAddress')}
+                  onPress={() => {
+                    bottomSheetModalRef.current?.dismiss();
+                    navigation.navigate('AddAddress');
+                  }}
                 />
               </Box>
             </Box>
@@ -459,7 +488,10 @@ const Checkout = ({navigation}) => {
                 label="Done"
                 buttonType="outlined"
                 buttonSize="small"
-                onPress={() => deliveryTimeModalRef.current?.dismiss()}
+                onPress={async () => {
+                  deliveryTimeModalRef.current?.dismiss();
+                  await handleCheckout();
+                }}
               />
             </Box>
 
@@ -486,47 +518,13 @@ const Checkout = ({navigation}) => {
                 }
                 leftIcon="calendar-outline"
                 onPress={() => {
+                  deliveryTimeModalRef.current?.dismiss();
                   setDeliveryOption(2);
                   setShowDatePicker(true);
                 }}
               />
             </Box>
             <Divider />
-
-            {/* <Box
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between">
-              <Box flexDirection="row" alignItems="center">
-                <Box
-                  bg="primaryLight"
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRadius={16}
-                  alignSelf="flex-start"
-                  p="xxs">
-                  <Icon
-                    name="time-outline"
-                    size={globalUnits.icon_XL}
-                    color={colors.primary}
-                  />
-                </Box>
-                <Text variant="title" ml="size8">
-                  As soon as possible
-                </Text>
-              </Box>
-
-              <TouchableOpacity>
-                <Box
-                  width={22}
-                  height={22}
-                  bg="mainBackground"
-                  borderColor="primary"
-                  borderWidth={6}
-                  borderRadius={11}
-                />
-              </TouchableOpacity>
-            </Box> */}
           </Box>
         </BottomSheetModal>
       </BottomSheetModalProvider>

@@ -17,6 +17,7 @@ import UpdateProfile from '../screens/UserProfile/Profile/UpdateProfile';
 import ManageAddresses from '../screens/UserProfile/Address/ManageAddresses';
 import AddAddress from '../screens/UserProfile/Address/AddAddress';
 import AppTabsNavigation from './AppTabsNavigation';
+import StoreDetails from '../screens/Home/Store/Details/StoreDetails';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -50,8 +51,9 @@ const RootNavigation = () => {
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen name="ProductDetails" component={ProductDetails} />
       <AppStack.Screen name="BookSeat" component={BookSeat} />
-      {/* <AppStack.Screen name="Profile" component={Profile} /> */}
+
       <AppStack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <AppStack.Screen name="StoreDetails" component={StoreDetails} />
       <AppStack.Screen name="AddAddress" component={AddAddress} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
     </AppStack.Navigator>

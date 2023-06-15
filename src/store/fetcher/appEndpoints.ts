@@ -1,6 +1,7 @@
 export const apiEndpoints = {
   login: '/login',
   register: '/register',
+  POST_UPDATE_PROFILE: '/profile-update',
   forgotPassword: '/forgot-password',
 
   GET_storeGallery: '/get-store-banners',

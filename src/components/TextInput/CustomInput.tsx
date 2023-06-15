@@ -198,7 +198,7 @@ const Input: React.FC<InputProps & RestyleProps> = ({
         </Box>
       )}
       {error?.error && (
-        <Text variant="body_xs_bold" ml={'m'} mt="xs" color="error">
+        <Text variant="body_xs_bold" ml={'xs'} mt="xs" color="error">
           {error.errorMsg}
         </Text>
       )}

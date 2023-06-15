@@ -1,9 +1,17 @@
 import {loadingStates} from '../../store/types';
 
+export type userAddressType = {
+  id?: number | string;
+  city?: string;
+  street_address?: string;
+  state_or_province?: string;
+  isSelected?: boolean;
+};
+
 export type addressType = {
-  addressSelected?: boolean;
-  city: string;
-  streetAddress: string;
+  isAddressSelected?: boolean;
+  selectedAddress?: userAddressType;
+  userAddresses: userAddressType[];
 };
 
 export type loginType = {

@@ -32,6 +32,7 @@ type Props = RestyleProps & {
   buttonSize?: 'full' | 'small' | 'xSmall';
   loading?: boolean;
   price?: string | number;
+  itemsCount?: string | number;
 };
 
 const CartButton: React.FC<Props> = ({
@@ -42,6 +43,7 @@ const CartButton: React.FC<Props> = ({
   buttonSize = 'full',
   loading,
   price = '',
+  itemsCount = '0',
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -143,7 +145,7 @@ const CartButton: React.FC<Props> = ({
                   justifyContent="center"
                   alignItems="center">
                   <Text variant="title_bold" color="primary">
-                    2
+                    {itemsCount}
                   </Text>
                 </Box>
                 <Text
