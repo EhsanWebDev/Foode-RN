@@ -18,6 +18,8 @@ import ManageAddresses from '../screens/UserProfile/Address/ManageAddresses';
 import AddAddress from '../screens/UserProfile/Address/AddAddress';
 import AppTabsNavigation from './AppTabsNavigation';
 import StoreDetails from '../screens/Home/Store/Details/StoreDetails';
+import StoreMenuDetails from '../screens/Home/Store/Details/StoreMenuDetails';
+import Menu from '../screens/Home/Store/Menu/Menu';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -54,6 +56,8 @@ const RootNavigation = () => {
 
       <AppStack.Screen name="UpdateProfile" component={UpdateProfile} />
       <AppStack.Screen name="StoreDetails" component={StoreDetails} />
+      <AppStack.Screen name="MenuItem" component={Menu} />
+      <AppStack.Screen name="StoreMenuDetails" component={StoreMenuDetails} />
       <AppStack.Screen name="AddAddress" component={AddAddress} />
       <AppStack.Screen name="AuthStack" component={AuthStackNavigation} />
     </AppStack.Navigator>

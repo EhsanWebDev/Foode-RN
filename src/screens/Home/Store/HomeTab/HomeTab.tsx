@@ -190,7 +190,10 @@ const HomeTab = () => {
         </Box>
         {/* Rewards */}
         <Box mt="l+">
-          <SectionHeader label="Rewards" />
+          <SectionHeader
+            label="Rewards"
+            onPress={() => nav.navigate('Offers')}
+          />
 
           <Card variant="secondary" mt="m" px="cardPaddingX" py="cardPaddingY">
             <Box
@@ -218,46 +221,54 @@ const HomeTab = () => {
             </Box>
           </Card>
           <Box flexDirection="row" alignItems="center">
-            <Card
-              flex={0.5}
-              variant="secondary"
-              mt="m"
-              mr="s"
-              px="cardPaddingX"
-              py="l">
-              <Box>
-                <Box flexDirection="row">
-                  <Icon
-                    name="gift"
-                    size={globalUnits.icon_MD}
-                    color={mainForeground}
-                  />
-                  <Text ml="s" variant="title_bold">
-                    Rewards
-                  </Text>
+            <Pressable
+              style={{flex: 0.5}}
+              onPress={() => nav.navigate('Offers')}>
+              <Card
+                flex={0.5}
+                variant="secondary"
+                mt="m"
+                mr="s"
+                px="cardPaddingX"
+                py="l">
+                <Box>
+                  <Box flexDirection="row">
+                    <Icon
+                      name="gift"
+                      size={globalUnits.icon_MD}
+                      color={mainForeground}
+                    />
+                    <Text ml="s" variant="title_bold">
+                      Rewards
+                    </Text>
+                  </Box>
                 </Box>
-              </Box>
-            </Card>
-            <Card
-              flex={0.5}
-              ml="s"
-              variant="secondary"
-              mt="m"
-              px="cardPaddingX"
-              py="l">
-              <Box>
-                <Box flexDirection="row">
-                  <Icon
-                    name="basket"
-                    size={globalUnits.icon_MD}
-                    color={mainForeground}
-                  />
-                  <Text ml="s" variant="title_bold">
-                    Order Now
-                  </Text>
+              </Card>
+            </Pressable>
+            <Pressable
+              style={{flex: 0.5}}
+              onPress={() => nav.navigate('OrderTab')}>
+              <Card
+                flex={0.5}
+                ml="s"
+                variant="secondary"
+                mt="m"
+                px="cardPaddingX"
+                py="l">
+                <Box>
+                  <Box flexDirection="row">
+                    <Icon
+                      name="basket"
+                      size={globalUnits.icon_MD}
+                      color={mainForeground}
+                    />
+                    <Text ml="s" variant="title_bold">
+                      Order Now
+                    </Text>
+                  </Box>
                 </Box>
-              </Box>
-            </Card>
+              </Card>
+            </Pressable>
           </Box>
         </Box>
         <Pressable onPress={() => nav.navigate('Reservations')}>

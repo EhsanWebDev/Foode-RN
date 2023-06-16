@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Image} from 'react-native';
+import {Image} from 'react-native';
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../../components/AppComponents/Header/Header';
 import Box from '../../../../components/View/CustomView';

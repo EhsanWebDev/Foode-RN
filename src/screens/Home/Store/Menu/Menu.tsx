@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {SectionList, RefreshControl, StatusBar} from 'react-native';
 import Box from '../../../../components/View/CustomView';
 import Text from '../../../../components/Text/CustomText';
@@ -16,29 +16,33 @@ import ScreenContainer from '../../../../components/AppComponents/Container/Scre
 import Header from '../../../../components/AppComponents/Header/Header';
 import MenuLoading from './Loader/MenuLoading';
 
-const Menu = () => {
+const RenderNoContent = ({section}) => {
+  if (section.data.length == 0) {
+    return <Text variant={'body_xs'}>No items</Text>;
+  }
+  return null;
+};
+const Menu = ({route}) => {
   const nav = useNavigation();
-  const {data, status} = useReduxSelector(selectStoreData);
-  const dispatch = useReduxDispatch();
+  const {status} = useReduxSelector(selectStoreData);
 
-  const fetchAPI = () => {
-    dispatch(getStoreData());
-  };
-  useEffect(() => {
-    if (status === 'idle') {
-      fetchAPI();
-    }
-  }, []);
-  const RenderNoContent = ({section}) => {
-    if (section.data.length == 0) {
-      return <Text variant={'body_xs'}>No items</Text>;
-    }
-    return null;
-  };
+  const {params} = route || {};
+  const {item_name, data} = params || {};
+  // const dispatch = useReduxDispatch();
+
+  // const fetchAPI = useCallback(() => {
+  //   dispatch(getStoreData());
+  // });
+  // useEffect(() => {
+  //   if (status === 'idle') {
+  //     fetchAPI();
+  //   }
+  // }, [status, fetchAPI]);
+
   return (
     <ScreenContainer>
       <StatusBar barStyle="default" />
-      <Header label="Menu" showBackIcon={false} />
+      <Header label="Menu" onBackPress={nav.goBack} />
 
       {status === 'loading' ? (
         <MenuLoading />
@@ -49,38 +53,42 @@ const Menu = () => {
               stickySectionHeadersEnabled={false}
               showsVerticalScrollIndicator={false}
               renderSectionFooter={RenderNoContent}
-              refreshControl={
-                <RefreshControl
-                  refreshing={status === 'loading'}
-                  onRefresh={fetchAPI}
-                />
-              }
-              sections={data?.transformedData ?? []}
+              // refreshControl={
+              //   <RefreshControl
+              //     refreshing={status === 'loading'}
+              //     onRefresh={fetchAPI}
+              //   />
+              // }
+              sections={data ?? []}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({item}) => (
-                <MenuItem
-                  item={item}
-                  onPress={() =>
-                    nav.navigate('ProductDetails', {productId: item?.id})
-                  }
-                  onPressAdd={() => {
-                    nav.navigate('ProductDetails', {productId: item?.id});
-                  }}
-                />
-              )}
-              renderSectionHeader={({section: {title}}) => {
+              renderItem={({item}) => {
+                console.log({item});
                 return (
-                  <Box alignSelf="flex-start">
-                    <Text
-                      variant="body_bold"
-                      marginTop="l"
-                      mb="s"
-                      textTransform="uppercase"
-                      letterSpacing={2}>
-                      {title}
-                    </Text>
-                  </Box>
+                  <MenuItem
+                    item={item}
+                    onPress={() =>
+                      nav.navigate('ProductDetails', {productId: item?.id})
+                    }
+                    onPressAdd={() => {
+                      nav.navigate('ProductDetails', {productId: item?.id});
+                    }}
+                  />
                 );
+              }}
+              renderSectionHeader={({section: {title}}) => {
+                if (title === item_name)
+                  return (
+                    <Box alignSelf="flex-start">
+                      <Text
+                        variant="body_bold"
+                        marginTop="l"
+                        mb="s"
+                        textTransform="uppercase"
+                        letterSpacing={2}>
+                        {title}
+                      </Text>
+                    </Box>
+                  );
               }}
               ListEmptyComponent={
                 <Box

@@ -19,6 +19,7 @@ import Profile from '../screens/UserProfile/Profile/Profile';
 import Reservations from '../screens/Home/Store/Reservations/Reservations';
 import Menu from '../screens/Home/Store/Menu/Menu';
 import Offers from '../screens/Home/Store/Offers/Offers';
+import StoreHome from '../screens/Home/Store/Details/StoreHome';
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +62,7 @@ const AppTabsNavigation = () => {
       />
       <Tab.Screen
         name="OrderTab"
-        component={Menu}
+        component={StoreHome}
         options={{
           tabBarIcon: ({color}) => <OrderIcon color={color} />,
           tabBarLabel: ({focused}) => (
