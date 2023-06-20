@@ -18,7 +18,11 @@ import MenuLoading from './Loader/MenuLoading';
 
 const RenderNoContent = ({section}) => {
   if (section.data.length == 0) {
-    return <Text variant={'body_xs'}>No items</Text>;
+    return (
+      <Text ml="s_m" variant={'body_xs'}>
+        No items
+      </Text>
+    );
   }
   return null;
 };

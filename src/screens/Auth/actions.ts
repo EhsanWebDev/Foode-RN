@@ -6,9 +6,8 @@ import {apiEndpoints} from '../../store/fetcher/appEndpoints';
 
 type updateProfile = {
   user_id: string;
-  name?: string;
-  email?: string;
-  phone_number?: string;
+  update_for?: 'name' | 'email' | 'phone_number';
+  update_value?: string;
 };
 
 export const login = createAsyncThunk(
@@ -70,11 +69,16 @@ export const forgotPassword = createAsyncThunk(
 export const updateUserProfile = createAsyncThunk(
   'user/updateProfile',
   async (params: updateProfile, {rejectWithValue}) => {
-    const {user_id, name, email, phone_number} = params;
+    const {user_id, update_for = 'name', update_value} = params;
     try {
       const response = await api.post(
         apiEndpoints.POST_UPDATE_PROFILE,
-        {name, email, phone_number},
+        {
+          update_for,
+          [update_for]: update_value,
+          // email,
+          // phone_number,
+        },
         {
           headers: {
             'user-id': user_id,

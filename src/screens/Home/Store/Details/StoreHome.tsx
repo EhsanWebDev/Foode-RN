@@ -31,7 +31,7 @@ const StoreHome = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      fetchAPI;
+      fetchAPI();
     }
   }, [status]);
 
@@ -43,7 +43,7 @@ const StoreHome = () => {
       {status === 'loading' ? (
         <MenuLoading />
       ) : (
-        <Box flex={1} mx="l">
+        <Box flex={1}>
           <ScrollView
             refreshControl={
               <RefreshControl
@@ -52,7 +52,12 @@ const StoreHome = () => {
               />
             }>
             <Pressable onPress={() => nav.navigate('StoreMenuDetails')}>
-              <Card variant="primary" mt="l" py="s" px="size8">
+              <Card
+                mx="l"
+                variant="primary"
+                marginVertical="l"
+                py="s"
+                px="size8">
                 <Box flexDirection="row" alignItems="center">
                   <Box
                     width={70}

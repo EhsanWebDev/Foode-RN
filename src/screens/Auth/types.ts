@@ -12,6 +12,12 @@ export type addressType = {
   isAddressSelected?: boolean;
   selectedAddress?: userAddressType;
   userAddresses: userAddressType[];
+  userLocation?: {
+    longitude: number;
+    latitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+  };
 };
 
 export type loginType = {

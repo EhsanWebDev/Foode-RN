@@ -1,5 +1,12 @@
-import React from 'react';
-import {Platform, ScrollView, TouchableOpacity, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  Alert,
+  Linking,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,6 +24,7 @@ import {useReduxSelector} from '../../store';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
+import {PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
 const imagesData = [
   {
@@ -55,6 +63,61 @@ const Home = ({navigation}) => {
     }
     navigation.navigate('AuthStack');
   };
+  const askLocationPermissions = async () => {
+    try {
+      const result =
+        Platform.OS === 'ios'
+          ? await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+          : await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      console.log({result});
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log(
+            'Bluetooth is not available (on this device / in this context)',
+          );
+          break;
+        case RESULTS.DENIED:
+          console.log(
+            'The Bluetooth permission has not been requested / is denied but requestable',
+          );
+          break;
+        case RESULTS.LIMITED:
+          console.log(
+            'The Bluetooth permission is limited: some actions are possible',
+          );
+          break;
+        case RESULTS.GRANTED:
+          console.log('The Bluetooth permission is granted');
+          return true;
+        case RESULTS.BLOCKED:
+          Alert.alert(
+            'Location permission',
+            'Location permission is blocked in the device ' +
+              'settings. Allow the app to access location to ' +
+              'see location-based weather.',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  Linking.openSettings();
+                },
+              },
+            ],
+          );
+          console.log(
+            'The Bluetooth permission is denied and not requestable anymore',
+          );
+          break;
+      }
+    } catch (error) {
+      console.log({error});
+    }
+  };
+
+  // useEffect(() => {
+  //   askLocationPermissions();
+  // }, []);
 
   return (
     <Box flex={1} backgroundColor="mainBackground">

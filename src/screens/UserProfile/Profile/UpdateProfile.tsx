@@ -81,42 +81,30 @@ const UpdateProfile: React.FC = ({navigation, route}) => {
   const handleSignUp = (values: signupPayload) => {
     const {name: f_name, email: f_email} = values;
 
-    // console.log({values, formattedValue});
     if (updateEntity === 'name')
       dispatch(
         updateUserProfile({
           user_id: uuid,
-          name: f_name,
-          email,
-          phone_number,
+          update_for: 'name',
+          update_value: f_name,
         }),
       );
     if (updateEntity === 'email')
       dispatch(
         updateUserProfile({
           user_id: uuid,
-          name,
-          email: f_email,
-          phone_number,
+          update_for: 'email',
+          update_value: f_email,
         }),
       );
-
-    // dispatch(
-    //   signup({
-    //     ...values,
-    //     confirm_password: repeatPassword,
-    //     phone_number: phone,
-    //   }),
-    // )
-    //   .then(unwrapResult)
-    //   .then(response => {
-    //     const {status, message} = response;
-    //     handleApiErrors({message});
-    //     if (status === 200) {
-    //       dispatch(login({email: values.email, password: values.password}));
-    //     }
-    //   })
-    //   .catch(e => handleApiErrors({message: e}));
+    if (updateEntity === 'phone')
+      dispatch(
+        updateUserProfile({
+          user_id: uuid,
+          update_for: 'phone_number',
+          update_value: formattedValue,
+        }),
+      );
   };
 
   return (

@@ -60,7 +60,12 @@ const Checkout = ({navigation}) => {
 
   const {data} = user || {};
   const {uuid} = data || {};
-  const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
+  const {selectedAddress, userAddresses, isAddressSelected, userLocation} =
+    userAddress;
+  const {longitude, latitude, latitudeDelta, longitudeDelta} = userLocation;
+
+  console.log({userLocation});
+
   const {city, street_address} = selectedAddress || {};
 
   const totalPrice = useReduxSelector(selectCartTotalPrice);
@@ -215,7 +220,7 @@ const Checkout = ({navigation}) => {
           width={width}
           height={moderateVerticalScale(220)}
           style={[styles.mapOverflow, {borderColor: colors.primary}]}>
-          <MapView
+          {/* <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={{
@@ -225,6 +230,7 @@ const Checkout = ({navigation}) => {
               longitudeDelta: 0.0121,
             }}>
             <Marker
+              image={require('./../../../assets/images/pin.png')}
               coordinate={{
                 latitude: 37.78825,
                 longitude: -122.4324,
@@ -252,14 +258,8 @@ const Checkout = ({navigation}) => {
                   <Box style={styles.arrow} borderTopColor="mainForeground" />
                 </Box>
               </Callout>
-              <View style={{}}>
-                <Image
-                  style={{width: scale(20), height: verticalScale(20)}}
-                  source={require('./../../../assets/images/pin.png')}
-                />
-              </View>
             </Marker>
-          </MapView>
+          </MapView> */}
         </Box>
       </Box>
       <DateTimePickerModal
@@ -381,7 +381,7 @@ const Checkout = ({navigation}) => {
             <CartButton
               // onPress={() => navigation.navigate('Checkout')}
               onPress={handleDeliveryTimeModalPress}
-              label="PROCEED PAYMENT"
+              label={!user ? 'CHECKOUT AS GUEST' : 'PROCEED PAYMENT'}
               price={totalPriceWithDelivery}
               loading={status === 'loading'}
               itemsCount={cartItems.length}
