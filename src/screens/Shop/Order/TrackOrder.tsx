@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {FlatList, Image, RefreshControl} from 'react-native';
+import {FlatList, Image, RefreshControl, StatusBar} from 'react-native';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../components/AppComponents/Header/Header';
@@ -119,6 +119,7 @@ const TrackOrder = ({navigation}) => {
 
   return (
     <ScreenContainer>
+      <StatusBar barStyle="default" />
       <Header label="Order History" onBackPress={navigation.goBack} />
       {status === 'loading' ? (
         <Box width="90%" mx="l">

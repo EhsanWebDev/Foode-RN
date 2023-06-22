@@ -33,6 +33,7 @@ const palette = {
   red: '#E04243',
   slate: '#909090',
   muted: '#B0B0B0',
+  grayScale: '#707070',
   gray: 'rgba(235, 235, 235, 1)',
   input: '#EAEEF2',
   inputPlaceholder: '#DCE0E3',
@@ -65,6 +66,7 @@ const theme = createTheme({
     border: palette.gray,
     headerBorder: palette.gray,
     gray: palette.slate,
+    grayScale: palette.grayScale,
 
     error: palette.red,
     inputBorder: palette.input,

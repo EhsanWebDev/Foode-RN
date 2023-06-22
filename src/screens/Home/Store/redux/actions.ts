@@ -41,19 +41,24 @@ export const getStoreData = createAsyncThunk(
 export const getProductDetails = createAsyncThunk(
   'store/productDetails',
   async (params: {productId: number | string}, {rejectWithValue}) => {
-    const {productId} = params || {};
+    try {
+      const {productId} = params || {};
 
-    const response = await api.get(
-      `${apiEndpoints.GET_productDetails}/${productId}`,
-    );
+      const response = await api.get(
+        `${apiEndpoints.GET_productDetails}/${productId}`,
+      );
 
-    const {data} = response || {};
-    const {status, message} = data || {};
+      const {data} = response || {};
+      const {status, message} = data || {};
 
-    if (status === 500) {
-      handleApiErrors(data);
-      return rejectWithValue(message);
+      if (status === 500 || status >= 300) {
+        handleApiErrors(data);
+        return rejectWithValue(message);
+      }
+      return {...response?.data?.data};
+    } catch (error) {
+      handleApiErrors(error);
+      return rejectWithValue(error.message);
     }
-    return {...response?.data?.data};
   },
 );

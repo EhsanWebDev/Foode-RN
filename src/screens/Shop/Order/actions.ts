@@ -3,6 +3,7 @@ import api from '../../../store/fetcher/fetcher';
 import {apiEndpoints} from '../../../store/fetcher/appEndpoints';
 import {handleApiErrors} from '../../../utils/utils';
 import {orderPayload} from './types';
+import {AxiosError} from 'axios';
 
 type userId = {
   user_id: string;
@@ -36,7 +37,7 @@ export const placeOrder = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      console.log({error});
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -60,7 +61,8 @@ export const getOrderList = createAsyncThunk(
       }
       return response.data?.data;
     } catch (error) {
-      console.log({error});
+      handleApiErrors(error);
+      return rejectWithValue(error.message);
     }
   },
 );

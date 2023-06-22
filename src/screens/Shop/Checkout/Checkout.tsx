@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import moment from 'moment';
 import {unwrapResult} from '@reduxjs/toolkit';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -19,7 +19,13 @@ import {placeOrder} from '../Order/actions';
 
 import {handleApiErrors} from '../../../utils/utils';
 import {StackActions} from '@react-navigation/native';
-import {SafeAreaView, ScrollView, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {dimensions} from '../../../utils/constants';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
@@ -42,10 +48,13 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Image} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {selectUserDeliveryAddress} from '../../Auth/userSlice';
+import {getUserAddressBook} from '../../Auth/actions';
 
-const Checkout = ({navigation}) => {
+const Checkout = ({navigation, route}) => {
+  const {params} = route || {};
+  const {message} = params || {};
+
   const {colors} = useAppTheme();
-  const refRBSheet = useRef();
   const dispatch = useReduxDispatch();
 
   const [tabIndex, setTabIndex] = useState(1);
@@ -55,16 +64,16 @@ const Checkout = ({navigation}) => {
   const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(new Date());
 
   const {cartItems} = useReduxSelector(store => store.cart);
-  const {user, userAddress} = useReduxSelector(store => store.user);
+  const {user, userAddress, address_status, addressBook} = useReduxSelector(
+    store => store.user,
+  );
+  console.log({addressBook});
   const {status} = useReduxSelector(store => store.order.orderProcess);
 
   const {data} = user || {};
   const {uuid} = data || {};
-  const {selectedAddress, userAddresses, isAddressSelected, userLocation} =
-    userAddress;
-  const {longitude, latitude, latitudeDelta, longitudeDelta} = userLocation;
-
-  console.log({userLocation});
+  const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
+  const {userLocation} = selectedAddress;
 
   const {city, street_address} = selectedAddress || {};
 
@@ -75,6 +84,16 @@ const Checkout = ({navigation}) => {
   const resultString = result.toFixed(2);
   const totalPriceWithDelivery = result2.toFixed(2);
 
+  const fetchAddressBook = () => {
+    dispatch(getUserAddressBook({user_id: uuid}));
+  };
+
+  useEffect(() => {
+    if (user && address_status === 'idle') {
+      fetchAddressBook();
+    }
+  }, []);
+
   const handleCheckout = async () => {
     if (!isAddressSelected) {
       showToast({
@@ -82,11 +101,6 @@ const Checkout = ({navigation}) => {
         type: 'error',
         visibilityTime: 1500,
       });
-      return;
-    }
-
-    if (!user) {
-      refRBSheet.current.open();
       return;
     }
 
@@ -123,7 +137,7 @@ const Checkout = ({navigation}) => {
           deliveryOption === 1
             ? moment().format('HH:MM')
             : moment(selectedDeliveryDate).format('hh:mm A'),
-        order_instruction: 'test',
+        order_instruction: message,
         payment_option: 'cash',
         delivery_charge: deliveryFee.toFixed(2),
         discount_price: '0.0',
@@ -145,10 +159,8 @@ const Checkout = ({navigation}) => {
       .catch(e => handleApiErrors({message: e}));
   };
 
-  const handleSignIn = () => {
-    refRBSheet.current.close();
-    navigation.navigate('AuthStack');
-  };
+  const handleSignIn = () => navigation.navigate('AuthStack');
+
   const {width} = dimensions;
   const renderBackdrop = useCallback(
     props => (
@@ -167,8 +179,7 @@ const Checkout = ({navigation}) => {
   const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['35%'], []);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [userAddresses]);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [userLocation]);
 
   const {
     animatedHandleHeight,
@@ -223,19 +234,14 @@ const Checkout = ({navigation}) => {
           {/* <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            region={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.015,
-              longitudeDelta: 0.0121,
-            }}>
+            region={userLocation}>
             <Marker
-              image={require('./../../../assets/images/pin.png')}
-              coordinate={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-              }}
+              coordinate={userLocation}
               title="Order will be delivered here">
+              <Image
+                source={require('./../../../assets/images/pin.png')}
+                style={{height: 32, width: 32, resizeMode: 'contain'}}
+              />
               <Callout tooltip>
                 <Box>
                   <Box
@@ -246,9 +252,6 @@ const Checkout = ({navigation}) => {
                     bg="mainForeground">
                     <Text variant="body_sm_bold" color="mainBackground">
                       Order will be delivered here
-                    </Text>
-                    <Text variant="body_xs" color="mainBackground">
-                      Place the pin concurrently on Map
                     </Text>
                   </Box>
                   <Box
@@ -379,12 +382,14 @@ const Checkout = ({navigation}) => {
 
           <Box mt="l">
             <CartButton
-              // onPress={() => navigation.navigate('Checkout')}
-              onPress={handleDeliveryTimeModalPress}
-              label={!user ? 'CHECKOUT AS GUEST' : 'PROCEED PAYMENT'}
+              onPress={() =>
+                !user ? handleSignIn() : handleDeliveryTimeModalPress()
+              }
+              label={'PROCEED PAYMENT'}
               price={totalPriceWithDelivery}
               loading={status === 'loading'}
               itemsCount={cartItems.length}
+              buttonType={!user ? 'dead_state' : 'contained'}
             />
           </Box>
         </Box>
@@ -394,7 +399,6 @@ const Checkout = ({navigation}) => {
           enablePanDownToClose
           ref={bottomSheetModalRef}
           backdropComponent={renderBackdrop}
-          // snapPoints={snapPoints}
           snapPoints={animatedSnapPoints}
           handleHeight={animatedHandleHeight}
           contentHeight={animatedContentHeight}
@@ -422,13 +426,17 @@ const Checkout = ({navigation}) => {
                 </TouchableOpacity>
               </Box>
 
-              {userAddresses.length > 0 ? (
+              {address_status === 'loading' ? (
+                <Box marginVertical="xl">
+                  <ActivityIndicator />
+                </Box>
+              ) : userAddresses.length > 0 ? (
                 <BottomSheetScrollView style={{flex: 1, maxHeight: 240}}>
                   <Box flex={1} marginVertical="s">
                     {userAddresses.map((item, index) => (
-                      <Box key={item.city} marginVertical="xs">
+                      <Box key={item.id} marginVertical="xs">
                         <RadioBar
-                          title={`${item.city}, ${item.street_address}`}
+                          title={`${item.street_address}`}
                           checked={item.isSelected}
                           leftIcon="home"
                           onPress={() => {

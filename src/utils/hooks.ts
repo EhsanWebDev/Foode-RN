@@ -28,7 +28,7 @@ interface LocationPermissionFunc {
 
 // Android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
 export const useAndroidLocationPermissions = (
-  requestRationale: Rationale,
+  requestRationale?: Rationale,
 ): LocationPermissionFunc => {
   const checkLocationPermission = useCallback(async () => {
     try {
@@ -66,7 +66,7 @@ export const useAndroidLocationPermissions = (
 
 // iOS: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
 export const useIosLocationPermissions = (
-  requestRationale: Rationale,
+  requestRationale?: Rationale,
 ): LocationPermissionFunc => {
   const checkLocationPermission = useCallback(async () => {
     try {

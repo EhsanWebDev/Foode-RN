@@ -1,6 +1,17 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {addressType, loginType, userAddressType} from './types';
-import {forgotPassword, login, signup, updateUserProfile} from './actions';
+import {
+  addressBookType,
+  addressType,
+  loginType,
+  userAddressType,
+} from './types';
+import {
+  forgotPassword,
+  getUserAddressBook,
+  login,
+  signup,
+  updateUserProfile,
+} from './actions';
 
 const INITIAL_STATE: loginType = {
   user: null,
@@ -10,16 +21,19 @@ const INITIAL_STATE: loginType = {
   forgotPass_status: 'idle',
   signUp_status: 'idle',
   error: '',
+  address_status: 'idle',
+  addressBook: [],
   userAddress: {
     isAddressSelected: false,
-    selectedAddress: undefined,
-    userAddresses: [],
-    userLocation: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.015,
-      longitudeDelta: 0.0121,
+    selectedAddress: {
+      userLocation: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
     },
+    userAddresses: [],
   },
 };
 
@@ -31,17 +45,18 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.login_status = 'idle';
     },
-    logoutUser: (state, action) => {
+    logoutUser: (state, _) => {
       state.user = null;
       state.login_status = 'idle';
     },
     setUserAddress: (state, action: PayloadAction<userAddressType>) => {
-      const {id, city, street_address} = action.payload;
+      const {id, city, street_address, userLocation} = action.payload;
 
       state.userAddress.isAddressSelected = true;
       state.userAddress.selectedAddress = {
         city,
         street_address,
+        userLocation,
       };
 
       const uncheckAll = state.userAddress.userAddresses.map(item => {
@@ -53,8 +68,27 @@ const userSlice = createSlice({
 
       state.userAddress.userAddresses = [
         ...uncheckAll,
-        {id, city, street_address, isSelected: true},
+        {id, city, street_address, isSelected: true, userLocation},
       ];
+    },
+    setUserLocation: (
+      state,
+      action: PayloadAction<{
+        latitude: number;
+        longitude: number;
+        latitudeDelta: number;
+        longitudeDelta: number;
+      }>,
+    ) => {
+      const {latitude, longitude, longitudeDelta, latitudeDelta} =
+        action.payload;
+
+      state.userAddress.userLocation = {
+        latitude,
+        longitude,
+        longitudeDelta,
+        latitudeDelta,
+      };
     },
     selectUserDeliveryAddress: (
       state,
@@ -82,6 +116,24 @@ const userSlice = createSlice({
 
       state.userAddress.userAddresses = updatedAddresses;
       state.userAddress.selectedAddress = selectedAddress;
+    },
+    updateDeliveryAddress: (state, action: PayloadAction<userAddressType>) => {
+      const {id, street_address} = action.payload;
+
+      const updatedAddresses = state.userAddress.userAddresses.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            street_address,
+          };
+        }
+        return {
+          ...item,
+          street_address,
+        };
+      });
+
+      state.userAddress.userAddresses = updatedAddresses;
     },
   },
   extraReducers(builder) {
@@ -116,7 +168,6 @@ const userSlice = createSlice({
     });
     builder.addCase(updateUserProfile.fulfilled, (state, action) => {
       state.signUp_status = 'completed';
-      console.log({stateInsideBuilder: action.payload, state});
       // state.user = action.payload;
     });
     builder.addCase(updateUserProfile.rejected, state => {
@@ -135,10 +186,28 @@ const userSlice = createSlice({
       state.forgotPass_status = 'rejected';
       state.error = 'Error while logging in';
     });
+    // ? GET USER ADDRESSES
+    builder.addCase(getUserAddressBook.pending, state => {
+      state.address_status = 'loading';
+    });
+    builder.addCase(getUserAddressBook.fulfilled, (state, action) => {
+      state.address_status = 'completed';
+      state.userAddress.userAddresses = action.payload;
+    });
+    builder.addCase(getUserAddressBook.rejected, state => {
+      state.address_status = 'rejected';
+      state.error = 'Error while fetching address book';
+    });
   },
 });
 
-export const {setUser, logoutUser, setUserAddress, selectUserDeliveryAddress} =
-  userSlice.actions;
+export const {
+  setUser,
+  logoutUser,
+  setUserAddress,
+  selectUserDeliveryAddress,
+  setUserLocation,
+  updateDeliveryAddress,
+} = userSlice.actions;
 
 export default userSlice.reducer;

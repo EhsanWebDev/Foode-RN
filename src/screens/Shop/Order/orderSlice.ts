@@ -29,7 +29,7 @@ const orderSlice = createSlice({
     });
     builder.addCase(placeOrder.rejected, (state, _) => {
       state.orderProcess.status = 'rejected';
-      state.error = 'Error while order processing.';
+      state.orderProcess.error = 'Error while order processing.';
     });
 
     //? GET Order List

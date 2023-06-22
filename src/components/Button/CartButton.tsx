@@ -27,7 +27,7 @@ type Props = RestyleProps & {
   onPress: () => void;
   label: string;
   labelOnly?: boolean;
-  buttonType?: 'contained' | 'textOnly' | 'outlined';
+  buttonType?: 'contained' | 'textOnly' | 'outlined' | 'dead_state';
   disabled?: boolean;
   buttonSize?: 'full' | 'small' | 'xSmall';
   loading?: boolean;
@@ -52,6 +52,12 @@ const CartButton: React.FC<Props> = ({
     ...defaultStyles,
     backgroundColor: 'primary',
     paddingVertical: 's',
+    opacity: disabled ? 0.7 : 1,
+  };
+  const deadStateFull = {
+    ...defaultStyles,
+    backgroundColor: 'grayScale',
+    paddingVertical: 'size8',
     opacity: disabled ? 0.7 : 1,
   };
 
@@ -102,6 +108,9 @@ const CartButton: React.FC<Props> = ({
       if (buttonType === 'contained') {
         return roundedFull;
       }
+      if (buttonType === 'dead_state') {
+        return deadStateFull;
+      }
       return outlinedFull;
     } else if (buttonSize === 'small') {
       if (buttonType === 'contained') {
@@ -134,39 +143,54 @@ const CartButton: React.FC<Props> = ({
             <Box
               flexDirection="row"
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent={
+                buttonType === 'dead_state' ? 'center' : 'space-between'
+              }
               px="s">
-              <Box flexDirection="row" alignItems="center">
-                <Box
-                  backgroundColor="mainBackground"
-                  height={34}
-                  width={34}
-                  borderRadius={16}
-                  justifyContent="center"
-                  alignItems="center">
-                  <Text variant="title_bold" color="primary">
-                    {itemsCount}
+              {buttonType === 'dead_state' ? (
+                <Box alignItems="center">
+                  <Text variant="body_sm" color="inactive2">
+                    Need to register
+                  </Text>
+                  <Text variant="body_xs" color="inactive2">
+                    Tap here to continue
                   </Text>
                 </Box>
-                <Text
-                  ml="size8"
-                  variant={
-                    buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'
-                  }
-                  color={buttonType === 'outlined' ? 'primary' : 'text'}>
-                  {label}
-                </Text>
-              </Box>
-              <Box flexDirection="row" alignItems="center">
-                <Text variant="title" mr="m" color="text">
-                  {price !== '' ? `CHF ${price}` : ''}
-                </Text>
-                <Icon
-                  name="chevron-forward"
-                  size={globalUnits.icon_MD - 4}
-                  color={colors.mainBackground}
-                />
-              </Box>
+              ) : (
+                <>
+                  <Box flexDirection="row" alignItems="center">
+                    <Box
+                      backgroundColor="mainBackground"
+                      height={34}
+                      width={34}
+                      borderRadius={16}
+                      justifyContent="center"
+                      alignItems="center">
+                      <Text variant="title_bold" color="primary">
+                        {itemsCount}
+                      </Text>
+                    </Box>
+                    <Text
+                      ml="size8"
+                      variant={
+                        buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'
+                      }
+                      color={buttonType === 'outlined' ? 'primary' : 'text'}>
+                      {label}
+                    </Text>
+                  </Box>
+                  <Box flexDirection="row" alignItems="center">
+                    <Text variant="title" mr="m" color="text">
+                      {price !== '' ? `CHF ${price}` : ''}
+                    </Text>
+                    <Icon
+                      name="chevron-forward"
+                      size={globalUnits.icon_MD - 4}
+                      color={colors.mainBackground}
+                    />
+                  </Box>
+                </>
+              )}
             </Box>
           )}
         </Box>

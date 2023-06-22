@@ -175,7 +175,11 @@ const Cart = ({navigation}) => {
               <Box mt="xxl">
                 <CartButton
                   price={resultString}
-                  onPress={() => navigation.navigate('Checkout')}
+                  onPress={() =>
+                    navigation.navigate('Checkout', {
+                      message,
+                    })
+                  }
                   label="GO TO CHECKOUT"
                   itemsCount={cartItems.length}
                 />

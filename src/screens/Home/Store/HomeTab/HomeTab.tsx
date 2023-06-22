@@ -1,25 +1,20 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  View,
-  Platform,
-  Pressable,
-} from 'react-native';
+import {Image, ScrollView, Pressable, ActivityIndicator} from 'react-native';
+
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import {scale, verticalScale} from 'react-native-size-matters';
 
 import Box from '../../../../components/View/CustomView';
 import Card from '../../../../components/Card/Card';
-import {scale, verticalScale} from 'react-native-size-matters';
 import Text from '../../../../components/Text/CustomText';
-import {dimensions} from '../../../../utils/constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {globalUnits} from '../../../../theme/globalStyles';
 import {useAppTheme} from '../../../../utils/hooks';
 import SectionHeader from '../../../../components/AppComponents/SectionHeader/SectionHeader';
-import LinearGradient from 'react-native-linear-gradient';
+import RecentOrders from './Components/RecentOrders';
+import {getOrderList} from '../../../Shop/Order/actions';
+import {useReduxDispatch, useReduxSelector} from '../../../../store';
 
 const newsCardsData = [
   {
@@ -96,6 +91,25 @@ const recentOrdersData = [
 
 const HomeTab = () => {
   const nav = useNavigation();
+  const dispatch = useReduxDispatch();
+  const {orderList, status, error} = useReduxSelector(
+    store => store.order.orderList,
+  );
+  const {user} = useReduxSelector(store => store.user);
+
+  const {data} = user || {};
+  const {uuid} = data || {};
+  const fetchOrders = () => {
+    dispatch(getOrderList({user_id: uuid}));
+  };
+
+  useEffect(() => {
+    if (status === 'idle') {
+      fetchOrders();
+    }
+  }, []);
+
+  console.log({orderList});
 
   const {colors} = useAppTheme();
   const {mainForeground} = colors || {};
@@ -138,25 +152,6 @@ const HomeTab = () => {
             ))}
           </ScrollView>
         </Box>
-
-        {/* <Box
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center">
-            <Text variant="body_bold">Food Categories</Text>
-            <TouchableOpacity onPress={() => {}}>
-              <Box
-                p="xs"
-                borderRadius={globalUnits.borderRadius_xs}
-                backgroundColor="primaryLight">
-                <Icon
-                  name={'ios-arrow-forward'}
-                  color={primary}
-                  size={globalUnits.icon_LG}
-                />
-              </Box>
-            </TouchableOpacity>
-          </Box> */}
         {/* News */}
         <Box mt="l+">
           <SectionHeader label="News" />
@@ -311,31 +306,27 @@ const HomeTab = () => {
           </Box>
         </Pressable>
 
-        <Box mt="l+">
+        <Box mt={'l+'}>
           <SectionHeader
             label="Recent Orders"
             onPress={() => nav.navigate('TrackOrder')}
           />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {recentOrdersData.map(item => (
-              <Box key={item.id} width={scale(180)} mr="s_m" mt="m">
-                <Image
-                  source={item.image}
-                  style={{
-                    height: verticalScale(110),
-                    width: '100%',
-                    borderRadius: 8,
-                  }}
-                />
-                <Box width="80%" mt="s">
-                  <Text variant="title_bold">{item.name}</Text>
-                  <Text mt="s" variant="body_sm" color="textMuted">
-                    {item.price}
-                  </Text>
-                </Box>
-              </Box>
-            ))}
-          </ScrollView>
+
+          {status === 'loading' ? (
+            <Box marginVertical="xl">
+              <ActivityIndicator />
+            </Box>
+          ) : user ? (
+            <Box>
+              <RecentOrders data={orderList} />
+            </Box>
+          ) : (
+            <Box marginVertical="s">
+              <Text variant="body_xs" textAlign="center">
+                Please login in order to see your orders
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

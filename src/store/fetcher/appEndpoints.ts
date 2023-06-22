@@ -14,4 +14,5 @@ export const apiEndpoints = {
   GET_orderList: '/order-lists',
 
   GET_Coupons: '/get-coupons',
+  GET_ADDRESS_BOOK: '/address-books',
 };

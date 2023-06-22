@@ -87,7 +87,10 @@ const ProductDetails = ({navigation, route}) => {
             height: verticalScale(dimensions.height / 3),
           }}
         />
-        <Box position="absolute" top={46} left={12}>
+        <Box
+          position="absolute"
+          top={Platform.OS === 'android' ? 20 : 46}
+          left={12}>
           <IconButton icon="close" onPress={navigation.goBack} />
         </Box>
       </Box>

@@ -1,6 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {handleApiErrors} from '../../utils/utils';
-import {forgotPassPayload, loginPayload, signUpPayload} from './types';
+import {
+  addressBookType,
+  forgotPassPayload,
+  loginPayload,
+  signUpPayload,
+} from './types';
 import api from '../../store/fetcher/fetcher';
 import {apiEndpoints} from '../../store/fetcher/appEndpoints';
 
@@ -8,6 +13,9 @@ type updateProfile = {
   user_id: string;
   update_for?: 'name' | 'email' | 'phone_number';
   update_value?: string;
+};
+type userId = {
+  user_id: string;
 };
 
 export const login = createAsyncThunk(
@@ -76,8 +84,6 @@ export const updateUserProfile = createAsyncThunk(
         {
           update_for,
           [update_for]: update_value,
-          // email,
-          // phone_number,
         },
         {
           headers: {
@@ -89,13 +95,50 @@ export const updateUserProfile = createAsyncThunk(
       const {data} = response || {};
       const {status, message} = data || {};
 
-      console.log({response});
-
       if (status === 500) {
         handleApiErrors(data);
         return rejectWithValue(message);
       }
       return response.data?.data;
+    } catch (error) {
+      console.log({error});
+    }
+  },
+);
+export const getUserAddressBook = createAsyncThunk(
+  'user/addressBook',
+  async (params: userId, {rejectWithValue}) => {
+    const {user_id} = params;
+    try {
+      const response = await api.get(apiEndpoints.GET_ADDRESS_BOOK, {
+        headers: {
+          'user-id': user_id,
+        },
+      });
+
+      const {data} = response || {};
+      const {status, message} = data || {};
+
+      const addressBookData = data?.data?.map((item: addressBookType) => {
+        const {address_1, longitude, latitude, title, id} = item || {};
+        return {
+          id,
+          street_address: address_1,
+          isSelected: false,
+          userLocation: {
+            latitude,
+            longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          },
+        };
+      });
+
+      if (status === 500) {
+        handleApiErrors(data);
+        return rejectWithValue(message);
+      }
+      return addressBookData;
     } catch (error) {
       console.log({error});
     }

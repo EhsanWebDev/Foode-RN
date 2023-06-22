@@ -35,7 +35,7 @@ const storeSlice = createSlice({
     });
     builder.addCase(getStoreData.rejected, (store, action) => {
       store.menu.status = 'rejected';
-      store.menu.error = action.payload;
+      store.menu.error = 'Error while fetching store menu';
     });
 
     // ? Product Details
@@ -48,7 +48,7 @@ const storeSlice = createSlice({
     });
     builder.addCase(getProductDetails.rejected, (store, action) => {
       store.product.status = 'rejected';
-      store.product.error = action.payload;
+      store.product.error = 'Error while fetching product details';
     });
 
     // ? Gallery
@@ -61,7 +61,7 @@ const storeSlice = createSlice({
     });
     builder.addCase(getStoreGallery.rejected, (store, action) => {
       store.gallery.status = 'rejected';
-      store.gallery.error = action.payload;
+      store.gallery.error = 'Error while fetching store gallery';
     });
   },
 });
