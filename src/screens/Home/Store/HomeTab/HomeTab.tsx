@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {Image, ScrollView, Pressable, ActivityIndicator} from 'react-native';
+import React from 'react';
+import {Image, Pressable} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {verticalScale} from 'react-native-size-matters';
 
 import Box from '../../../../components/View/CustomView';
 import Card from '../../../../components/Card/Card';
@@ -12,9 +12,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {globalUnits} from '../../../../theme/globalStyles';
 import {useAppTheme} from '../../../../utils/hooks';
 import SectionHeader from '../../../../components/AppComponents/SectionHeader/SectionHeader';
-import RecentOrders from './Components/RecentOrders';
-import {getOrderList} from '../../../Shop/Order/actions';
-import {useReduxDispatch, useReduxSelector} from '../../../../store';
+import {useReduxSelector} from '../../../../store';
+import Retry from '../../../../components/Common/Retry';
 
 const newsCardsData = [
   {
@@ -91,25 +90,10 @@ const recentOrdersData = [
 
 const HomeTab = () => {
   const nav = useNavigation();
-  const dispatch = useReduxDispatch();
-  const {orderList, status, error} = useReduxSelector(
-    store => store.order.orderList,
-  );
-  const {user} = useReduxSelector(store => store.user);
+  const {data: storeData} = useReduxSelector(store => store.store.menu);
+  const {category, transformedData} = storeData || {};
 
-  const {data} = user || {};
-  const {uuid} = data || {};
-  const fetchOrders = () => {
-    dispatch(getOrderList({user_id: uuid}));
-  };
-
-  useEffect(() => {
-    if (status === 'idle') {
-      fetchOrders();
-    }
-  }, []);
-
-  console.log({orderList});
+  console.log({storeData});
 
   const {colors} = useAppTheme();
   const {mainForeground} = colors || {};
@@ -117,27 +101,48 @@ const HomeTab = () => {
   return (
     <Box mt="l+" mx="l" mb="m">
       <Box>
-        <SectionHeader label="Food Categories" />
+        <SectionHeader
+          label="Food Categories"
+          onPress={() => nav.navigate('OrderTab')}
+        />
         <Box
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          {categoriesData.map(item => (
-            <Box key={item.id} mt="m">
-              <Image source={item.image} style={{width: 58, height: 58}} />
-              <Box>
-                <Text variant="body_sm_bold" textAlign="center">
-                  {item.name}
-                </Text>
-                <Text variant="body_xs" color="textMuted" textAlign="center">
-                  {item.noOfItems} items
-                </Text>
+          {(category || [])?.map(item => (
+            <Pressable
+              key={item.id}
+              onPress={() =>
+                nav.navigate('MenuItem', {
+                  data: transformedData,
+                  sectionIndex:
+                    (transformedData || [])?.findIndex(
+                      t_item => t_item.title === item?.category_name,
+                    ) ?? 0,
+                })
+              }>
+              <Box mt="m">
+                <Image
+                  source={
+                    item.category_image ??
+                    require('./../../../../assets/icons/noIcon.png')
+                  }
+                  style={{width: 58, height: 58}}
+                />
+                <Box>
+                  <Text variant="body_sm_bold" textAlign="center">
+                    {item.category_name}
+                  </Text>
+                  <Text variant="body_xs" color="textMuted" textAlign="center">
+                    {item.items?.length} items
+                  </Text>
+                </Box>
               </Box>
-            </Box>
+            </Pressable>
           ))}
         </Box>
         {/* Vouchers */}
-        <Box mt="l+">
+        {/* <Box mt="l+">
           <SectionHeader label="Gift Vouchers" />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {vouchersData.map(item => (
@@ -151,9 +156,9 @@ const HomeTab = () => {
               </Box>
             ))}
           </ScrollView>
-        </Box>
+        </Box> */}
         {/* News */}
-        <Box mt="l+">
+        {/* <Box mt="l+">
           <SectionHeader label="News" />
           <ScrollView showsHorizontalScrollIndicator={false} horizontal>
             {newsCardsData.map((item, index) => (
@@ -182,7 +187,7 @@ const HomeTab = () => {
               </Card>
             ))}
           </ScrollView>
-        </Box>
+        </Box> */}
         {/* Rewards */}
         <Box mt="l+">
           <SectionHeader
@@ -190,7 +195,7 @@ const HomeTab = () => {
             onPress={() => nav.navigate('Offers')}
           />
 
-          <Card variant="secondary" mt="m" px="cardPaddingX" py="cardPaddingY">
+          {/* <Card variant="secondary" mt="m" px="cardPaddingX" py="cardPaddingY">
             <Box
               flexDirection="row"
               justifyContent="space-between"
@@ -214,7 +219,7 @@ const HomeTab = () => {
                 </Text>
               </Box>
             </Box>
-          </Card>
+          </Card> */}
           <Box flexDirection="row" alignItems="center">
             <Pressable
               style={{flex: 0.5}}
@@ -305,7 +310,7 @@ const HomeTab = () => {
             />
           </Box>
         </Pressable>
-
+        {/* 
         <Box mt={'l+'}>
           <SectionHeader
             label="Recent Orders"
@@ -327,7 +332,7 @@ const HomeTab = () => {
               </Text>
             </Box>
           )}
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

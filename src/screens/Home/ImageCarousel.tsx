@@ -20,6 +20,8 @@ type Props = {
 const ImageCarousel = ({imagesData = []}: Props) => {
   const {spacing, colors} = useAppTheme();
 
+  console.log({imagesData});
+
   const progressValue = useSharedValue<number>(0);
 
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -34,7 +36,7 @@ const ImageCarousel = ({imagesData = []}: Props) => {
         width={dimensions.width}
         height={moderateVerticalScale(180)}
         data={imagesData}
-        scrollAnimationDuration={200}
+        scrollAnimationDuration={100}
         onSnapToItem={index => setCurrentIndex(index + 1)}
         renderItem={({item}) => (
           <Box
@@ -49,7 +51,7 @@ const ImageCarousel = ({imagesData = []}: Props) => {
               }}
               style={{
                 height: moderateVerticalScale(180),
-                borderRadius: 8,
+                borderRadius: 6,
               }}
             />
           </Box>
@@ -60,10 +62,10 @@ const ImageCarousel = ({imagesData = []}: Props) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            width: moderateScale(125),
+            width: moderateScale(imagesData.length * 30),
             alignItems: 'center',
             alignSelf: 'center',
-            marginTop: moderateVerticalScale(-6),
+            marginTop: moderateVerticalScale(-8),
             backgroundColor: 'white',
             borderTopRightRadius: 12,
             borderTopLeftRadius: 12,

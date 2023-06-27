@@ -9,13 +9,17 @@ export const getStoreGallery = createAsyncThunk(
     const response = await api.get(apiEndpoints.GET_storeGallery);
 
     const {data} = response || {};
-    const {status, message} = data || {};
+    const {status, message, data: images} = data || {};
+
+    const transformedData = (images || []).map(item => {
+      return {id: item, image: item};
+    });
 
     if (status === 500) {
       handleApiErrors(data);
       return rejectWithValue(message);
     }
-    return response.data;
+    return transformedData;
   },
 );
 export const getStoreData = createAsyncThunk(

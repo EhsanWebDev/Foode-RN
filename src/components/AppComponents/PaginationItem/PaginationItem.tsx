@@ -61,7 +61,7 @@ const PaginationItem: React.FC<{
           backgroundColor: inActiveColor,
           width: isCurrentItemActive ? width : 10,
           height: isCurrentItemActive ? height : 10,
-          marginRight: 12,
+          marginRight: 10,
         },
         styles.container,
       ]}>

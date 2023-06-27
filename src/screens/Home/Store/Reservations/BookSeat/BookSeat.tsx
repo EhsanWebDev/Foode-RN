@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {useAppTheme} from '../../../../../utils/hooks';
 import showToast from '../../../../../utils/toast';
 import {handleApiErrors} from '../../../../../utils/utils';
+import {StatusBar} from 'react-native';
 
 const initial_values = {
   people: '',
@@ -77,6 +78,7 @@ const BookSeat = ({navigation}) => {
   if (!user) {
     return (
       <ScreenContainer>
+        <StatusBar barStyle="default" />
         <Header label="Reserve a Table" onBackPress={navigation.goBack} />
 
         <Box flex={1} mx="l">
@@ -101,6 +103,7 @@ const BookSeat = ({navigation}) => {
   }
   return (
     <ScreenContainer>
+      <StatusBar barStyle="default" />
       <Header label="Reserve a Table" onBackPress={navigation.goBack} />
       <Formik
         innerRef={formRef}

@@ -24,8 +24,8 @@ type loginValues = {
 };
 
 const initial_values = {
-  email: '',
-  password: '',
+  email: 'Dev1@me.co',
+  password: '123123',
   rememberMe: false,
 };
 
