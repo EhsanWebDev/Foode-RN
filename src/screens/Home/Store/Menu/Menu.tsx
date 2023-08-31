@@ -37,6 +37,7 @@ const Menu = ({route}) => {
 
   const {params} = route || {};
   const {data, sectionIndex = 0} = params || {};
+
   // const dispatch = useReduxDispatch();
 
   return (

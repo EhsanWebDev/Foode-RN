@@ -19,6 +19,8 @@ import {RefreshControl} from 'react-native-gesture-handler';
 import Retry from '../../components/Common/Retry';
 import ScreenContainer from '../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../components/AppComponents/Header/Header';
+import {getData} from '../../utils/storage';
+import {setUser} from '../Auth/userSlice';
 
 const imagesData = [
   {
@@ -69,6 +71,13 @@ const Home = ({navigation}) => {
   };
 
   useEffect(() => {
+    const getUser = async () => {
+      const userInfo = await getData('user');
+      if (userInfo) {
+        dispatch(setUser(userInfo));
+      }
+    };
+    getUser();
     if (galleryStatus === 'idle') {
       fetchStoreGallery();
     }

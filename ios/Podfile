@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'NamasteSchiffli' do
+target 'IndianCorner' do
   rn_maps_path = '../node_modules/react-native-maps'
 pod 'react-native-google-maps', :path => rn_maps_path
   config = use_native_modules!
@@ -28,7 +28,7 @@ pod 'react-native-google-maps', :path => rn_maps_path
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'NamasteSchiffliTests' do
+  target 'IndianCornerTests' do
     inherit! :complete
     # Pods for testing
   end

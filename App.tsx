@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import theme from './src/theme/theme';
 import {ThemeProvider} from '@shopify/restyle';
@@ -11,8 +11,13 @@ import store, {persistor} from './src/store';
 import {Provider} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {PersistGate} from 'redux-persist/integration/react';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

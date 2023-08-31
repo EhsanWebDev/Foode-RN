@@ -1,36 +1,36 @@
 PODS:
-  - Adyen (4.10.3):
-    - Adyen/Actions (= 4.10.3)
-    - Adyen/Card (= 4.10.3)
-    - Adyen/Components (= 4.10.3)
-    - Adyen/Core (= 4.10.3)
-    - Adyen/DropIn (= 4.10.3)
-    - Adyen/Encryption (= 4.10.3)
-  - adyen-react-native (1.0.0):
-    - Adyen (= 4.10.3)
+  - Adyen (4.10.4):
+    - Adyen/Actions (= 4.10.4)
+    - Adyen/Card (= 4.10.4)
+    - Adyen/Components (= 4.10.4)
+    - Adyen/Core (= 4.10.4)
+    - Adyen/DropIn (= 4.10.4)
+    - Adyen/Encryption (= 4.10.4)
+  - adyen-react-native (1.1.0):
+    - Adyen (= 4.10.4)
     - React-Core
-  - Adyen/Actions (4.10.3):
+  - Adyen/Actions (4.10.4):
     - Adyen/Core
-    - Adyen3DS2 (= 2.2.6)
-  - Adyen/Card (4.10.3):
-    - Adyen/Core
-    - Adyen/Encryption
-  - Adyen/Components (4.10.3):
+    - Adyen3DS2 (= 2.3.1)
+  - Adyen/Card (4.10.4):
     - Adyen/Core
     - Adyen/Encryption
-  - Adyen/Core (4.10.3):
+  - Adyen/Components (4.10.4):
+    - Adyen/Core
+    - Adyen/Encryption
+  - Adyen/Core (4.10.4):
     - AdyenNetworking (= 1.0.0)
-  - Adyen/DropIn (4.10.3):
+  - Adyen/DropIn (4.10.4):
     - Adyen/Actions
     - Adyen/Card
     - Adyen/Components
     - Adyen/Core
     - Adyen/Encryption
-  - Adyen/Encryption (4.10.3)
-  - Adyen3DS2 (2.2.6)
+  - Adyen/Encryption (4.10.4)
+  - Adyen3DS2 (2.3.1)
   - AdyenNetworking (1.0.0)
   - boost (1.76.0)
-  - BVLinearGradient (2.6.2):
+  - BVLinearGradient (2.8.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -360,14 +360,12 @@ PODS:
     - React-Core
   - react-native-maps (1.7.1):
     - React-Core
-  - react-native-pager-view (6.2.0):
+  - react-native-pager-view (6.2.1):
     - React-Core
-  - react-native-safe-area-context (4.5.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.7.1):
     - React-Core
-    - ReactCommon/turbomodule/core
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - React-perflogger (0.70.6)
   - React-RCTActionSheet (0.70.6):
     - React-Core/RCTActionSheetHeaders (= 0.70.6)
@@ -434,15 +432,15 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - RNCAsyncStorage (1.18.1):
+  - RNCAsyncStorage (1.19.3):
     - React-Core
-  - RNDateTimePicker (7.0.1):
+  - RNDateTimePicker (7.5.0):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.8.0):
     - React-Core
   - RNImageCropPicker (0.38.0):
     - React-Core
@@ -453,9 +451,9 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNLocalize (3.0.1):
+  - RNLocalize (3.0.2):
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.8.4):
     - React-Core
   - RNReanimated (2.14.4):
     - DoubleConversion
@@ -484,10 +482,10 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.9.0):
+  - RNSVG (13.13.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -552,6 +550,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -656,6 +655,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -704,12 +705,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adyen: 220c6b3dc7f96d0b92e935e8d4ca94204277a088
-  adyen-react-native: f85b8bf20fa8971a2d43111ead5914f50b431fb0
-  Adyen3DS2: e683a519946e99a78adec8d89459e6eec53b0a4f
+  Adyen: 4232a5b02578a54e31db158ae906f5b8d42f4673
+  adyen-react-native: c1c6c3ef15d60e93a5dc5e09762b3b6df8623d27
+  Adyen3DS2: 6c30dcca4ef74629d21bfd9dca351bad1bc1426b
   AdyenNetworking: 14567bd00c00ba2e2580a904708c7ba5f010b1f9
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
+  BVLinearGradient: 916632041121a658c704df89d99f04acb038de0f
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 48289402952f4f7a4e235de70a9a590aa0b79ef4
@@ -736,7 +737,7 @@ SPEC CHECKSUMS:
   React: bb3e06418d2cc48a84f9666a576c7b38e89cd7db
   React-bridging: 572502ec59c9de30309afdc4932e278214288913
   React-callinvoker: 6b708b79c69f3359d42f1abb4663f620dbd4dadf
-  React-Codegen: ae5360313e74862bbc6b036143c2963cb4892096
+  React-Codegen: 74e1cd7cee692a8b983c18df3274b5e749de07c8
   React-Core: b587d0a624f9611b0e032505f3d6f25e8daa2bee
   React-CoreModules: c6ff48b985e7aa622e82ca51c2c353c7803eb04e
   React-cxxreact: ade3d9e63c599afdead3c35f8a8bd12b3da6730b
@@ -747,8 +748,9 @@ SPEC CHECKSUMS:
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-google-maps: dd12cdd86b8e3fedbbb671676aedaa2f656e2ccd
   react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
-  react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
-  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
+  react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
   React-RCTAnimation: 5341e288375451297057391227f691d9b2326c3d
@@ -761,16 +763,16 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
-  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
+  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
+  RNDateTimePicker: b722c23030b744763cf51d80fc22f354653f65e0
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
-  RNLocalize: 6dd9226886fa61bf0cefc7644e3f9620770b1a31
-  RNPermissions: a1a9a95808fe84a6477b8eafe7ef6df9b0b05257
+  RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
+  RNPermissions: 053329a3413dafcd6c77d64ab0e23363c8269188
   RNReanimated: 6668b0587bebd4b15dd849b99e5a9c70fc12ed95
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
-  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
+  RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
+  RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
@@ -778,6 +780,6 @@ SPEC CHECKSUMS:
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 77d08ff64936e857bb46ac0901c47b692f404624
+PODFILE CHECKSUM: 72a379504b4c135197f9bdbc2a07c92585e481c3
 
 COCOAPODS: 1.12.0

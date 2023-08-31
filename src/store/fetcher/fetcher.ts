@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const baseURL = 'https://seashell.chaslay.com/api/v1/customer-api';
+// export const baseURL = 'https://seashell.chaslay.com/api/v1/customer-api';
+export const baseURL = 'https://indiancorner.chaslay.com/api/v1/customer-api';
 const commonHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
