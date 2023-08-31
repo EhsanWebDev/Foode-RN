@@ -5,7 +5,7 @@
 #import <React/RCTRootView.h>
 #import <adyen-react-native/ADYRedirectComponent.h>
 #import <React/RCTLinkingManager.h>
-
+#import "RNSplashScreen.h"
 #import <React/RCTAppSetupUtils.h>
 
 #if RCT_NEW_ARCH_ENABLED
@@ -61,7 +61,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #endif
 
   NSDictionary *initProps = [self prepareInitialProps];
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"indiancorner", initProps);
+  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"Indian Corner", initProps);
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];
@@ -74,6 +74,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+   // Set the splash screen to show by default.
+  [RNSplashScreen show]; 
   return YES;
 }
 
