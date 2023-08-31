@@ -13,9 +13,11 @@ import Header from '../../../components/AppComponents/Header/Header';
 
 import ProfileTab from '../../../components/AppComponents/TabView/ProfileTab';
 import ProfileAction from '../../../components/AppComponents/ActionBar/ProfileAction';
+import {useTranslation} from 'react-i18next';
 
 const Profile = ({navigation}) => {
   const {user} = useReduxSelector(store => store.user);
+  const {t: lang} = useTranslation();
 
   const {data} = user || {};
   const {name, email, phone_number} = data || {};
@@ -26,7 +28,7 @@ const Profile = ({navigation}) => {
     <ScreenContainer>
       <StatusBar barStyle="default" />
       <Header
-        label="My Profile"
+        label={lang('myProfile')}
         iconName="chevron-back"
         onBackPress={navigation.goBack}
         onRightIconPress={() => navigation.navigate('Settings')}
@@ -97,7 +99,7 @@ const Profile = ({navigation}) => {
                   <Box>
                     <Box mt="s">
                       <ProfileAction
-                        title="Name"
+                        title={lang('name')}
                         titleValue={name}
                         onPress={() =>
                           navigation.navigate('UpdateProfile', {
@@ -108,7 +110,7 @@ const Profile = ({navigation}) => {
                     </Box>
                     <Box mt="s">
                       <ProfileAction
-                        title="Email"
+                        title={lang('email')}
                         titleValue={email}
                         onPress={() =>
                           navigation.navigate('UpdateProfile', {
@@ -119,7 +121,7 @@ const Profile = ({navigation}) => {
                     </Box>
                     <Box mt="s">
                       <ProfileAction
-                        title="Mobile Number"
+                        title={lang('phone')}
                         titleValue={phone_number}
                         onPress={() =>
                           navigation.navigate('UpdateProfile', {
@@ -132,13 +134,16 @@ const Profile = ({navigation}) => {
                 ) : (
                   <Box>
                     <Box mt="s">
-                      <ProfileAction title="Order History" />
+                      <ProfileAction
+                        title={lang('orderHistory')}
+                        onPress={() => navigation.navigate('TrackOrder')}
+                      />
                     </Box>
                     <Box mt="s">
-                      <ProfileAction title="Rewards" />
+                      <ProfileAction title={lang('rewards')} />
                     </Box>
                     <Box mt="s">
-                      <ProfileAction title="Points" />
+                      <ProfileAction title={lang('points')} />
                     </Box>
                   </Box>
                 )}

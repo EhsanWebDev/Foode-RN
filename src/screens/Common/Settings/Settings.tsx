@@ -8,9 +8,11 @@ import CustomButton from '../../../components/Button/CustomButton';
 import {useReduxDispatch} from '../../../store';
 import {logoutUser} from '../../Auth/userSlice';
 import {removeData} from '../../../utils/storage';
+import {useTranslation} from 'react-i18next';
 
 const Settings = ({navigation}) => {
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
 
   const handleLogout = async () => {
     dispatch(logoutUser({}));
@@ -21,27 +23,27 @@ const Settings = ({navigation}) => {
   return (
     <ScreenContainer>
       <Header
-        label="App Settings"
+        label={lang('appSettings')}
         onBackPress={navigation.goBack}
         iconName="chevron-back"
       />
       <Box mx="l" flex={1}>
         <Box mt="s">
-          <ProfileAction title="App language" />
+          <ProfileAction title={lang('appLang')} />
         </Box>
         <Box mt="s">
-          <ProfileAction title="Notification settings" />
+          <ProfileAction title={lang('notfSettings')} />
         </Box>
         <Box mt="s">
-          <ProfileAction title="Delete your account" />
+          <ProfileAction title={lang('delAccount')} />
         </Box>
         <Box mt="s">
-          <ProfileAction title="About the app" />
+          <ProfileAction title={lang('aboutApp')} />
         </Box>
       </Box>
       <Box alignItems="center" mb="xxs">
         <CustomButton
-          label="Logout"
+          label={lang('logout')}
           buttonSize="small"
           buttonType="outlined"
           showLeftIcon

@@ -9,6 +9,8 @@ import {globalUnits} from '../../../theme/globalStyles';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useReduxSelector} from '../../../store';
+import {useNavigation} from '@react-navigation/native';
 
 export type IconLibrary = {
   [key: string]: () => React.ComponentType<any>;
@@ -29,6 +31,7 @@ interface HeaderProps {
   onBackPress?: () => void;
   onRightIconPress?: () => void;
   showBottomBorder?: boolean;
+  showCart?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -41,8 +44,12 @@ const Header: React.FC<HeaderProps> = ({
   onBackPress,
   onRightIconPress,
   showBottomBorder = true,
+  showCart = false,
 }) => {
   const theme = useTheme<Theme>();
+  const navigation = useNavigation();
+  const {cartItems} = useReduxSelector(store => store.cart);
+
   const {colors} = theme || {};
   const {mainForeground} = colors || {};
 
@@ -70,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({
       <Box
         flex={1}
         alignItems="center"
-        mr={showBackIcon && !rightIcon ? 'header' : 'none'}>
+        mr={showBackIcon && !showCart && !rightIcon ? 'header' : 'none'}>
         <Text variant="topHeader">{label}</Text>
       </Box>
 
@@ -82,6 +89,33 @@ const Header: React.FC<HeaderProps> = ({
               color={mainForeground}
               size={globalUnits.icon_LG}
             />
+          </Box>
+        </TouchableOpacity>
+      )}
+
+      {showCart && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Cart');
+          }}>
+          <IonIcon
+            name="ios-cart"
+            size={globalUnits.icon_LG}
+            color={colors.mainForeground}
+          />
+          <Box
+            position="absolute"
+            backgroundColor="primary"
+            width={20}
+            height={20}
+            justifyContent="center"
+            alignItems="center"
+            borderRadius={20}
+            top={-6}
+            right={-8}>
+            <Text variant="body_sm_bold" color="mainBackground">
+              {cartItems.length}
+            </Text>
           </Box>
         </TouchableOpacity>
       )}

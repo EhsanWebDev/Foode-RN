@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Pressable} from 'react-native';
+import {Image, Pressable, ScrollView} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,87 +13,15 @@ import {globalUnits} from '../../../../theme/globalStyles';
 import {useAppTheme} from '../../../../utils/hooks';
 import SectionHeader from '../../../../components/AppComponents/SectionHeader/SectionHeader';
 import {useReduxSelector} from '../../../../store';
-import Retry from '../../../../components/Common/Retry';
-
-const newsCardsData = [
-  {
-    id: 1,
-    title:
-      ' Lorem ipsum dolor sit amet, consectetur adipisicing elit.Voluptatibus, iste.',
-    date: 'Oct 20, 2022',
-  },
-  {
-    id: 2,
-    title:
-      ' Lorem ipsum dolor sit amet, consectetur adipisicing elit.Voluptatibus, iste.',
-    date: 'Aug 12, 2022',
-  },
-];
-const categoriesData = [
-  {
-    id: 1,
-    name: 'Burger',
-    image: require('./../../../../assets/images/categories/burger.png'),
-    noOfItems: 12,
-  },
-  {
-    id: 2,
-    name: 'Pizza',
-    image: require('./../../../../assets/images/categories/pizza.png'),
-    noOfItems: 12,
-  },
-  {
-    id: 3,
-    name: 'Chicken',
-    image: require('./../../../../assets/images/categories/chicken.png'),
-    noOfItems: 12,
-  },
-  {
-    id: 4,
-    name: 'Salad',
-    image: require('./../../../../assets/images/categories/salad.png'),
-    noOfItems: 12,
-  },
-  {
-    id: 5,
-    name: 'Coffee',
-    image: require('./../../../../assets/images/categories/coffee.png'),
-    noOfItems: 12,
-  },
-];
-const vouchersData = [
-  {
-    id: 1,
-    desc: 'Lorem Ipsum is simply demo text of the printing.',
-    image: require('./../../../../assets/images/vouchers/voucher60.png'),
-  },
-  {
-    id: 2,
-    desc: 'Lorem Ipsum is simply demo text of the printing.',
-    image: require('./../../../../assets/images/vouchers/voucher100.png'),
-  },
-];
-const recentOrdersData = [
-  {
-    id: 1,
-    name: 'Philly Cheese Steak Sandwich',
-    price: 'CHF 15.90',
-    image: require('./../../../../assets/images/food1.png'),
-  },
-  {
-    id: 2,
-    name: 'Philly Cheese Steak Sandwich',
-    price: 'CHF 15.90',
-    image: require('./../../../../assets/images/food2.png'),
-  },
-];
+import {truncateString} from '../../../../utils/utils';
+import {useTranslation} from 'react-i18next';
 
 const HomeTab = () => {
   const nav = useNavigation();
+  const {t: lang} = useTranslation();
+
   const {data: storeData} = useReduxSelector(store => store.store.menu);
   const {category, transformedData} = storeData || {};
-
-  console.log({storeData});
 
   const {colors} = useAppTheme();
   const {mainForeground} = colors || {};
@@ -102,13 +30,11 @@ const HomeTab = () => {
     <Box mt="l+" mx="l" mb="m">
       <Box>
         <SectionHeader
-          label="Food Categories"
+          label={lang('foodCategories')}
           onPress={() => nav.navigate('OrderTab')}
         />
-        <Box
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between">
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {(category || [])?.map(item => (
             <Pressable
               key={item.id}
@@ -121,17 +47,21 @@ const HomeTab = () => {
                     ) ?? 0,
                 })
               }>
-              <Box mt="m">
-                <Image
-                  source={
-                    item.category_image ??
-                    require('./../../../../assets/icons/noIcon.png')
-                  }
-                  style={{width: 58, height: 58}}
-                />
+              <Box mt="m" mr="m">
+                <Box alignItems="center">
+                  <Image
+                    source={
+                      item.category_image
+                        ? {uri: item.category_image}
+                        : require('./../../../../assets/icons/noIcon.png')
+                    }
+                    style={{width: 58, height: 58}}
+                  />
+                </Box>
+
                 <Box>
                   <Text variant="body_sm_bold" textAlign="center">
-                    {item.category_name}
+                    {truncateString(item.category_name, 20)}
                   </Text>
                   <Text variant="body_xs" color="textMuted" textAlign="center">
                     {item.items?.length} items
@@ -140,7 +70,8 @@ const HomeTab = () => {
               </Box>
             </Pressable>
           ))}
-        </Box>
+        </ScrollView>
+
         {/* Vouchers */}
         {/* <Box mt="l+">
           <SectionHeader label="Gift Vouchers" />
@@ -239,7 +170,7 @@ const HomeTab = () => {
                       color={mainForeground}
                     />
                     <Text ml="s" variant="title_bold">
-                      Rewards
+                      {lang('rewards')}
                     </Text>
                   </Box>
                 </Box>
@@ -263,7 +194,7 @@ const HomeTab = () => {
                       color={mainForeground}
                     />
                     <Text ml="s" variant="title_bold">
-                      Order Now
+                      {lang('orderNow')}
                     </Text>
                   </Box>
                 </Box>
@@ -294,7 +225,7 @@ const HomeTab = () => {
               }}>
               <Box pl="s_m">
                 <Text variant="title" color="mainBackground">
-                  Reserve Table
+                  {lang('reserveTable')}
                 </Text>
               </Box>
             </LinearGradient>
@@ -310,7 +241,7 @@ const HomeTab = () => {
             />
           </Box>
         </Pressable>
-        {/* 
+        {/*
         <Box mt={'l+'}>
           <SectionHeader
             label="Recent Orders"

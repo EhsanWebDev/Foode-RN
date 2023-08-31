@@ -19,7 +19,7 @@ export type orderPayload = {
   delivery_date: string;
   delivery_timing: string;
   order_instruction?: string;
-  payment_option: string;
+  payment_option: 'cash' | 'adyen';
   delivery_charge: string;
   order_sub_total: string;
   discount_price: string;

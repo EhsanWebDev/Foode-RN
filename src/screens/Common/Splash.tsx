@@ -31,6 +31,7 @@ const Splash = ({navigation}) => {
       <Image
         resizeMode="contain"
         source={require('./../../assets/images/logo.png')}
+        style={{width: 200, height: 200}}
       />
     </View>
   );

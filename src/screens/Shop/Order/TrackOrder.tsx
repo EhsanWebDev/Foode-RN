@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {FlatList, Image, RefreshControl, StatusBar} from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  RefreshControl,
+  StatusBar,
+} from 'react-native';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../components/AppComponents/Header/Header';
@@ -9,10 +15,16 @@ import Text from '../../../components/Text/CustomText';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {getOrderList} from './actions';
 import moment from 'moment';
-import ContentLoader from 'react-content-loader/native';
 import {Facebook} from 'react-content-loader/native';
-
-type trackOrderItem = {
+import {useTranslation} from 'react-i18next';
+type CartItem = {
+  price?: string;
+  product_name?: string;
+  product_id?: number;
+  quantity?: number;
+  total_price?: string;
+};
+export type trackOrderItem = {
   address: string;
 
   created_at: Date;
@@ -38,13 +50,26 @@ type trackOrderItem = {
   sub_total: string;
   total_price: string;
   updated_at: Date;
+
+  carts?: CartItem[];
 };
 type OrderItemProps = {
   orderStatus?: 'pending' | 'completed' | 'canceled';
   item: trackOrderItem;
+  onItemPress?: () => void;
 };
-const Item = ({item}: OrderItemProps) => {
-  const {id, created_at, total_price, store_email, store_name} = item || {};
+const Item = ({item, onItemPress}: OrderItemProps) => {
+  const {t: lang} = useTranslation();
+  const {
+    id,
+    created_at,
+    total_price,
+    order_ref,
+
+    store_name,
+    order_type,
+    address,
+  } = item || {};
   const orderStatuses = {
     pending: {
       title: 'Process',
@@ -60,43 +85,46 @@ const Item = ({item}: OrderItemProps) => {
     },
   };
   return (
-    <Card variant="primary" paddingVertical="s_m" px="s" mb="m" mx="xs">
-      <Box flexDirection="row" justifyContent="space-between">
-        <Box flex={1} flexDirection="row" justifyContent="space-between">
-          <Box ml="xs">
-            <Text variant="title_bold"> Order Id: {id}</Text>
-            <Text variant="body_xs_bold" color="textMuted" mt="xxs" mb="xs">
-              store name: {store_name}
-            </Text>
-            <Text variant="body_xs_bold" color="primary">
-              Order total ${total_price}
-            </Text>
-          </Box>
-          <Box>
-            <Text variant="body_xs_bold" color="textMuted">
-              Placed: {moment(created_at).fromNow()}
-            </Text>
+    <Pressable onPress={onItemPress}>
+      <Card variant="primary" paddingVertical="s_m" px="s" mb="m" mx="xs">
+        <Box flexDirection="row" justifyContent="space-between">
+          <Box flex={1} flexDirection="row" justifyContent="space-between">
+            <Box ml="xs" flex={1}>
+              <Text variant="title_bold">Order Id: {order_ref}</Text>
+              <Text variant="body_xs">
+                Order type:{' '}
+                <Text variant="body_xs_bold" color="primary">
+                  {order_type === 1 ? 'Pickup' : 'Delivery'}
+                </Text>
+              </Text>
+              <Text variant="body_xs_bold" color="primary">
+                Order total: CHF {total_price}
+              </Text>
+            </Box>
+            <Box>
+              <Text variant="body_xs_bold" color="textMuted">
+                {lang('placed')}: {moment(created_at).fromNow()}
+              </Text>
+            </Box>
           </Box>
         </Box>
-        {/* <Box
-          justifyContent="center"
-          alignItems="center"
-          alignSelf="center"
-          px="s_m"
-          py="xs"
-          borderRadius={12}
-         >
-          <Text variant="body_xs" color="text">
-            {orderStatuses[orderStatus].title}
+        {order_type === 2 && (
+          <Text variant="body_xs_bold" color="primary">
+            {lang('address')}:{' '}
+            <Text variant="body_xs_2" numberOfLines={2}>
+              {address}
+            </Text>
           </Text>
-        </Box> */}
-      </Box>
-    </Card>
+        )}
+      </Card>
+    </Pressable>
   );
 };
 
 const TrackOrder = ({navigation}) => {
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
+
   const {orderList, status, error} = useReduxSelector(
     store => store.order.orderList,
   );
@@ -120,7 +148,7 @@ const TrackOrder = ({navigation}) => {
   return (
     <ScreenContainer>
       <StatusBar barStyle="default" />
-      <Header label="Order History" onBackPress={navigation.goBack} />
+      <Header label={lang('orderHistory')} onBackPress={navigation.goBack} />
       {status === 'loading' ? (
         <Box width="90%" mx="l">
           <Facebook />
@@ -140,7 +168,16 @@ const TrackOrder = ({navigation}) => {
             showsVerticalScrollIndicator={false}
             data={orderList}
             keyExtractor={item => item?.id?.toString()}
-            renderItem={({item}) => <Item item={item} />}
+            renderItem={({item}) => (
+              <Item
+                item={item}
+                onItemPress={() =>
+                  navigation.navigate('OrderDetails', {
+                    item,
+                  })
+                }
+              />
+            )}
           />
         </Box>
       )}

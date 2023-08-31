@@ -25,6 +25,7 @@ import {useAppTheme, useLocationPermissions} from '../../../utils/hooks';
 import styles from '../../Shop/Checkout/styles';
 import localStyles from './styles';
 import {userAddressType} from '../../Auth/types';
+import {useTranslation} from 'react-i18next';
 
 Geocoder.init('AIzaSyA5dnMHxWSak2yswhuIVLOqyiJhUomHkC0');
 
@@ -35,6 +36,7 @@ Geolocation.setRNConfiguration({
 const AddAddress = ({navigation}) => {
   const dispatch = useReduxDispatch();
   const {colors} = useAppTheme();
+  const {t: lang} = useTranslation();
   const {checkPermission, requestPermission, openSettings} =
     useLocationPermissions();
 
@@ -206,7 +208,10 @@ const AddAddress = ({navigation}) => {
 
   return (
     <ScreenContainer>
-      <Header label="Add delivery address" onBackPress={navigation.goBack} />
+      <Header
+        label={lang('addDeliveryAddress')}
+        onBackPress={navigation.goBack}
+      />
 
       <Box flex={1}>
         <Box style={localStyles.inputContainer}>
@@ -289,17 +294,20 @@ const AddAddress = ({navigation}) => {
             {borderBottomColor: colors.primary},
           ]}>
           <Text variant="body_sm" color="primary">
-            Use my current location
+            {lang('useMyLocation')}
           </Text>
 
           <Icon name="ios-location-sharp" color={colors.primary} size={18} />
         </TouchableOpacity>
         <Box mx="l" mb="xs" mt="m">
           <CustomButton
-            label="CONFIRM"
+            label={lang('confirm')}
             disabled={!tempAddress.street_address || fetching}
             onPress={handleConfirm}
             loading={fetching}
+            textStyles={{
+              textTransform: 'uppercase',
+            }}
           />
         </Box>
       </Box>

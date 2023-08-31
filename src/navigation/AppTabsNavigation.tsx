@@ -22,6 +22,7 @@ import Offers from '../screens/Home/Store/Offers/Offers';
 import StoreHome from '../screens/Home/Store/Details/StoreHome';
 import BookSeat from '../screens/Home/Store/Reservations/BookSeat/BookSeat';
 import StoreMenuDetails from '../screens/Home/Store/Details/StoreMenuDetails';
+import {useTranslation} from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,8 @@ const Settings = () => (
 
 const AppTabsNavigation = () => {
   const theme = useTheme<Theme>();
+  const {t: lang} = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -55,9 +58,10 @@ const AppTabsNavigation = () => {
           tabBarLabel: ({focused}) => (
             <Text
               variant="body_xs_2"
+              textTransform="uppercase"
               pb="xxs"
               color={focused ? 'primary' : 'title'}>
-              HOME
+              {lang('home')}
             </Text>
           ),
         }}
@@ -71,8 +75,9 @@ const AppTabsNavigation = () => {
             <Text
               variant="body_xs_2"
               pb="xxs"
+              textTransform="uppercase"
               color={focused ? 'primary' : 'title'}>
-              ORDER
+              {lang('order')}
             </Text>
           ),
         }}
@@ -87,8 +92,9 @@ const AppTabsNavigation = () => {
               numberOfLines={1}
               variant="body_xs_2"
               pb="xxs"
+              textTransform="uppercase"
               color={focused ? 'primary' : 'title'}>
-              RESERVATION
+              {lang('reservation')}
             </Text>
           ),
         }}
@@ -104,8 +110,9 @@ const AppTabsNavigation = () => {
             <Text
               variant="body_xs_2"
               pb="xxs"
+              textTransform="uppercase"
               color={focused ? 'primary' : 'title'}>
-              OFFERS
+              {lang('offers')}
             </Text>
           ),
         }}
@@ -121,8 +128,9 @@ const AppTabsNavigation = () => {
             <Text
               variant="body_xs_2"
               pb="xxs"
+              textTransform="uppercase"
               color={focused ? 'primary' : 'title'}>
-              PROFILE
+              {lang('profile')}
             </Text>
           ),
         }}

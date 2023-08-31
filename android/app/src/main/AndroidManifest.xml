@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.namasteschiffli">
+  package="com.indiancorner">
+ 
 
     <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.CAMERA"/>
@@ -16,6 +17,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+       <service android:name="com.adyenreactnativesdk.component.dropin.AdyenCheckoutService" android:exported="false" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

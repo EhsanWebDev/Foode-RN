@@ -14,6 +14,7 @@ import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {login} from '../actions';
 import showToast from '../../../utils/toast';
 import {storeData} from '../../../utils/storage';
+import {useTranslation} from 'react-i18next';
 
 // Dev1@me.co 123123
 
@@ -37,6 +38,7 @@ const loginSchema = Yup.object().shape({
 
 const Login = ({navigation}: LoginScreenNavigationProp) => {
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
   const {user, login_status} = useReduxSelector(state => state.user);
 
   const [showPass, setShowPass] = useState(false);
@@ -59,7 +61,10 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
   return (
     <ScreenContainer>
       <Box flex={1} alignItems="center" justifyContent="center">
-        <Image source={require('../../../assets/images/logo.png')} />
+        <Image
+          source={require('../../../assets/images/logo.png')}
+          style={{width: 120, height: 120}}
+        />
       </Box>
 
       <Box flex={2.5} mt="xl" mx="l">
@@ -78,7 +83,6 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
           }) => (
             <>
               <CustomInput
-                required
                 label="Email"
                 placeholder="Email Address"
                 value={values.email}
@@ -114,7 +118,7 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
 
               <CustomButton
                 loading={login_status === 'loading'}
-                label="Sign in"
+                label={lang('signIn')}
                 onPress={handleSubmit}
                 mt="l"
                 disabled={
@@ -131,7 +135,7 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
             onPress={() => navigation.navigate('RegisteredCredentials')}
             mt="m"
             buttonType="textOnly"
-            label="  Forgot the password?"
+            label={lang('forgotPass')}
             color="primary"
           />
         </Box>
@@ -142,11 +146,11 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
           alignItems="center"
           justifyContent="center">
           <Text variant="title" textAlign="center" color="textMuted">
-            Don't have an account?
+            {lang('noAcc')}
           </Text>
           <CustomButton
             onPress={() => navigation.navigate('Bio')}
-            label=" Sign up"
+            label={` ${lang('signUp')}`}
             buttonType="textOnly"
             color="primary"
           />

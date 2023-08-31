@@ -1,4 +1,4 @@
-package com.namasteschiffli.newarchitecture;
+package com.indiancorner.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.namasteschiffli.BuildConfig;
-import com.namasteschiffli.newarchitecture.components.MainComponentsRegistry;
-import com.namasteschiffli.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.indiancorner.BuildConfig;
+import com.indiancorner.newarchitecture.components.MainComponentsRegistry;
+import com.indiancorner.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

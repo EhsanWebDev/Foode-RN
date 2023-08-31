@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Box from '../../../../../components/View/CustomView';
 import Text from '../../../../../components/Text/CustomText';
@@ -34,7 +34,7 @@ const MenuItem: FC<MenuProps> = ({item, onPress, onPressAdd}) => {
               {product_description ?? ''}
             </Text>
             <Text variant="body_sm_bold" mt="s" color="primary">
-              ${price ?? ''}
+              CHF {price ?? ''}
             </Text>
           </Box>
           <Box>
@@ -57,4 +57,4 @@ const MenuItem: FC<MenuProps> = ({item, onPress, onPressAdd}) => {
     </>
   );
 };
-export default MenuItem;
+export default memo(MenuItem);

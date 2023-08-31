@@ -1,88 +1,99 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from 'react-native';
 import moment from 'moment';
 import {unwrapResult} from '@reduxjs/toolkit';
-import RBSheet from 'react-native-raw-bottom-sheet';
+import {StackActions} from '@react-navigation/native';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Box from '../../../components/View/CustomView';
 import Text from '../../../components/Text/CustomText';
 import Header from '../../../components/AppComponents/Header/Header';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {useAppTheme} from '../../../utils/hooks';
 import {globalUnits} from '../../../theme/globalStyles';
 import {Divider} from 'react-native-paper';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
 import {clearCart, selectCartTotalPrice} from '../Cart/cartSlice';
-
 import showToast from '../../../utils/toast';
 import {placeOrder} from '../Order/actions';
-
 import {handleApiErrors} from '../../../utils/utils';
-import {StackActions} from '@react-navigation/native';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import {dimensions} from '../../../utils/constants';
-import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
 
 import styles from './styles';
 import CheckoutTab from '../../../components/AppComponents/TabView/CheckoutTab';
 import CartButton from '../../../components/Button/CartButton';
 import CustomButton from '../../../components/Button/CustomButton';
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
 
-import RadioBar from '../../../components/RadioButton/RadioBar';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Image} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {selectUserDeliveryAddress} from '../../Auth/userSlice';
 import {getUserAddressBook} from '../../Auth/actions';
+import AddressModal from './components/AddressModal';
+import DeliveryTimeModal from './components/DeliveryTimeModal';
+import PayMethodModal from './components/PayMethodModal';
+import {useTranslation} from 'react-i18next';
 
 const Checkout = ({navigation, route}) => {
   const {params} = route || {};
   const {message} = params || {};
 
+  const {t: lang} = useTranslation();
+
+  // modal refs
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
+  const payMethodModalRef = useRef<BottomSheetModal>(null);
+
   const {colors} = useAppTheme();
   const dispatch = useReduxDispatch();
+  const {cartItems} = useReduxSelector(store => store.cart);
+  const {user, userAddress, address_status} = useReduxSelector(
+    store => store.user,
+  );
+  const {data: storeData} = useReduxSelector(store => store.store.menu);
+  const {status} = useReduxSelector(store => store.order.orderProcess);
+  const totalPrice = useReduxSelector(selectCartTotalPrice);
 
   const [tabIndex, setTabIndex] = useState(1);
   const [deliveryOption, setDeliveryOption] = useState(1);
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(new Date());
-
-  const {cartItems} = useReduxSelector(store => store.cart);
-  const {user, userAddress, address_status, addressBook} = useReduxSelector(
-    store => store.user,
+  const [payMethod, setPayMethod] = useState<'cash' | 'adyen' | undefined>(
+    undefined,
   );
-  console.log({addressBook});
-  const {status} = useReduxSelector(store => store.order.orderProcess);
+
+  const {longitude, latitude} = storeData || {};
+  const storeLocation = {
+    longitude: parseFloat(longitude),
+    latitude: parseFloat(latitude),
+    latitudeDelta: 0.0222,
+    longitudeDelta: 0.0121,
+  };
 
   const {data} = user || {};
   const {uuid} = data || {};
   const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
-  const {userLocation} = selectedAddress;
+  const {userLocation} = selectedAddress || {};
 
   const {city, street_address} = selectedAddress || {};
 
-  const totalPrice = useReduxSelector(selectCartTotalPrice);
-  const deliveryFee = 4.0;
+  const deliveryFee = 2.0;
   const result = parseFloat(totalPrice) + 0.0;
   const result2 = parseFloat(totalPrice) + deliveryFee;
-  const resultString = result.toFixed(2);
-  const totalPriceWithDelivery = result2.toFixed(2);
+  const resultString = result?.toFixed(2);
+  const totalPriceWithDelivery = result2?.toFixed(2);
+  const {width} = dimensions;
 
   const fetchAddressBook = () => {
     dispatch(getUserAddressBook({user_id: uuid}));
@@ -92,16 +103,17 @@ const Checkout = ({navigation, route}) => {
     if (user && address_status === 'idle') {
       fetchAddressBook();
     }
-  }, []);
+  }, [user]);
 
   const handleCheckout = async () => {
-    if (!isAddressSelected) {
-      showToast({
-        message: 'Please select a delivery address',
-        type: 'error',
-        visibilityTime: 1500,
-      });
-      return;
+    if (tabIndex === 1) {
+      if (!isAddressSelected) {
+        showToast({
+          message: 'Please select a delivery address',
+          visibilityTime: 1500,
+        });
+        return;
+      }
     }
 
     const orderCartItems = (cartItems || []).map(item => {
@@ -121,99 +133,124 @@ const Checkout = ({navigation, route}) => {
         total_price: totalItemPrice.toFixed(2),
       };
     });
-
-    dispatch(
-      placeOrder({
-        user_id: uuid,
-
-        order_type: tabIndex === 1 ? 'delivery' : 'pickup',
-        delivery_time_opiton: deliveryOption === 1 ? 'asap' : 'later',
-        delivery_address: `${street_address}, ${city}`,
-        delivery_date:
-          deliveryOption === 1
-            ? moment().format('YYYY-MM-DD')
-            : moment(selectedDeliveryDate).format('YYYY-MM-DD'),
-        delivery_timing:
-          deliveryOption === 1
-            ? moment().format('HH:MM')
-            : moment(selectedDeliveryDate).format('hh:mm A'),
-        order_instruction: message,
-        payment_option: 'cash',
-        delivery_charge: deliveryFee.toFixed(2),
-        discount_price: '0.0',
-        order_grant_total: resultString,
-        order_sub_total: totalPrice,
-        cart_data: orderCartItems,
-      }),
-    )
+    const deliverMyOrder = tabIndex === 1;
+    const ASAPDelivery = deliveryOption === 1;
+    const orderPayload = {
+      user_id: uuid,
+      order_type: deliverMyOrder ? 'delivery' : 'pickup',
+      delivery_time_opiton: deliverMyOrder
+        ? ASAPDelivery
+          ? 'asap'
+          : 'later'
+        : '',
+      delivery_address: deliverMyOrder ? `${street_address}, ${city}` : '',
+      delivery_date: deliverMyOrder
+        ? ASAPDelivery
+          ? moment().format('YYYY-MM-DD')
+          : moment(selectedDeliveryDate).format('YYYY-MM-DD')
+        : '',
+      delivery_timing: deliverMyOrder
+        ? ASAPDelivery
+          ? moment().format('HH:MM')
+          : moment(selectedDeliveryDate).format('hh:mm A')
+        : '',
+      order_instruction: message,
+      payment_option: payMethod ?? 'cash',
+      delivery_charge: deliverMyOrder ? deliveryFee.toFixed(2) : '0',
+      discount_price: '0.0',
+      order_grant_total: resultString,
+      order_sub_total: totalPrice,
+      cart_data: orderCartItems,
+    };
+    dispatch(placeOrder(orderPayload))
       .then(unwrapResult)
       .then(response => {
-        const {status, message} = response;
-        handleApiErrors({message});
+        const {status} = response || {};
+
         if (status === 200) {
           dispatch(clearCart());
-          const popAction = StackActions.pop(2);
-          navigation.dispatch(popAction);
+          if (payMethod === 'adyen') {
+            navigation.navigate('ProcessPayment', {
+              orderDetails: {
+                ...orderPayload,
+                ...response,
+                orderPrice: parseInt(
+                  deliverMyOrder
+                    ? totalPriceWithDelivery * 100
+                    : totalPrice * 100,
+                ),
+              },
+            });
+
+            return;
+          }
+          navigation.navigate('OrderCompleted', {
+            orderDetails: {
+              ...orderPayload,
+              ...response,
+              orderPrice: parseInt(
+                deliverMyOrder
+                  ? totalPriceWithDelivery * 100
+                  : totalPrice * 100,
+              ),
+            },
+          });
         }
       })
       .catch(e => handleApiErrors({message: e}));
   };
 
   const handleSignIn = () => navigation.navigate('AuthStack');
+  const handleOrderProcess = () => {
+    if (!user) {
+      handleSignIn();
+      return;
+    }
+    if (!payMethod) {
+      showToast({
+        message: 'Please select a payment method first',
+        visibilityTime: 2000,
+      });
+      return;
+    }
+    if (tabIndex === 1) {
+      handleDeliveryTimeModalPress();
+      return;
+    }
+    handleCheckout();
+  };
 
-  const {width} = dimensions;
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        // disappearsOnIndex={-1}
-        // appearsOnIndex={0}
-        animatedIndex={animatedContentHeight}
-        pressBehavior="close"
-      />
-    ),
-    [],
-  );
-  // ref
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [userLocation]);
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
-  const deliveryTimeSnapPoints = useMemo(() => ['28%'], []);
-
-  // callbacks
+  // modal callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
   const handleDeliveryTimeModalPress = useCallback(() => {
     deliveryTimeModalRef.current?.present();
   }, []);
+  const handlePayMethodModalPress = useCallback(() => {
+    payMethodModalRef.current?.present();
+  }, []);
 
-  function dateToFromNowDaily(myDate) {
-    // get from-now for this date
-    var fromNow = moment(myDate).format('dddd, DD/MM');
-
-    // ensure the date is displayed with today and yesterday
-    return moment(myDate).calendar(null, {
-      // when the date is closer, specify custom values
-      lastWeek: '[Last] dddd',
-      lastDay: '[Yesterday]',
-      sameDay: '[Today]',
-      nextDay: '[Tomorrow]',
-      nextWeek: 'dddd',
-      // when the date is further away, use from-now functionality
-      sameElse: function () {
-        return '[' + fromNow + ']';
-      },
-    });
+  if (cartItems.length === 0) {
+    return (
+      <ScreenContainer>
+        <Header label="Empty Cart" showBackIcon={false} />
+        <Box flex={1} justifyContent="center" alignItems="center">
+          <Icon name="cart" size={80} color={colors.primary} />
+          <Text variant="body_sm_bold">Your cart is empty</Text>
+        </Box>
+        <Box mx="l" mb="xs">
+          <CustomButton
+            label="GO BACK"
+            buttonType="outlined"
+            onPress={() => {
+              const popAction = StackActions.pop(2);
+              navigation.dispatch(popAction);
+            }}
+          />
+        </Box>
+      </ScreenContainer>
+    );
   }
 
   return (
@@ -231,12 +268,12 @@ const Checkout = ({navigation, route}) => {
           width={width}
           height={moderateVerticalScale(220)}
           style={[styles.mapOverflow, {borderColor: colors.primary}]}>
-          {/* <MapView
+          <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            region={userLocation}>
+            region={tabIndex === 1 ? userLocation : storeLocation}>
             <Marker
-              coordinate={userLocation}
+              coordinate={tabIndex === 1 ? userLocation : storeLocation}
               title="Order will be delivered here">
               <Image
                 source={require('./../../../assets/images/pin.png')}
@@ -262,7 +299,7 @@ const Checkout = ({navigation, route}) => {
                 </Box>
               </Callout>
             </Marker>
-          </MapView> */}
+          </MapView>
         </Box>
       </Box>
       <DateTimePickerModal
@@ -300,47 +337,58 @@ const Checkout = ({navigation, route}) => {
               />
             </Box>
 
-            <ActionBar
-              title={
-                isAddressSelected
-                  ? 'Select a different delivery address'
-                  : 'Add a delivery address'
-              }
-              titleSize="title"
-              leftIcon="map-marker-outline"
-              subTitle={
-                isAddressSelected
-                  ? `${street_address}, ${city}`
-                  : 'Tap here to continue'
-              }
-              onPress={handlePresentModalPress}
-            />
+            {tabIndex === 1 ? (
+              <ActionBar
+                title={
+                  isAddressSelected
+                    ? lang('selectDiffAddress')
+                    : lang('addDeliveryAddress')
+                }
+                titleSize="title"
+                leftIcon="map-marker-outline"
+                subTitle={
+                  isAddressSelected
+                    ? `${street_address}, ${city}`
+                    : lang('tapToContinue')
+                }
+                onPress={handlePresentModalPress}
+              />
+            ) : null}
           </Box>
           <Divider style={{height: 8, backgroundColor: '#EBEBEB'}} />
         </View>
-        <Box px="l" pt="header">
+        <Box px="l">
           <Box
             flexDirection="row"
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+            mt="m"
+            mb="s">
             <Box flexDirection="row" alignItems="center">
               <Icon
                 name="ios-card-outline"
                 color={colors.primary}
                 size={globalUnits.icon_LG}
               />
-              <Text ml="size8" variant="title_bold">
-                Payment method
-              </Text>
+              <Box ml="size8">
+                <Text variant="title_bold">{lang('payMethod')}</Text>
+                {payMethod && (
+                  <Text variant="body_xs_2">
+                    ({payMethod === 'adyen' ? 'Credit/Debit Card' : 'COD'})
+                  </Text>
+                )}
+              </Box>
             </Box>
+
             <CustomButton
-              label="Add"
+              label={payMethod ? 'Update' : 'Add'}
               buttonSize="small"
               buttonType="outlined"
               showRightIcon
+              onPress={handlePayMethodModalPress}
             />
           </Box>
-          <Box mt="l" mb="s">
+          <Box mb="s">
             <Text mb="size6" variant="body_bold">
               Price in EUR, incl. taxes
             </Text>
@@ -366,8 +414,14 @@ const Checkout = ({navigation, route}) => {
               p="s"
               borderBottomLeftRadius={10}
               borderBottomRightRadius={10}>
-              <Text variant="body_sm_bold">Total (incl. delivery charges)</Text>
-              <Text variant="body_sm_bold">CHF {totalPriceWithDelivery}</Text>
+              <Text variant="body_sm_bold">
+                {tabIndex === 1
+                  ? `Total (incl. ${lang('deliveryCharges')})`
+                  : 'Total'}
+              </Text>
+              <Text variant="body_sm_bold">
+                CHF {tabIndex === 1 ? totalPriceWithDelivery : totalPrice}
+              </Text>
             </Box>
           </Box>
         </Box>
@@ -376,166 +430,32 @@ const Checkout = ({navigation, route}) => {
         <Box mx="l" mb="l" pt="s">
           <ActionBar
             leftIcon="file-document-outline"
-            title="Terms of service and purchase"
+            title={lang('termsOfPurchase')}
             onPress={() => {}}
           />
 
           <Box mt="l">
             <CartButton
-              onPress={() =>
-                !user ? handleSignIn() : handleDeliveryTimeModalPress()
-              }
-              label={'PROCEED PAYMENT'}
-              price={totalPriceWithDelivery}
+              onPress={handleOrderProcess}
+              label={lang('processOrder')}
+              price={tabIndex === 1 ? totalPriceWithDelivery : totalPrice}
               loading={status === 'loading'}
               itemsCount={cartItems.length}
               buttonType={!user ? 'dead_state' : 'contained'}
+              textStyles={{textTransform: 'uppercase'}}
             />
           </Box>
         </Box>
       </Box>
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          enablePanDownToClose
-          ref={bottomSheetModalRef}
-          backdropComponent={renderBackdrop}
-          snapPoints={animatedSnapPoints}
-          handleHeight={animatedHandleHeight}
-          contentHeight={animatedContentHeight}
-          handleComponent={null}
-          detached
-          bottomInset={12}
-          style={{marginHorizontal: 20}}>
-          <BottomSheetScrollView onLayout={handleContentLayout}>
-            <Box flex={1} py="s_m" px="s">
-              <Box
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between">
-                <Text variant="title_bold" color="gray">
-                  Choose your delivery address
-                </Text>
-
-                <TouchableOpacity
-                  onPress={() => bottomSheetModalRef.current?.dismiss()}>
-                  <Icon
-                    name="close"
-                    size={globalUnits.icon_LG}
-                    color={colors.gray}
-                  />
-                </TouchableOpacity>
-              </Box>
-
-              {address_status === 'loading' ? (
-                <Box marginVertical="xl">
-                  <ActivityIndicator />
-                </Box>
-              ) : userAddresses.length > 0 ? (
-                <BottomSheetScrollView style={{flex: 1, maxHeight: 240}}>
-                  <Box flex={1} marginVertical="s">
-                    {userAddresses.map((item, index) => (
-                      <Box key={item.id} marginVertical="xs">
-                        <RadioBar
-                          title={`${item.street_address}`}
-                          checked={item.isSelected}
-                          leftIcon="home"
-                          onPress={() => {
-                            dispatch(selectUserDeliveryAddress({id: item.id}));
-                          }}
-                        />
-                      </Box>
-                    ))}
-                  </Box>
-                </BottomSheetScrollView>
-              ) : (
-                <Box
-                  flex={1}
-                  marginVertical="l"
-                  justifyContent="center"
-                  alignItems="center">
-                  <Text variant="body_sm">Please add a delivery address</Text>
-                </Box>
-              )}
-
-              <Box pt="s">
-                <CustomButton
-                  label="ADD NEW ADDRESS"
-                  showLeftIcon
-                  buttonType="outlined"
-                  onPress={() => {
-                    bottomSheetModalRef.current?.dismiss();
-                    navigation.navigate('AddAddress');
-                  }}
-                />
-              </Box>
-            </Box>
-          </BottomSheetScrollView>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          enablePanDownToClose
-          ref={deliveryTimeModalRef}
-          index={0}
-          backdropComponent={renderBackdrop}
-          snapPoints={deliveryTimeSnapPoints}
-          handleComponent={null}
-          detached
-          bottomInset={12}
-          style={{marginHorizontal: 20}}>
-          <Box flex={1} pt="l" px="s">
-            <Box
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mb="size8">
-              <Text variant="title_bold" textTransform="uppercase" color="gray">
-                Delivery Time
-              </Text>
-              <CustomButton
-                label="Done"
-                buttonType="outlined"
-                buttonSize="small"
-                onPress={async () => {
-                  deliveryTimeModalRef.current?.dismiss();
-                  await handleCheckout();
-                }}
-              />
-            </Box>
-
-            <Divider />
-            <Box px="s" marginVertical="s">
-              <RadioBar
-                title="As soon as possible"
-                checked={deliveryOption === 1}
-                onPress={() => {
-                  setDeliveryOption(1);
-                }}
-              />
-            </Box>
-            <Divider />
-            <Box px="s" marginVertical="s">
-              <RadioBar
-                checked={deliveryOption === 2}
-                title="Schedule for later"
-                subTitle={
-                  selectedDeliveryDate &&
-                  `${dateToFromNowDaily(selectedDeliveryDate)} ${moment(
-                    selectedDeliveryDate,
-                  ).format('hh:mm A')}`
-                }
-                leftIcon="calendar-outline"
-                onPress={() => {
-                  deliveryTimeModalRef.current?.dismiss();
-                  setDeliveryOption(2);
-                  setShowDatePicker(true);
-                }}
-              />
-            </Box>
-            <Divider />
-          </Box>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+      <AddressModal modalRef={bottomSheetModalRef} />
+      <DeliveryTimeModal
+        modalRef={deliveryTimeModalRef}
+        onDonePress={handleCheckout}
+      />
+      <PayMethodModal
+        modalRef={payMethodModalRef}
+        onDonePress={method => setPayMethod(method)}
+      />
     </ScreenContainer>
   );
 };

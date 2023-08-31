@@ -20,6 +20,9 @@ import AppTabsNavigation from './AppTabsNavigation';
 import StoreDetails from '../screens/Home/Store/Details/StoreDetails';
 import StoreMenuDetails from '../screens/Home/Store/Details/StoreMenuDetails';
 import Menu from '../screens/Home/Store/Menu/Menu';
+import ProcessPayment from '../screens/Shop/Checkout/ProcessPayment';
+import OrderCompleted from '../screens/Shop/Checkout/OrderCompleted';
+import OrderDetails from '../screens/Shop/Order/OrderDetails';
 
 const AppStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,7 +52,10 @@ const RootNavigation = () => {
       <AppStack.Screen name="Splash" component={Splash} />
       <AppStack.Screen name="Cart" component={Cart} />
       <AppStack.Screen name="Checkout" component={Checkout} />
+      <AppStack.Screen name="ProcessPayment" component={ProcessPayment} />
+      <AppStack.Screen name="OrderCompleted" component={OrderCompleted} />
       <AppStack.Screen name="TrackOrder" component={TrackOrder} />
+      <AppStack.Screen name="OrderDetails" component={OrderDetails} />
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen name="ProductDetails" component={ProductDetails} />
       <AppStack.Screen name="BookSeat" component={BookSeat} />

@@ -25,8 +25,6 @@ type errorObject = {
 };
 
 interface InputProps extends TextInputProps {
-  label?: string;
-  required?: boolean;
   value: string;
   onChangeText: (text: string) => void;
   extraInputStyles?: object;
@@ -39,8 +37,6 @@ interface InputProps extends TextInputProps {
 }
 
 const Input: React.FC<InputProps & RestyleProps> = ({
-  label,
-  required = true,
   extraInputStyles,
   showIcon,
   iconName = 'mail',
@@ -60,21 +56,16 @@ const Input: React.FC<InputProps & RestyleProps> = ({
 
   return (
     <Box {...props}>
-      {/* {label && (
-        <Text marginBottom="s" ml="m" variant="body_sm_bold" color="textMuted">
-          {label} {required && <Text color="error">*</Text>}
-        </Text>
-      )} */}
       <DateTimePickerModal
         date={new Date()}
         minimumDate={pickerMode === 'date' ? new Date() : null}
         isVisible={showDatePicker}
         mode={pickerMode}
         onConfirm={date => {
-          rest.onChangeText(date);
-          setShowDatePicker(show => !show);
+          setShowDatePicker(false);
+          rest?.onChangeText(date);
         }}
-        onCancel={() => setShowDatePicker(show => !show)}
+        onCancel={() => setShowDatePicker(false)}
       />
 
       <Box>

@@ -18,6 +18,7 @@ i18next
   // .use(languageDetector)
   .use(initReactI18next)
   .init({
+    compatibilityJSON: 'v3',
     fallbackLng: 'en',
     resources: {
       en: english,

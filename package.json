@@ -1,5 +1,5 @@
 {
-  "name": "namasteschiffli",
+  "name": "IndianCorner",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@adyen/react-native": "^1.0.0",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/cli-platform-android": "^11.2.0",
@@ -28,6 +29,8 @@
     "google-libphonenumber": "^3.2.32",
     "i18next": "^23.2.3",
     "moment": "^2.29.4",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.1.0",
     "react-content-loader": "^6.2.1",
     "react-i18next": "^13.0.1",
@@ -62,6 +65,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
     "yup": "^1.1.1"
   },
   "reactNativePermissionsIOS": [

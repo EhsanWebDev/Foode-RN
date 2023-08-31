@@ -19,6 +19,7 @@ import {TouchableOpacity} from 'react-native';
 import {Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
+import {useTranslation} from 'react-i18next';
 type signupPayload = {
   name: string;
   email: string;
@@ -58,6 +59,7 @@ const signUpSchema = Yup.object().shape({
 const Bio: React.FC = ({navigation}) => {
   const dispatch = useReduxDispatch();
   const phoneInput = useRef<PhoneInput>(null);
+  const {t: lang} = useTranslation();
 
   const {signUp_status, login_status} = useReduxSelector(state => state.user);
   const [formattedValue, setFormattedValue] = useState('');
@@ -92,6 +94,12 @@ const Bio: React.FC = ({navigation}) => {
   return (
     <ScreenContainer>
       <Box flex={1} mx="l">
+        <Box mt="s" alignItems="center" justifyContent="center">
+          <Image
+            source={require('../../../../assets/images/logo.png')}
+            style={{width: 120, height: 120}}
+          />
+        </Box>
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -113,16 +121,9 @@ const Bio: React.FC = ({navigation}) => {
                 handleSubmit,
               }) => (
                 <Box flex={1}>
-                  <Box flex={1} alignItems="center" justifyContent="center">
-                    <Image
-                      source={require('../../../../assets/images/logo.png')}
-                    />
-                  </Box>
-
                   <Box mt="l">
                     <Input
-                      label="Full Name"
-                      placeholder="Full Name"
+                      placeholder={lang('fullName')}
                       value={values.name}
                       onChangeText={handleChange('name')}
                       onBlur={() => setFieldTouched('name')}
@@ -133,8 +134,7 @@ const Bio: React.FC = ({navigation}) => {
                       mb="l"
                     />
                     <Input
-                      label="Email"
-                      placeholder="Email"
+                      placeholder={lang('email')}
                       value={values.email}
                       onChangeText={handleChange('email')}
                       onBlur={() => setFieldTouched('email')}
@@ -153,8 +153,7 @@ const Bio: React.FC = ({navigation}) => {
                         error: touched.password && errors.password,
                         errorMsg: errors.password,
                       }}
-                      label="Password"
-                      placeholder="Password"
+                      placeholder={lang('password')}
                       secureTextEntry={!showPass}
                       showIcon
                       iconName={showPass ? 'eye-off-sharp' : 'eye-sharp'}
@@ -169,8 +168,7 @@ const Bio: React.FC = ({navigation}) => {
                         error: touched.repeatPassword && errors.repeatPassword,
                         errorMsg: errors.repeatPassword,
                       }}
-                      label="Confirm Password"
-                      placeholder="Confirm Password"
+                      placeholder={`${lang('confirm')} ${lang('password')}`}
                       secureTextEntry={!showRepeatPass}
                       showIcon
                       iconName={showRepeatPass ? 'eye-off-sharp' : 'eye-sharp'}
@@ -184,6 +182,7 @@ const Bio: React.FC = ({navigation}) => {
                         defaultCode="IN"
                         layout="second"
                         containerStyle={styles.phoneInputContainer}
+                        textInputStyle={{padding: 0}}
                         textContainerStyle={[
                           styles.input,
                           {
@@ -212,7 +211,7 @@ const Bio: React.FC = ({navigation}) => {
                     </Box>
                   </Box>
                   <CustomButton
-                    label="Sign up"
+                    label={lang('signUp')}
                     loading={signUp_status === 'loading'}
                     onPress={handleSubmit}
                     disabled={
@@ -233,11 +232,11 @@ const Bio: React.FC = ({navigation}) => {
                     alignItems="center"
                     justifyContent="center">
                     <Text variant="title" textAlign="center" color="textMuted">
-                      Already have an account?
+                      {lang('haveAcc')}
                     </Text>
                     <CustomButton
                       onPress={() => navigation.navigate('Login')}
-                      label=" Sign in"
+                      label={` ${lang('signIn')}`}
                       buttonType="textOnly"
                       color="primary"
                     />

@@ -8,7 +8,7 @@ import Box from '../../components/View/CustomView';
 import Text from '../../components/Text/CustomText';
 
 import {globalUnits} from '../../theme/globalStyles';
-import {useReduxDispatch, useReduxSelector} from '../../store';
+import {persistor, useReduxDispatch, useReduxSelector} from '../../store';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
@@ -17,6 +17,8 @@ import {getStoreData, getStoreGallery} from './Store/redux/actions';
 import HomeLoading from './Loaders/HomeLoading';
 import {RefreshControl} from 'react-native-gesture-handler';
 import Retry from '../../components/Common/Retry';
+import ScreenContainer from '../../components/AppComponents/Container/ScreenContainer';
+import Header from '../../components/AppComponents/Header/Header';
 
 const imagesData = [
   {
@@ -54,8 +56,6 @@ const Home = ({navigation}) => {
   const {data} = user || {};
   const {name} = data || {};
 
-  console.log({user});
-
   const fetchStoreGallery = () => {
     dispatch(getStoreGallery());
   };
@@ -87,12 +87,15 @@ const Home = ({navigation}) => {
 
   if (storeError || galleryError) {
     return (
-      <Box mx="l">
-        <Retry
-          onPress={onRefresh}
-          isLoading={galleryStatus === 'loading' || storeStatus === 'loading'}
-        />
-      </Box>
+      <ScreenContainer>
+        <Header label="Error" showBackIcon={false} />
+        <Box mx="l" mt="xxl">
+          <Retry
+            onPress={onRefresh}
+            isLoading={galleryStatus === 'loading' || storeStatus === 'loading'}
+          />
+        </Box>
+      </ScreenContainer>
     );
   }
 
@@ -148,7 +151,11 @@ const Home = ({navigation}) => {
                 </TouchableOpacity>
               </Box>
               <Box>
-                <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Cart');
+                    // await persistor.purge();
+                  }}>
                   <Icon
                     name="ios-cart"
                     size={globalUnits.icon_LG}
@@ -172,7 +179,7 @@ const Home = ({navigation}) => {
             <Box mt="l" mx="l">
               <Text variant="header" color="text">
                 {`Hey, ${name ?? 'Guest'}
-Good Morning! `}
+${t('goodMorning')}! `}
                 <Icon name="sunny-sharp" color="white" size={24} />
               </Text>
               <Text mt="s" mb="xl" variant="title" color="text">

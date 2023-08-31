@@ -43,8 +43,11 @@ const DrawerContent = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Box flex={1} mt="xl" px="m">
-        <Box flex={1}>
-          <Image source={require('./../assets/images/logo.png')} />
+        <Box alignItems="center" justifyContent="center">
+          <Image
+            source={require('./../assets/images/logo.png')}
+            style={{width: 120, height: 120}}
+          />
         </Box>
         <Box flex={1} justifyContent="center">
           <DrawerButton

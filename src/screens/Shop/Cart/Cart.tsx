@@ -28,6 +28,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import BottomSheetInput from '../../../components/TextInput/BottomSheetInput';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
+import {useTranslation} from 'react-i18next';
 
 const recentOrdersData = [
   {
@@ -95,6 +96,7 @@ const ListEmptyComponent = () => {
 
 const Cart = ({navigation}) => {
   const refRBSheet = useRef();
+  const {t: lang} = useTranslation();
   const {cartItems} = useReduxSelector(store => store.cart);
   const totalPrice = useReduxSelector(selectCartTotalPrice);
 
@@ -131,7 +133,7 @@ const Cart = ({navigation}) => {
     <ScreenContainer>
       <StatusBar barStyle="default" />
       <Box flex={1}>
-        <Header label="Your Order" onBackPress={navigation.goBack} />
+        <Header label={lang('yourOrder')} onBackPress={navigation.goBack} />
         <Box flex={1} mt="l">
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -139,7 +141,9 @@ const Cart = ({navigation}) => {
             data={[{}]}
             ListHeaderComponent={() => (
               <Box mx="l" flex={1}>
-                <Text variant="body">Order Items</Text>
+                <Text variant="body">
+                  {lang('order')} {lang('items')}
+                </Text>
                 <FlatList
                   style={{marginTop: 16}}
                   contentContainerStyle={{maxHeight: 120}}
@@ -167,8 +171,8 @@ const Cart = ({navigation}) => {
           <Box borderTopColor="border" borderTopWidth={2}>
             <Box mx="l" mt="l+" mb="l">
               <ActionBar
-                title="Add a message for the restaurant"
-                subTitle="Special request, allergies, dietary restrictions?"
+                title={lang('addMSGForRestaurant')}
+                subTitle={lang('specialReq')}
                 onPress={handleDeliveryTimeModalPress}
               />
 
@@ -180,8 +184,9 @@ const Cart = ({navigation}) => {
                       message,
                     })
                   }
-                  label="GO TO CHECKOUT"
+                  label={lang('goToCheckout')}
                   itemsCount={cartItems.length}
+                  textStyles={{textTransform: 'uppercase'}}
                 />
               </Box>
             </Box>
@@ -207,15 +212,14 @@ const Cart = ({navigation}) => {
           keyboardBlurBehavior="restore">
           <Box flex={1} marginVertical="l" px="m">
             <Box>
-              <Text variant="body_bold">Add Message</Text>
+              <Text variant="body_bold">{lang('addMSG')}</Text>
 
               <Box mt="m">
-                <Text variant="title">
-                  Special request, allergies, dietary restrictions?
+                <Text variant="title" textTransform="capitalize">
+                  {lang('specialReq')}?
                 </Text>
                 <Text mt="size8" variant="body_xs" color="textMuted">
-                  Please note that your message to the venue may also be seen by
-                  the courier partner delivering your order
+                  {lang('msgNote')}
                 </Text>
               </Box>
 
@@ -224,7 +228,7 @@ const Cart = ({navigation}) => {
                   value={message}
                   onChangeText={text => setMessage(text)}
                   blurOnSubmit
-                  placeholder="Write your message here"
+                  placeholder={lang('writeMSG')}
                   multiline
                 />
 

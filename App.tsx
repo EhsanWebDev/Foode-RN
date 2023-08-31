@@ -7,28 +7,27 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RootNavigation from './src/navigation/RootNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import store from './src/store';
+import store, {persistor} from './src/store';
 import {Provider} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <GestureHandlerRootView style={styles.container}>
-        {/* <SafeAreaProvider> */}
-        {/* <SafeAreaView style={styles.container}> */}
-        <NavigationContainer>
-          <ThemeProvider theme={theme}>
-            <PaperProvider>
-              <RootNavigation />
-            </PaperProvider>
-          </ThemeProvider>
-        </NavigationContainer>
-        <Toast />
-        <StatusBar barStyle="light-content" />
-        {/* </SafeAreaView> */}
-        {/* </SafeAreaProvider> */}
-      </GestureHandlerRootView>
+      <PersistGate loading={null} persistor={persistor}>
+        <GestureHandlerRootView style={styles.container}>
+          <NavigationContainer>
+            <ThemeProvider theme={theme}>
+              <PaperProvider>
+                <RootNavigation />
+              </PaperProvider>
+            </ThemeProvider>
+          </NavigationContainer>
+          <Toast />
+          <StatusBar barStyle="light-content" />
+        </GestureHandlerRootView>
+      </PersistGate>
     </Provider>
   );
 };

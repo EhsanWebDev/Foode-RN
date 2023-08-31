@@ -16,12 +16,14 @@ import showToast from '../../../../utils/toast';
 import {addToCart} from '../../Cart/cartSlice';
 import CartItemActions from '../../../../components/AppComponents/CartItemActions/CartItemActions';
 import BottomSheet from '@gorhom/bottom-sheet';
+import {useTranslation} from 'react-i18next';
 
 const ProductDetails = ({navigation, route}) => {
   const {params} = route || {};
   const {productId} = params || {};
 
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
   const {data, status} = useReduxSelector(store => store.store.product);
   const {cartItems} = useReduxSelector(store => store.cart);
 
@@ -69,6 +71,8 @@ const ProductDetails = ({navigation, route}) => {
     items || {};
   const {price} = details?.[0] || {};
 
+  console.log({data});
+
   return (
     <Box flex={1}>
       {/* <StatusBar backgroundColor={colors.primary} /> */}
@@ -94,7 +98,6 @@ const ProductDetails = ({navigation, route}) => {
           <IconButton icon="close" onPress={navigation.goBack} />
         </Box>
       </Box>
-      {/* <SafeAreaView style={{flex: 1}}> */}
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -109,12 +112,12 @@ const ProductDetails = ({navigation, route}) => {
           <Box flex={1} mx="m" mb="l+">
             <Text variant="header">{product_name}</Text>
             <Text variant="title_bold" color="primary">
-              ${price}
+              CHF {price}
             </Text>
             <Text variant="body_sm" mt="s">
               {product_description}
             </Text>
-            <Box flex={1} justifyContent="flex-end" mb="s">
+            <Box flex={1} justifyContent="flex-end" mb="xxs">
               <Box flexDirection="row" alignItems="center">
                 <CartItemActions
                   onDecrement={() => {
@@ -129,15 +132,14 @@ const ProductDetails = ({navigation, route}) => {
                 />
                 <Box flex={1}>
                   <CustomButton
-                    label="Add to cart"
+                    label={lang('addToCart')}
                     ml="s"
                     onPress={() => {
                       showToast({
                         message: `${product_name} ${
                           isDec ? 'removed from' : 'added to'
                         }  the cart`,
-                        type: isDec ? 'info' : 'success',
-                        visibilityTime: 1000,
+                        visibilityTime: 1200,
                       });
                       dispatch(addToCart({...items, quantity}));
                       navigation.goBack();
@@ -149,8 +151,6 @@ const ProductDetails = ({navigation, route}) => {
           </Box>
         </Box>
       </BottomSheet>
-
-      {/* </SafeAreaView> */}
     </Box>
   );
 };

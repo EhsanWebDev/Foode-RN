@@ -17,6 +17,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {CategoryItem, InfoRowProps} from './types';
 import {getStoreData} from '../redux/actions';
 import MenuLoading from '../Menu/Loader/MenuLoading';
+import {useTranslation} from 'react-i18next';
 
 const InfoRow = ({title, image, onPress}: InfoRowProps) => {
   const {colors} = useAppTheme();
@@ -56,6 +57,7 @@ const StoreMenuDetails = ({navigation}) => {
   const {colors} = useAppTheme();
   const dispatch = useReduxDispatch();
   const {data, status} = useReduxSelector(store => store.store.menu);
+  const {t: lang} = useTranslation();
 
   const fetchAPI = () => {
     dispatch(getStoreData());
@@ -109,7 +111,7 @@ const StoreMenuDetails = ({navigation}) => {
                 <Text variant="body_bold">{business_name}</Text>
 
                 <Text variant="body_sm" color="primary">
-                  {`Delivery in ${delivery_estimate} min`}
+                  {`${lang('delivery')} in ${delivery_estimate} min`}
                 </Text>
               </Box>
             </Box>
@@ -128,7 +130,7 @@ const StoreMenuDetails = ({navigation}) => {
                 variant="title_bold"
                 color="muted"
                 textTransform="uppercase">
-                Food menu
+                {lang('foodMenu')}
               </Text>
             </Box>
             {(category || []).map(item => {
@@ -165,7 +167,7 @@ const StoreMenuDetails = ({navigation}) => {
                 variant="title_bold"
                 color="muted"
                 textTransform="uppercase">
-                Vouchers
+                {lang('vouchers')}
               </Text>
             </Box>
 

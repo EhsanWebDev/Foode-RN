@@ -33,6 +33,7 @@ type Props = RestyleProps & {
   loading?: boolean;
   price?: string | number;
   itemsCount?: string | number;
+  textStyles?: TextProps<Theme>;
 };
 
 const CartButton: React.FC<Props> = ({
@@ -44,6 +45,7 @@ const CartButton: React.FC<Props> = ({
   loading,
   price = '',
   itemsCount = '0',
+  textStyles = {},
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -175,7 +177,8 @@ const CartButton: React.FC<Props> = ({
                       variant={
                         buttonSize === 'full' ? 'title_bold' : 'body_xs_bold'
                       }
-                      color={buttonType === 'outlined' ? 'primary' : 'text'}>
+                      color={buttonType === 'outlined' ? 'primary' : 'text'}
+                      {...textStyles}>
                       {label}
                     </Text>
                   </Box>

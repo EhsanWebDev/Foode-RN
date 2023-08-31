@@ -11,6 +11,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useReduxDispatch, useReduxSelector} from '../../../../store';
 import {forgotPassword} from '../../actions';
+import {useTranslation} from 'react-i18next';
 
 const initial_values = {
   email: '',
@@ -22,6 +23,8 @@ const forgotPassSchema = Yup.object().shape({
 
 const RegisteredCredentials = ({navigation}) => {
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
+
   const {forgotPass_status} = useReduxSelector(state => state.user);
 
   const handleSendMail = (values: {email: string}) => {
@@ -30,7 +33,7 @@ const RegisteredCredentials = ({navigation}) => {
 
   return (
     <ScreenContainer>
-      <Header label="Forgot password" onBackPress={navigation.goBack} />
+      <Header label={lang('forgotPassword')} onBackPress={navigation.goBack} />
       <Formik
         initialValues={initial_values}
         validationSchema={forgotPassSchema}
@@ -46,8 +49,7 @@ const RegisteredCredentials = ({navigation}) => {
           <Box flex={2.5} mt="xl" mx="l">
             <Input
               required
-              label="Email"
-              placeholder="Email Address"
+              placeholder={lang('email')}
               value={values.email}
               onChangeText={handleChange('email')}
               onBlur={() => setFieldTouched('email')}
@@ -59,7 +61,7 @@ const RegisteredCredentials = ({navigation}) => {
             />
 
             <CustomButton
-              label="Verify your email"
+              label={lang('verifyEmail')}
               onPress={handleSubmit}
               mt="xl"
               loading={forgotPass_status === 'loading'}

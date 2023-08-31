@@ -1,11 +1,19 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, Pressable, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  Pressable,
+  ScrollView,
+  Image,
+} from 'react-native';
 import ScreenContainer from '../../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../../components/AppComponents/Header/Header';
 import Box from '../../../../components/View/CustomView';
 import {useAppTheme} from '../../../../utils/hooks';
 import Text from '../../../../components/Text/CustomText';
 import {Divider} from 'react-native-paper';
+import {useReduxSelector} from '../../../../store';
+import {useTranslation} from 'react-i18next';
 
 const DeliveryInfoRow = ({title, value}) => (
   <Box
@@ -24,19 +32,46 @@ const DeliveryInfoRow = ({title, value}) => (
 
 const StoreDetails = ({navigation}) => {
   const {colors} = useAppTheme();
+  const {t: lang} = useTranslation();
+  const {status: storeStatus, data: storeData} = useReduxSelector(
+    store => store.store.menu,
+  );
+
+  const {
+    business_name,
+    business_logo,
+    business_address,
+    pickup_estimate,
+    meta_description,
+    currency,
+    delivery_estimate,
+  } = storeData || {};
+
+  console.log({storeData});
+
   return (
     <ScreenContainer>
-      <Header
-        label="Shriganesha"
-        onBackPress={navigation.goBack}
-        rightIcon="information-circle-outline"
-      />
+      <Header label={business_name} onBackPress={navigation.goBack} />
       <ScrollView>
         <Box mt="m" mx="l">
           <Box flexDirection="row" alignItems="center">
-            <Box width={70} height={70} borderRadius={35} bg="primary" />
+            <Box
+              width={70}
+              overflow="hidden"
+              height={70}
+              bg={'primary'}
+              borderRadius={35}>
+              <Image
+                source={{uri: business_logo}}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  resizeMode: 'contain',
+                }}
+              />
+            </Box>
             <Box ml="size8">
-              <Text variant="body_bold">Shriganesha</Text>
+              <Text variant="body_bold">{business_name}</Text>
               <Box flexDirection="row" alignItems="center">
                 <Box
                   mr="xs"
@@ -53,10 +88,7 @@ const StoreDetails = ({navigation}) => {
           </Box>
           <Box mt="m">
             <Text variant="body_sm" textAlign="justify" color="textMuted">
-              Pickles, or “pickled vegetables”, are a Korean specialty. They are
-              served as a side dish to many dishes. The white cabbage is placed
-              in say sauce and spices, giving it its unmistakable taste. Goes
-              well vid Fried Chicken Bulgogi.
+              {meta_description}
             </Text>
           </Box>
         </Box>
@@ -65,19 +97,25 @@ const StoreDetails = ({navigation}) => {
         </Box>
 
         <Box mx="l">
-          <Text variant="body_bold">Location</Text>
+          <Text variant="body_bold">{lang('location')}</Text>
 
           <Box
             mt="m"
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between">
-            <Text variant="body_sm" color="textMuted">
-              {`Vijay Nagar, Indore
-Open at 17:30 . Order in advance`}
-            </Text>
-            <Pressable>
-              <Text variant="body_sm" color="primary">
+            <Box flex={1}>
+              <Text
+                variant="body_sm"
+                color="textMuted"
+                mr={'m'}
+                numberOfLines={2}>
+                {`${business_address}`}
+              </Text>
+            </Box>
+
+            <Pressable disabled>
+              <Text variant="body_sm" color="inactive2">
                 Map
               </Text>
             </Pressable>
@@ -87,7 +125,7 @@ Open at 17:30 . Order in advance`}
           <Divider style={{height: 8, backgroundColor: '#EBEBEB'}} />
         </Box>
         <Box mx="l">
-          <Text variant="body_bold">Open Hours</Text>
+          <Text variant="body_bold">{lang('openHours')}</Text>
 
           <Box mt="m">
             <Text variant="body_sm" color="textMuted">
@@ -99,22 +137,27 @@ Open at 17:30 . Order in advance`}
           <Divider style={{height: 8, backgroundColor: '#EBEBEB'}} />
         </Box>
         <Box mx="l">
-          <Text variant="body_bold">Delivery Information</Text>
+          <Text variant="body_bold">
+            {lang('delivery')} {lang('information')}
+          </Text>
 
           <Box mt="l">
-            <DeliveryInfoRow title="Time:" value="Monday-Sunday 10:00-02:00" />
-            <DeliveryInfoRow title="Delivery Cost:" value="CHF 0:00" />
             <DeliveryInfoRow
-              title="Small order surcharge limit:"
-              value="CHF 15:90"
+              title={`${lang('time')}:`}
+              value="Monday-Sunday 10:00-02:00"
             />
             <DeliveryInfoRow
-              title="Long delivery surcharge limit:"
-              value="2 km"
+              title={`${lang('delivery')} ${lang('cost')}:`}
+              value={`CHF ${delivery_estimate}`}
+            />
+
+            <DeliveryInfoRow
+              title={`${lang('estDelivery')} ${lang('delivery')}:`}
+              value={`${delivery_estimate} min`}
             />
             <DeliveryInfoRow
-              title="Estimated time until delivery:"
-              value="20-30 min"
+              title={`${lang('pickupEST')}:`}
+              value={`${pickup_estimate} min`}
             />
           </Box>
         </Box>

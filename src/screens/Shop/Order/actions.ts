@@ -3,7 +3,6 @@ import api from '../../../store/fetcher/fetcher';
 import {apiEndpoints} from '../../../store/fetcher/appEndpoints';
 import {handleApiErrors} from '../../../utils/utils';
 import {orderPayload} from './types';
-import {AxiosError} from 'axios';
 
 type userId = {
   user_id: string;

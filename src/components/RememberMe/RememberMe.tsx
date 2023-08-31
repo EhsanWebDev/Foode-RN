@@ -6,9 +6,12 @@ import Text from '../Text/CustomText';
 import {Theme} from '../../theme/theme';
 import {useTheme} from '@shopify/restyle';
 import {TouchableOpacity} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 const RememberMe = ({checked, onCheck}) => {
   const theme = useTheme<Theme>();
+  const {t: lang} = useTranslation();
+
   return (
     <Box flexDirection="row" alignItems="center" mt="l">
       <TouchableOpacity onPress={onCheck}>
@@ -20,7 +23,7 @@ const RememberMe = ({checked, onCheck}) => {
       </TouchableOpacity>
 
       <Text variant="body_sm_bold" color="title" ml="s">
-        Remember me
+        {lang('remMe')}
       </Text>
     </Box>
   );

@@ -7,10 +7,16 @@ type ToastTypes = {
   visibilityTime?: number;
 };
 
-const showToast = ({message, type = 'error', ...rest}: ToastTypes) => {
+const showToast = ({
+  message,
+  position = 'bottom',
+  type = 'error',
+  ...rest
+}: ToastTypes) => {
   toast.show({
     type,
     text1: message,
+    position,
     ...rest,
   });
 };

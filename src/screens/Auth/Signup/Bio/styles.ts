@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   phoneInputContainer: {
     width: '100%',
     flex: 1,
+    padding: 0,
   },
   checkIcon: {position: 'absolute', right: 16, top: 17},
   input: {

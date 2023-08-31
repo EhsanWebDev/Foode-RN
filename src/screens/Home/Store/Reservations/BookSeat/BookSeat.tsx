@@ -17,6 +17,7 @@ import {useAppTheme} from '../../../../../utils/hooks';
 import showToast from '../../../../../utils/toast';
 import {handleApiErrors} from '../../../../../utils/utils';
 import {StatusBar} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 const initial_values = {
   people: '',
@@ -43,6 +44,7 @@ const BookSeat = ({navigation}) => {
 
   const {colors} = useAppTheme();
   const formRef = useRef();
+  const {t: lang} = useTranslation();
 
   const {user} = useReduxSelector(store => store.user);
 
@@ -66,7 +68,6 @@ const BookSeat = ({navigation}) => {
 
         showToast({
           message,
-          type: 'success',
         });
         formRef.current?.resetForm();
       } catch (error) {
@@ -104,7 +105,7 @@ const BookSeat = ({navigation}) => {
   return (
     <ScreenContainer>
       <StatusBar barStyle="default" />
-      <Header label="Reserve a Table" onBackPress={navigation.goBack} />
+      <Header label={lang('reserve a Table')} onBackPress={navigation.goBack} />
       <Formik
         innerRef={formRef}
         initialValues={initial_values}
@@ -122,8 +123,7 @@ const BookSeat = ({navigation}) => {
           <Box flex={1} mx="l">
             <Box mt="l">
               <Input
-                label="Number of guests"
-                placeholder="Number of guests"
+                placeholder={lang('numOfGuests')}
                 keyboardType="number-pad"
                 value={values.people}
                 onChangeText={handleChange('people')}
@@ -136,8 +136,7 @@ const BookSeat = ({navigation}) => {
               />
               <Input
                 inputMode="date-picker"
-                label="Booking Date"
-                placeholder="Booking Date"
+                placeholder={`${lang('booking')} ${lang('date')}`}
                 value={values.booking_date}
                 onChangeText={date =>
                   setFieldValue(
@@ -164,22 +163,20 @@ const BookSeat = ({navigation}) => {
                   error: errors.booking_timing,
                   errorMsg: errors.booking_timing,
                 }}
-                label="Booking Time"
-                placeholder="Booking Time"
+                placeholder={`${lang('booking')} ${lang('time')}`}
                 inputMode="date-picker"
                 pickerMode="time"
                 mb="l"
               />
               <Input
-                label="Booking instructions"
-                placeholder="Booking instructions"
+                placeholder={`${lang('booking')} ${lang('instructions')}`}
                 value={values.booking_instruction}
                 onChangeText={handleChange('booking_instruction')}
                 mb="l"
               />
             </Box>
             <CustomButton
-              label="Confirm booking"
+              label={`${lang('confirm')} ${lang('booking')}`}
               loading={loading}
               onPress={handleSubmit}
               disabled={

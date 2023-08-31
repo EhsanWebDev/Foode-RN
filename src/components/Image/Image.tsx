@@ -17,9 +17,13 @@ const Image = ({uri, imageStyles}) => {
       {!isLoading && !error && (
         <FastImage
           style={imageStyles ? imageStyles : styles.image}
-          source={{
-            uri,
-          }}
+          source={
+            uri
+              ? {
+                  uri,
+                }
+              : require('./../../assets/images/noImage.png')
+          }
           onError={handleError}
         />
       )}

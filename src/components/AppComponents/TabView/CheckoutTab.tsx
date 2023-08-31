@@ -5,9 +5,19 @@ import {PackageIcon, ScooterIcon} from '../../../assets/icons/tabbar/Icons';
 import Text from '../../Text/CustomText';
 import {useAppTheme} from '../../../utils/hooks';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
-const CheckoutTab = ({activeTab = 1, onTabPress = () => {}}) => {
+type CheckoutTabProps = {
+  activeTab?: number;
+  onTabPress?: (index: number) => void;
+};
+
+const CheckoutTab = ({
+  activeTab = 1,
+  onTabPress = () => {},
+}: CheckoutTabProps) => {
   const {colors} = useAppTheme();
+  const {t: lang} = useTranslation();
 
   return (
     <Box
@@ -24,7 +34,7 @@ const CheckoutTab = ({activeTab = 1, onTabPress = () => {}}) => {
         <TouchableOpacity style={styles.button} onPress={() => onTabPress(1)}>
           <ScooterIcon color={activeTab === 1 ? colors.primary : 'black'} />
           <Text ml="s" variant="title">
-            Delivery
+            {lang('delivery')}
           </Text>
         </TouchableOpacity>
       </Box>
@@ -36,7 +46,7 @@ const CheckoutTab = ({activeTab = 1, onTabPress = () => {}}) => {
         <TouchableOpacity style={styles.button} onPress={() => onTabPress(2)}>
           <PackageIcon color={activeTab === 2 ? colors.primary : 'black'} />
           <Text ml="s" variant="title">
-            Pickup
+            {lang('pickup')}
           </Text>
         </TouchableOpacity>
       </Box>

@@ -48,6 +48,7 @@ type Props = RestyleProps & {
   showRightIcon?: boolean;
   iconName?: string;
   iconFamily?: 'IonIcon' | 'MaterialCommunityIcons';
+  textStyles?: TextProps<Theme>;
 };
 
 const CustomButton: React.FC<Props> = ({
@@ -61,6 +62,7 @@ const CustomButton: React.FC<Props> = ({
   showRightIcon,
   iconName = 'add',
   iconFamily = 'IonIcon',
+  textStyles = {},
   ...rest
 }) => {
   const props = useRestyle(restyleFunctions, rest);
@@ -165,7 +167,8 @@ const CustomButton: React.FC<Props> = ({
                 variant={buttonSize === 'full' ? 'title_bold' : 'body_sm'}
                 color={buttonType === 'outlined' ? 'primary' : 'text'}
                 mr={showRightIcon ? 'size8' : 'none'}
-                ml={showLeftIcon ? 'size8' : 'none'}>
+                ml={showLeftIcon ? 'size8' : 'none'}
+                {...textStyles}>
                 {label}
               </Text>
               {showRightIcon && (

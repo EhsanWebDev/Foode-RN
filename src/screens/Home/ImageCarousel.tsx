@@ -20,8 +20,6 @@ type Props = {
 const ImageCarousel = ({imagesData = []}: Props) => {
   const {spacing, colors} = useAppTheme();
 
-  console.log({imagesData});
-
   const progressValue = useSharedValue<number>(0);
 
   const [currentIndex, setCurrentIndex] = useState(1);

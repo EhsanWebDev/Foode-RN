@@ -15,4 +15,5 @@ export const apiEndpoints = {
 
   GET_Coupons: '/get-coupons',
   GET_ADDRESS_BOOK: '/address-books',
+  ADYEN_PAYMENT_URL: '/payment-response',
 };
