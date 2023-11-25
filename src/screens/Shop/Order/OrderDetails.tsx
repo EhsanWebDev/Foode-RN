@@ -37,7 +37,9 @@ const OrderDetails = ({route, navigation}) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_xs_bold">Order Id: {order_ref}</Text>
+          <Text variant="body_xs_bold" textTransform="capitalize">
+            {lang('orderId')}: {order_ref}
+          </Text>
           <Text variant="body_xs_bold" color="textMuted">
             {store_name}
           </Text>
@@ -47,13 +49,13 @@ const OrderDetails = ({route, navigation}) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_xs_bold">
+          <Text variant="body_xs">
             {lang('order')} {lang('price')}:{' '}
-            <Text variant="body_xs"> CHF {total_price} </Text>
+            <Text variant="body_xs_bold"> CHF {total_price} </Text>
           </Text>
-          <Text variant="body_xs_bold">
+          <Text variant="body_xs">
             {lang('order')} {lang('placed')}:{' '}
-            <Text variant="body_xs"> {moment(created_at).fromNow()}</Text>
+            <Text variant="body_xs_bold"> {moment(created_at).fromNow()}</Text>
           </Text>
         </Box>
         <Box
@@ -61,11 +63,11 @@ const OrderDetails = ({route, navigation}) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_xs_bold">
+          <Text variant="body_xs">
             {lang('payMethod')}:{' '}
-            <Text variant="body_sm">
+            <Text variant="body_xs_bold" textTransform="capitalize">
               {' '}
-              {payment_method === 1 ? 'Cash' : 'Credit/Debit Card'}
+              {payment_method === 1 ? lang('COD') : lang('CDC')}
             </Text>
           </Text>
           {/* <Text variant="body_xs_bold">
@@ -75,14 +77,13 @@ const OrderDetails = ({route, navigation}) => {
         </Box>
 
         {order_type === 2 && (
-          <Text variant="body_xs_bold" mt="m">
-            Delivery Address:{' '}
+          <Text variant="body_xs_bold" mt="s">
+            {lang('address')}: {address}
             <MaterialCommunityIcons
               name="google-maps"
               color={colors.primary}
-              size={16}
-            />{' '}
-            {address}
+              size={12}
+            />
           </Text>
         )}
         <Box mt="m">

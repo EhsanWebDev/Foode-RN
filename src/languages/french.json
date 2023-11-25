@@ -56,6 +56,7 @@
 
     "orderType": "type de commande",
     "orderTotal": "Total de la commande",
+    "orderId": "numéro de commande",
 
     "delivery": "Livraison",
     "ASAP": "Dès que Possible",

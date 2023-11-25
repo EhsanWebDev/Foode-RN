@@ -32,6 +32,7 @@
     "payDeclined": "Pagamento rifiutato",
     "orderType": "tipo di ordine",
     "orderTotal": "Ordine totale",
+    "orderId": "ID ordine",
 
     "required": "Necessario",
     "confirm": "Conferma",

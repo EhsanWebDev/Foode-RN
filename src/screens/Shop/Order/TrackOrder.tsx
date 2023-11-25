@@ -76,14 +76,16 @@ const Item = ({item, onItemPress}: OrderItemProps) => {
         <Box flexDirection="row" justifyContent="space-between">
           <Box flex={1} flexDirection="row" justifyContent="space-between">
             <Box ml="xs" flex={1}>
-              <Text variant="body_sm_bold">Order Id: {order_ref}</Text>
-              <Text variant="body_xs" mt="xxs">
+              <Text variant="body_xs_2" textTransform="capitalize">
+                {lang('orderId')}: {order_ref}
+              </Text>
+              <Text variant="body_xs" mt="xs" textTransform="capitalize">
                 {lang('orderType')}:{' '}
                 <Text variant="body_xs_bold" color="primary">
                   {order_type === 1 ? lang('pickup') : lang('delivery')}
                 </Text>
               </Text>
-              <Text variant="body_xs_bold" mt="xxs">
+              <Text variant="body_xs" mt="xxs">
                 {lang('orderTotal')}:{' '}
                 <Text variant="body_xs_bold" color="primary">
                   CHF {total_price}
@@ -98,9 +100,9 @@ const Item = ({item, onItemPress}: OrderItemProps) => {
           </Box>
         </Box>
         {order_type === 2 && (
-          <Text ml="xs" variant="body_xs_bold" mt="xxs">
+          <Text ml="xs" variant="body_xs" mt="xs">
             {lang('address')}:{' '}
-            <Text variant="body_xs_2" numberOfLines={2} color="primary">
+            <Text variant="body_xs_bold" numberOfLines={2} color="primary">
               {address}
             </Text>
           </Text>
@@ -154,6 +156,7 @@ const TrackOrder = ({navigation}) => {
                 onRefresh={fetchOrders}
               />
             }
+            contentContainerStyle={{paddingTop: 12}}
             showsVerticalScrollIndicator={false}
             data={orderList}
             keyExtractor={item => item?.id?.toString()}

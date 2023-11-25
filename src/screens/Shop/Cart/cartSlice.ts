@@ -5,6 +5,7 @@ import {calculateTotals} from '../Product/ProductDetails/helpers';
 const initialState: CartState = {
   cartItems: [],
   paymentMethod: undefined,
+  order_note: '',
 };
 
 const cartSlice = createSlice({
@@ -52,9 +53,13 @@ const cartSlice = createSlice({
     },
     clearCart: state => {
       state.cartItems = [];
+      state.order_note = '';
     },
     setPaymentMethod: (state, action: PayloadAction<paymentMethods>) => {
       state.paymentMethod = action.payload;
+    },
+    setOrderNote: (state, action: PayloadAction<string>) => {
+      state.order_note = action.payload;
     },
     clearPaymentMethod: state => {
       state.paymentMethod = undefined;
@@ -92,5 +97,6 @@ export const {
   clearCart,
   setPaymentMethod,
   clearPaymentMethod,
+  setOrderNote,
 } = cartSlice.actions;
 export default cartSlice.reducer;

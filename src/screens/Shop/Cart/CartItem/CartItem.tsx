@@ -25,6 +25,7 @@ import {
   toggleExtraItem,
 } from '../../Product/ProductDetails/helpers';
 import CustomButton from '../../../../components/Button/CustomButton';
+import {useTranslation} from 'react-i18next';
 
 const renderRightActions = (onPress, productId) => {
   return (
@@ -50,6 +51,7 @@ type CartItem = {
 
 const CartItem: FC<CartItem> = ({item, onPress}) => {
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
   const [isExpended, setIsExpended] = useState<boolean>(false);
 
   const {
@@ -209,7 +211,7 @@ const CartItem: FC<CartItem> = ({item, onPress}) => {
                 <CustomButton
                   disabled={!allItemsSatisfied}
                   buttonSize="small"
-                  label="Update"
+                  label={lang('update')}
                   onPress={() => {
                     dispatch(removeFromCart(id));
                     let extraIds = [];

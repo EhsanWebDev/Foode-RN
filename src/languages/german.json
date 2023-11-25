@@ -30,6 +30,7 @@
     "payDeclined": "Zahlung abgelehnt",
     "orderType": "Auftragsart",
     "orderTotal": "Auftragssumme",
+    "orderId": "Auftragsnummer",
 
     "forgotPass": "Haben Sie Ihr Passwort vergessen?",
     "forgotPassword": "Vergessenes Passwort",

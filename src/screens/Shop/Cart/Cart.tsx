@@ -12,7 +12,7 @@ import CustomButton from '../../../components/Button/CustomButton';
 
 import {useAppTheme} from '../../../utils/hooks';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
-import {removeFromCart, selectCartTotalPrice} from './cartSlice';
+import {removeFromCart, selectCartTotalPrice, setOrderNote} from './cartSlice';
 import CartItem from './CartItem/CartItem';
 
 import {Divider} from 'react-native-paper';
@@ -28,6 +28,7 @@ import BottomSheet, {
 import BottomSheetInput from '../../../components/TextInput/BottomSheetInput';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
 import {useTranslation} from 'react-i18next';
+import {useDispatch} from 'react-redux';
 
 const ListFooterComponent = () => {
   const {colors} = useAppTheme();
@@ -84,17 +85,18 @@ const ListEmptyComponent = () => {
 const Cart = ({navigation}) => {
   const {colors} = useAppTheme();
   const refRBSheet = useRef();
+  const dispatch = useDispatch();
   const {t: lang} = useTranslation();
-  const {cartItems} = useReduxSelector(store => store.cart);
+  const {cartItems, order_note} = useReduxSelector(store => store.cart);
   const totalPrice = useReduxSelector(selectCartTotalPrice);
-  console.log({cartItems});
+  console.log({order_note});
 
   const deliveryFee = 0.0;
   const result = parseFloat(totalPrice) + deliveryFee;
   const resultString = result.toFixed(2);
 
   const [tempProductId, setTempProductId] = useState<number>(0);
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>(order_note ?? '');
 
   // ref
   const deliveryTimeModalRef = useRef<BottomSheetModal>(null);
@@ -239,7 +241,7 @@ const Cart = ({navigation}) => {
 
                   <Box alignItems="flex-end" mt="xs">
                     <Text variant="body_xs" color="textMuted">
-                      {message.length} / 400
+                      {(message || '')?.length} / 400
                     </Text>
                   </Box>
                 </Box>
@@ -249,6 +251,7 @@ const Cart = ({navigation}) => {
               <CustomButton
                 label={lang('save')}
                 onPress={() => {
+                  dispatch(setOrderNote(message));
                   deliveryTimeModalRef?.current?.dismiss();
                 }}
                 disabled={message?.length === 0}

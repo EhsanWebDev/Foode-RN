@@ -26,4 +26,5 @@ export type paymentMethods = 'cash' | 'adyen' | undefined;
 export type CartState = {
   cartItems: CartProduct[];
   paymentMethod: paymentMethods;
+  order_note: string;
 };

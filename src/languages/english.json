@@ -29,6 +29,7 @@
     "payDeclined": "Payment declined",
     "orderType": "order type",
     "orderTotal": "order total",
+    "orderId": "order id",
 
     "required": "Required",
     "removeFromCartMsg": "removed from the cart",
