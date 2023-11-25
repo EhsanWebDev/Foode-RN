@@ -8,12 +8,15 @@ import CustomButton from '../../Button/CustomButton';
 import {useReduxDispatch} from '../../../store';
 import {removeFromCart} from '../../../screens/Shop/Cart/cartSlice';
 import {useAppTheme} from '../../../utils/hooks';
+import {useTranslation} from 'react-i18next';
 
 type CartItemActionsProps = {
   onDecrement: () => void;
   onIncrement: () => void;
   quantity: string | number;
   itemId?: number;
+  hideDialog?: boolean;
+  size?: 'md' | 'lg';
 };
 
 const CartItemActions: FC<CartItemActionsProps> = ({
@@ -21,25 +24,37 @@ const CartItemActions: FC<CartItemActionsProps> = ({
   onIncrement,
   quantity = 0,
   itemId,
+  hideDialog,
+  size = 'md',
 }) => {
   const refRBSheet = useRef<RBSheet>();
   const {colors} = useAppTheme();
   const dispatch = useReduxDispatch();
+  const {t: lang} = useTranslation();
+
   const [tempProductId, setTempProductId] = useState<number>(itemId ?? 0);
   return (
     <Box
       flexDirection="row"
       alignItems="center"
       borderColor="border"
-      borderWidth={1}
-      px="s"
-      py="size8"
+      borderWidth={2}
+      px={size === 'md' ? 's' : 's_m'}
+      py={size === 'md' ? 'size8' : 's_m'}
       alignSelf="flex-end"
       borderRadius={12}>
       <CartItemAction
-        onPress={() =>
-          quantity > 1 ? onDecrement() : refRBSheet?.current?.open()
-        }
+        onPress={() => {
+          if (!hideDialog && quantity > 1) {
+            onDecrement();
+            return;
+          }
+          if (!hideDialog) {
+            refRBSheet?.current?.open();
+            return;
+          }
+          onDecrement();
+        }}
       />
       <Text variant="body_sm" marginHorizontal="s">
         {quantity}
@@ -67,13 +82,13 @@ const CartItemActions: FC<CartItemActionsProps> = ({
           <Box alignItems="center">
             <Icon name="trash" size={28} color={colors.primary} />
             <Text variant="body_sm_bold" mt="m">
-              Are your sure you want to delete this cart item?
+              {lang('deleteCartItem')}
             </Text>
           </Box>
           <Box flexDirection="row" alignItems="center" mt="xl">
             <Box flex={1} mr="m">
               <CustomButton
-                label="Cancel"
+                label={lang('Cancel')}
                 onPress={() => refRBSheet?.current?.close()}
                 buttonType="outlined"
                 buttonSize="full"
@@ -81,7 +96,7 @@ const CartItemActions: FC<CartItemActionsProps> = ({
             </Box>
             <Box flex={1}>
               <CustomButton
-                label="Yes, delete"
+                label={lang('confirmDelete')}
                 onPress={() => {
                   dispatch(removeFromCart(tempProductId));
                   setTempProductId(0);

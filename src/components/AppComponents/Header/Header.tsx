@@ -78,7 +78,9 @@ const Header: React.FC<HeaderProps> = ({
         flex={1}
         alignItems="center"
         mr={showBackIcon && !showCart && !rightIcon ? 'header' : 'none'}>
-        <Text variant="topHeader">{label}</Text>
+        <Text variant="topHeader" numberOfLines={1}>
+          {label}
+        </Text>
       </Box>
 
       {rightIcon && (
@@ -114,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({
             top={-6}
             right={-8}>
             <Text variant="body_sm_bold" color="mainBackground">
-              {cartItems.length}
+              {cartItems?.length}
             </Text>
           </Box>
         </TouchableOpacity>

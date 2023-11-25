@@ -37,21 +37,23 @@ const OrderDetails = ({route, navigation}) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_sm_bold">Order Id: ${order_ref}</Text>
-          <Text variant="body_sm_bold">Store: {store_name}</Text>
+          <Text variant="body_xs_bold">Order Id: {order_ref}</Text>
+          <Text variant="body_xs_bold" color="textMuted">
+            {store_name}
+          </Text>
         </Box>
         <Box
           mt="s"
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_sm_bold">
+          <Text variant="body_xs_bold">
             {lang('order')} {lang('price')}:{' '}
-            <Text variant="body_sm"> CHF {total_price}</Text>
+            <Text variant="body_xs"> CHF {total_price} </Text>
           </Text>
-          <Text variant="body_sm_bold">
+          <Text variant="body_xs_bold">
             {lang('order')} {lang('placed')}:{' '}
-            <Text variant="body_sm"> {moment(created_at).fromNow()}</Text>
+            <Text variant="body_xs"> {moment(created_at).fromNow()}</Text>
           </Text>
         </Box>
         <Box
@@ -59,21 +61,21 @@ const OrderDetails = ({route, navigation}) => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <Text variant="body_sm_bold">
+          <Text variant="body_xs_bold">
             {lang('payMethod')}:{' '}
             <Text variant="body_sm">
               {' '}
               {payment_method === 1 ? 'Cash' : 'Credit/Debit Card'}
             </Text>
           </Text>
-          {/* <Text variant="body_sm_bold">
+          {/* <Text variant="body_xs_bold">
             Order placed:{' '}
             <Text variant="body_sm"> {moment(created_at).fromNow()}</Text>
           </Text> */}
         </Box>
 
         {order_type === 2 && (
-          <Text variant="title" mt="m">
+          <Text variant="body_xs_bold" mt="m">
             Delivery Address:{' '}
             <MaterialCommunityIcons
               name="google-maps"

@@ -1,15 +1,10 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  TouchableOpacity,
-  View,
-  ScrollView,
-} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, ScrollView} from 'react-native';
 import moment from 'moment';
 import {unwrapResult} from '@reduxjs/toolkit';
 import {StackActions} from '@react-navigation/native';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
@@ -21,7 +16,12 @@ import {useAppTheme} from '../../../utils/hooks';
 import {globalUnits} from '../../../theme/globalStyles';
 import {Divider} from 'react-native-paper';
 import {useReduxDispatch, useReduxSelector} from '../../../store';
-import {clearCart, selectCartTotalPrice} from '../Cart/cartSlice';
+import {
+  clearCart,
+  clearPaymentMethod,
+  selectCartTotalPrice,
+  setPaymentMethod,
+} from '../Cart/cartSlice';
 import showToast from '../../../utils/toast';
 import {placeOrder} from '../Order/actions';
 import {handleApiErrors} from '../../../utils/utils';
@@ -42,6 +42,7 @@ import AddressModal from './components/AddressModal';
 import DeliveryTimeModal from './components/DeliveryTimeModal';
 import PayMethodModal from './components/PayMethodModal';
 import {useTranslation} from 'react-i18next';
+import {paymentMethods} from '../Cart/types';
 
 const Checkout = ({navigation, route}) => {
   const {params} = route || {};
@@ -56,7 +57,7 @@ const Checkout = ({navigation, route}) => {
 
   const {colors} = useAppTheme();
   const dispatch = useReduxDispatch();
-  const {cartItems} = useReduxSelector(store => store.cart);
+  const {cartItems, paymentMethod} = useReduxSelector(store => store.cart);
   const {user, userAddress, address_status} = useReduxSelector(
     store => store.user,
   );
@@ -66,14 +67,11 @@ const Checkout = ({navigation, route}) => {
 
   const [tabIndex, setTabIndex] = useState(1);
   const [deliveryOption, setDeliveryOption] = useState(1);
-
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(new Date());
-  const [payMethod, setPayMethod] = useState<'cash' | 'adyen' | undefined>(
-    undefined,
-  );
 
-  const {longitude, latitude} = storeData || {};
+  const {longitude, latitude, business_name} = storeData || {};
+
   const storeLocation = {
     longitude: parseFloat(longitude),
     latitude: parseFloat(latitude),
@@ -83,7 +81,7 @@ const Checkout = ({navigation, route}) => {
 
   const {data} = user || {};
   const {uuid} = data || {};
-  const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
+  const {selectedAddress, isAddressSelected} = userAddress;
   const {userLocation} = selectedAddress || {};
 
   const {city, street_address} = selectedAddress || {};
@@ -105,19 +103,16 @@ const Checkout = ({navigation, route}) => {
     }
   }, [user]);
 
-  const handleCheckout = async () => {
-    if (tabIndex === 1) {
-      if (!isAddressSelected) {
-        showToast({
-          message: 'Please select a delivery address',
-          visibilityTime: 1500,
-        });
-        return;
-      }
-    }
-
+  const getOrderPayload = () => {
     const orderCartItems = (cartItems || []).map(item => {
-      const {product_name, business_id, details, quantity} = item;
+      const {
+        product_name,
+        business_id,
+        details,
+        quantity,
+        extra_id,
+        extra_name,
+      } = item;
       const {id: detail_id, product_id, price} = details?.[0] || {};
       const totalItemPrice = price * quantity;
 
@@ -131,45 +126,60 @@ const Checkout = ({navigation, route}) => {
         price: `${price}`,
         quantity: `${quantity}`,
         total_price: totalItemPrice.toFixed(2),
+        extra_id,
+        extra_name,
       };
     });
+
     const deliverMyOrder = tabIndex === 1;
     const ASAPDelivery = deliveryOption === 1;
-    const orderPayload = {
+    let orderPayload = {
       user_id: uuid,
-      order_type: deliverMyOrder ? 'delivery' : 'pickup',
-      delivery_time_opiton: deliverMyOrder
-        ? ASAPDelivery
-          ? 'asap'
-          : 'later'
-        : '',
-      delivery_address: deliverMyOrder ? `${street_address}, ${city}` : '',
-      delivery_date: deliverMyOrder
-        ? ASAPDelivery
-          ? moment().format('YYYY-MM-DD')
-          : moment(selectedDeliveryDate).format('YYYY-MM-DD')
-        : '',
-      delivery_timing: deliverMyOrder
-        ? ASAPDelivery
-          ? moment().format('HH:MM')
-          : moment(selectedDeliveryDate).format('hh:mm A')
-        : '',
       order_instruction: message,
-      payment_option: payMethod ?? 'cash',
-      delivery_charge: deliverMyOrder ? deliveryFee.toFixed(2) : '0',
+      payment_option: paymentMethod ?? 'cash',
       discount_price: '0.0',
-      order_grant_total: resultString,
-      order_sub_total: totalPrice,
+
+      order_sub_total: resultString,
       cart_data: orderCartItems,
     };
+
+    if (deliverMyOrder) {
+      orderPayload = {
+        ...orderPayload,
+        order_type: 'delivery',
+        delivery_time_opiton: ASAPDelivery ? 'asap' : 'later',
+        delivery_address: street_address,
+        delivery_date: ASAPDelivery
+          ? moment().format('YYYY-MM-DD')
+          : moment(selectedDeliveryDate).format('YYYY-MM-DD'),
+        delivery_timing: ASAPDelivery
+          ? moment().format('HH:MM')
+          : moment(selectedDeliveryDate).format('hh:mm A'),
+        order_grant_total: totalPriceWithDelivery,
+      };
+
+      return orderPayload;
+    }
+    orderPayload = {
+      ...orderPayload,
+      order_type: 'pickup',
+      order_grant_total: resultString,
+      delivery_time_opiton: 'asap',
+    };
+
+    return orderPayload;
+  };
+  const handleCheckout = async () => {
+    const orderPayload = getOrderPayload();
+    console.log({orderPayload});
+    const deliverMyOrder = tabIndex === 1;
+
     dispatch(placeOrder(orderPayload))
       .then(unwrapResult)
       .then(response => {
         const {status} = response || {};
-
         if (status === 200) {
-          dispatch(clearCart());
-          if (payMethod === 'adyen') {
+          if (paymentMethod === 'adyen') {
             navigation.navigate('ProcessPayment', {
               orderDetails: {
                 ...orderPayload,
@@ -181,7 +191,8 @@ const Checkout = ({navigation, route}) => {
                 ),
               },
             });
-
+            dispatch(clearCart());
+            dispatch(clearPaymentMethod());
             return;
           }
           navigation.navigate('OrderCompleted', {
@@ -195,9 +206,14 @@ const Checkout = ({navigation, route}) => {
               ),
             },
           });
+          dispatch(clearCart());
+          dispatch(clearPaymentMethod());
         }
       })
-      .catch(e => handleApiErrors({message: e}));
+      .catch(e => {
+        console.log({orderE: e});
+        handleApiErrors({message: e});
+      });
   };
 
   const handleSignIn = () => navigation.navigate('AuthStack');
@@ -206,9 +222,18 @@ const Checkout = ({navigation, route}) => {
       handleSignIn();
       return;
     }
-    if (!payMethod) {
+    if (tabIndex === 1) {
+      if (!isAddressSelected) {
+        showToast({
+          message: lang('selectDeliveryAddress'),
+          visibilityTime: 1500,
+        });
+        return;
+      }
+    }
+    if (!paymentMethod) {
       showToast({
-        message: 'Please select a payment method first',
+        message: lang('selectPaymentMethod'),
         visibilityTime: 2000,
       });
       return;
@@ -231,17 +256,17 @@ const Checkout = ({navigation, route}) => {
     payMethodModalRef.current?.present();
   }, []);
 
-  if (cartItems.length === 0) {
+  if ((cartItems || [])?.length === 0) {
     return (
       <ScreenContainer>
-        <Header label="Empty Cart" showBackIcon={false} />
+        <Header label={lang('emptyCart')} showBackIcon={false} />
         <Box flex={1} justifyContent="center" alignItems="center">
           <Icon name="cart" size={80} color={colors.primary} />
-          <Text variant="body_sm_bold">Your cart is empty</Text>
+          <Text variant="body_sm_bold">{lang('emptyCart')}</Text>
         </Box>
         <Box mx="l" mb="xs">
           <CustomButton
-            label="GO BACK"
+            label={lang('goBack')}
             buttonType="outlined"
             onPress={() => {
               const popAction = StackActions.pop(2);
@@ -256,7 +281,7 @@ const Checkout = ({navigation, route}) => {
   return (
     <ScreenContainer>
       <Header
-        label="Shriganesha"
+        label={business_name}
         iconName="chevron-back"
         onBackPress={navigation.goBack}
         onRightIconPress={() => navigation.navigate('StoreDetails')}
@@ -348,7 +373,7 @@ const Checkout = ({navigation, route}) => {
                 leftIcon="map-marker-outline"
                 subTitle={
                   isAddressSelected
-                    ? `${street_address}, ${city}`
+                    ? `${street_address}`
                     : lang('tapToContinue')
                 }
                 onPress={handlePresentModalPress}
@@ -372,27 +397,28 @@ const Checkout = ({navigation, route}) => {
               />
               <Box ml="size8">
                 <Text variant="title_bold">{lang('payMethod')}</Text>
-                {payMethod && (
-                  <Text variant="body_xs_2">
-                    ({payMethod === 'adyen' ? 'Credit/Debit Card' : 'COD'})
+                {paymentMethod && (
+                  <Text variant="body_xs">
+                    (
+                    {paymentMethod === 'adyen'
+                      ? 'Credit/Debit Card'
+                      : 'Cash On Delivery'}
+                    )
                   </Text>
                 )}
               </Box>
             </Box>
 
             <CustomButton
-              label={payMethod ? 'Update' : 'Add'}
+              label={paymentMethod ? lang('update') : lang('add')}
               buttonSize="small"
               buttonType="outlined"
               showRightIcon
               onPress={handlePayMethodModalPress}
+              textStyles={{textTransform: 'capitalize'}}
             />
           </Box>
           <Box mb="s">
-            <Text mb="size6" variant="body_bold">
-              Price in EUR, incl. taxes
-            </Text>
-
             <Box
               flexDirection="row"
               alignItems="center"
@@ -402,9 +428,26 @@ const Checkout = ({navigation, route}) => {
               p="s"
               borderTopLeftRadius={10}
               borderTopRightRadius={10}>
-              <Text variant="body_sm">Item subtotal</Text>
+              <Text variant="body_sm">{lang('subtotal')}</Text>
+
               <Text variant="body_sm">CHF {resultString}</Text>
             </Box>
+            {tabIndex === 1 ? (
+              <Box
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+                borderColor="border"
+                borderWidth={1}
+                p="s"
+                borderTopLeftRadius={10}
+                borderTopRightRadius={10}>
+                <Text variant="body_sm">{lang('deliveryCharges')}</Text>
+
+                <Text variant="body_sm">CHF {deliveryFee?.toFixed(2)}</Text>
+              </Box>
+            ) : null}
+
             <Box
               flexDirection="row"
               alignItems="center"
@@ -454,7 +497,7 @@ const Checkout = ({navigation, route}) => {
       />
       <PayMethodModal
         modalRef={payMethodModalRef}
-        onDonePress={method => setPayMethod(method)}
+        onDonePress={method => dispatch(setPaymentMethod(method))}
       />
     </ScreenContainer>
   );

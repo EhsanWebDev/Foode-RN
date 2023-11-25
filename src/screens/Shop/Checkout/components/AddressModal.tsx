@@ -35,6 +35,8 @@ const AddressModal = ({modalRef}) => {
   const {selectedAddress, userAddresses, isAddressSelected} = userAddress;
   const {userLocation} = selectedAddress || {};
 
+  console.log({userAddresses});
+
   //   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [userLocation]);
   const {
@@ -90,10 +92,10 @@ const AddressModal = ({modalRef}) => {
               <Box marginVertical="xl">
                 <ActivityIndicator />
               </Box>
-            ) : userAddresses.length > 0 ? (
+            ) : (userAddresses || [])?.length > 0 ? (
               <BottomSheetScrollView style={{flex: 1, maxHeight: 240}}>
                 <Box flex={1} marginVertical="s">
-                  {userAddresses.map((item, _) => (
+                  {(userAddresses || [])?.map((item, _) => (
                     <Box key={item.id} marginVertical="xs">
                       <RadioBar
                         title={`${item.street_address}`}

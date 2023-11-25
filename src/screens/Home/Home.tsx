@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Platform, ScrollView, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,7 +8,7 @@ import Box from '../../components/View/CustomView';
 import Text from '../../components/Text/CustomText';
 
 import {globalUnits} from '../../theme/globalStyles';
-import {persistor, useReduxDispatch, useReduxSelector} from '../../store';
+import {useReduxDispatch, useReduxSelector} from '../../store';
 import HomeTab from './Store/HomeTab/HomeTab';
 import ImageCarousel from './ImageCarousel';
 import {useAppTheme} from '../../utils/hooks';
@@ -21,30 +21,17 @@ import ScreenContainer from '../../components/AppComponents/Container/ScreenCont
 import Header from '../../components/AppComponents/Header/Header';
 import {getData} from '../../utils/storage';
 import {setUser} from '../Auth/userSlice';
-
-const imagesData = [
-  {
-    id: 1,
-    image:
-      'https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
-  },
-  {
-    id: 2,
-    image:
-      'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
-  },
-  {
-    id: 3,
-    image:
-      'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=640&q=80',
-  },
-];
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import LangSelectionModal from './Store/components/LangModal';
 
 const Home = ({navigation}) => {
+  const langSelectionModalRef = useRef<BottomSheetModal | null>(null);
+
   const {user} = useReduxSelector(store => store.user);
+  const {appLang} = useReduxSelector(store => store.settings);
   const {cartItems} = useReduxSelector(store => store.cart);
   const {colors} = useAppTheme();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const dispatch = useReduxDispatch();
   const {
     data: galleryData,
@@ -73,6 +60,7 @@ const Home = ({navigation}) => {
   useEffect(() => {
     const getUser = async () => {
       const userInfo = await getData('user');
+      i18n.changeLanguage(appLang);
       if (userInfo) {
         dispatch(setUser(userInfo));
       }
@@ -148,7 +136,7 @@ const Home = ({navigation}) => {
 
                     <Box flexDirection="row" alignItems="center">
                       <Text variant="title" marginHorizontal="xxs" color="text">
-                        {name ?? 'Login'}
+                        {name ?? t('login')}
                       </Text>
                       <Icon
                         name="chevron-down"
@@ -159,7 +147,19 @@ const Home = ({navigation}) => {
                   </Box>
                 </TouchableOpacity>
               </Box>
-              <Box>
+              <Box flexDirection="row" alignItems="center">
+                <TouchableOpacity
+                  onPress={() => {
+                    langSelectionModalRef?.current?.present();
+                  }}>
+                  <Box mr="s">
+                    <Icon
+                      name="language"
+                      size={globalUnits.icon_LG}
+                      color={colors.text}
+                    />
+                  </Box>
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Cart');
@@ -205,6 +205,8 @@ ${t('goodMorning')}! `}
           <Box flex={1}>
             <HomeTab />
           </Box>
+
+          <LangSelectionModal modalRef={langSelectionModalRef} />
         </ScrollView>
       )}
     </Box>

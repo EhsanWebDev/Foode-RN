@@ -18,7 +18,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['cart'],
+  whitelist: ['cart', 'settings'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

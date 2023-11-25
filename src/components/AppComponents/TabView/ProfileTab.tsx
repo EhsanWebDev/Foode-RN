@@ -3,6 +3,7 @@ import React from 'react';
 import Box from '../../View/CustomView';
 import Text from '../../Text/CustomText';
 import {TouchableOpacity} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 type ProfileTabProps = {
   activeTab?: number;
@@ -10,6 +11,8 @@ type ProfileTabProps = {
 };
 
 const ProfileTab = ({activeTab = 1, onTabPress}: ProfileTabProps) => {
+  const {t: lang} = useTranslation();
+
   return (
     <Box
       mt="m"
@@ -29,7 +32,7 @@ const ProfileTab = ({activeTab = 1, onTabPress}: ProfileTabProps) => {
               variant={activeTab === 1 ? 'title_bold' : 'title'}
               color="text"
               textTransform="uppercase">
-              Profile
+              {lang('profile')}
             </Text>
             {activeTab === 1 && (
               <Box
@@ -52,7 +55,7 @@ const ProfileTab = ({activeTab = 1, onTabPress}: ProfileTabProps) => {
               variant={activeTab === 2 ? 'title_bold' : 'title'}
               color="text"
               textTransform="uppercase">
-              Account
+              {lang('account')}
             </Text>
             {activeTab === 2 && (
               <Box

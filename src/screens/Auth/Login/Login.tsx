@@ -30,30 +30,32 @@ const initial_values = {
   rememberMe: false,
 };
 
-const loginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('*Required'),
-  password: Yup.string().required('*Required'),
-  rememberMe: Yup.boolean(),
-});
-
 const Login = ({navigation}: LoginScreenNavigationProp) => {
   const dispatch = useReduxDispatch();
   const {t: lang} = useTranslation();
-  const {user, login_status} = useReduxSelector(state => state.user);
+  const {login_status} = useReduxSelector(state => state.user);
+
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email(lang('invalidEmail'))
+      .required(`*${lang('required')}`),
+    password: Yup.string().required(`*${lang('required')}`),
+    rememberMe: Yup.boolean(),
+  });
 
   const [showPass, setShowPass] = useState(false);
 
   const handleSignIn = async (values: loginValues) => {
     dispatch(login({email: values.email, password: values.password})).then(
       res => {
-        if (res.payload.status === 200) {
-          if (values.rememberMe) {
-            storeData('user', res.payload);
+        if (res?.payload?.status === 200) {
+          if (values?.rememberMe) {
+            storeData('user', res?.payload);
           }
           navigation.replace('AppTabs');
           return;
         }
-        showToast({message: res.payload});
+        showToast({message: lang('invalidCredentials')});
       },
     );
   };
@@ -83,8 +85,7 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
           }) => (
             <>
               <CustomInput
-                label="Email"
-                placeholder="Email Address"
+                placeholder={lang('emailAdd')}
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={() => setFieldTouched('email')}
@@ -95,9 +96,7 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
               />
               <Box marginTop="l">
                 <CustomInput
-                  required
-                  label="Password"
-                  placeholder="Password"
+                  placeholder={lang('password')}
                   secureTextEntry={!showPass}
                   value={values.password}
                   onChangeText={handleChange('password')}

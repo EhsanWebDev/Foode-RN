@@ -75,7 +75,7 @@ const StoreMenuDetails = ({navigation}) => {
     <ScreenContainer>
       <StatusBar barStyle="default" />
       <Header
-        label={status === 'loading' ? 'Loading' : business_name}
+        label={status === 'loading' ? 'Loading' : lang('storeDetails')}
         onBackPress={navigation.goBack}
         rightIcon="information-circle-outline"
         onRightIconPress={() => navigation.navigate('StoreDetails')}
@@ -111,7 +111,7 @@ const StoreMenuDetails = ({navigation}) => {
                 <Text variant="body_bold">{business_name}</Text>
 
                 <Text variant="body_sm" color="primary">
-                  {`${lang('delivery')} in ${delivery_estimate} min`}
+                  {`${lang('delivery')} ${lang('in')} ${delivery_estimate} min`}
                 </Text>
               </Box>
             </Box>
@@ -143,6 +143,7 @@ const StoreMenuDetails = ({navigation}) => {
                     onPress={() =>
                       navigation.navigate('MenuItem', {
                         data: transformedData,
+                        sectionTitle: item?.category_name,
                         sectionIndex:
                           (transformedData || [])?.findIndex(
                             t_item => t_item.title === category_name,

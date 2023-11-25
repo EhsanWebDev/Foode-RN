@@ -1,10 +1,5 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {
-  addressBookType,
-  addressType,
-  loginType,
-  userAddressType,
-} from './types';
+import {loginType, userAddressType} from './types';
 import {
   forgotPassword,
   getUserAddressBook,
@@ -27,8 +22,8 @@ const INITIAL_STATE: loginType = {
     isAddressSelected: false,
     selectedAddress: {
       userLocation: {
-        latitude: 37.78825,
-        longitude: -122.4324,
+        latitude: 46.204391,
+        longitude: 6.143158,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
@@ -59,7 +54,7 @@ const userSlice = createSlice({
         userLocation,
       };
 
-      const uncheckAll = state.userAddress.userAddresses.map(item => {
+      const uncheckAll = state.userAddress.userAddresses?.map(item => {
         return {
           ...item,
           isSelected: false,
@@ -71,34 +66,15 @@ const userSlice = createSlice({
         {id, city, street_address, isSelected: true, userLocation},
       ];
     },
-    setUserLocation: (
-      state,
-      action: PayloadAction<{
-        latitude: number;
-        longitude: number;
-        latitudeDelta: number;
-        longitudeDelta: number;
-      }>,
-    ) => {
-      const {latitude, longitude, longitudeDelta, latitudeDelta} =
-        action.payload;
-
-      state.userAddress.userLocation = {
-        latitude,
-        longitude,
-        longitudeDelta,
-        latitudeDelta,
-      };
-    },
     selectUserDeliveryAddress: (
       state,
       action: PayloadAction<userAddressType>,
     ) => {
-      const {id} = action.payload;
+      const {id} = action.payload || {};
 
       let selectedAddress = {};
 
-      const updatedAddresses = state.userAddress.userAddresses.map(item => {
+      const updatedAddresses = state?.userAddress?.userAddresses.map(item => {
         if (item.id === id) {
           selectedAddress = item;
           return {
@@ -111,8 +87,6 @@ const userSlice = createSlice({
           isSelected: false,
         };
       });
-
-      console.log({id, updatedAddresses});
 
       state.userAddress.userAddresses = updatedAddresses;
       state.userAddress.selectedAddress = selectedAddress;
@@ -155,11 +129,15 @@ const userSlice = createSlice({
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.signUp_status = 'completed';
-      state.user = action.payload;
+      // if (action?.payload?.status === 200) {
+      //   state.user = action.payload;
+      //   return;
+      // }
+      // state.user = null;
     });
     builder.addCase(signup.rejected, state => {
       state.signUp_status = 'rejected';
-      state.error = 'Error while logging in';
+      // state.error = 'Error while logging in';
     });
 
     // ? UPDATE PROFILE
@@ -206,7 +184,6 @@ export const {
   logoutUser,
   setUserAddress,
   selectUserDeliveryAddress,
-  setUserLocation,
   updateDeliveryAddress,
 } = userSlice.actions;
 

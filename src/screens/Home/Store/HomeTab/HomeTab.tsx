@@ -3,7 +3,7 @@ import {Image, Pressable, ScrollView} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {verticalScale} from 'react-native-size-matters';
+import {mvs, verticalScale} from 'react-native-size-matters';
 
 import Box from '../../../../components/View/CustomView';
 import Card from '../../../../components/Card/Card';
@@ -41,6 +41,7 @@ const HomeTab = () => {
               onPress={() =>
                 nav.navigate('MenuItem', {
                   data: transformedData,
+                  sectionTitle: item?.category_name,
                   sectionIndex:
                     (transformedData || [])?.findIndex(
                       t_item => t_item.title === item?.category_name,
@@ -122,7 +123,7 @@ const HomeTab = () => {
         {/* Rewards */}
         <Box mt="l+">
           <SectionHeader
-            label="Rewards"
+            label={lang('rewards')}
             onPress={() => nav.navigate('Offers')}
           />
 
@@ -152,48 +153,43 @@ const HomeTab = () => {
             </Box>
           </Card> */}
           <Box flexDirection="row" alignItems="center">
-            <Pressable
-              style={{flex: 0.5}}
-              onPress={() => nav.navigate('Offers')}>
+            <Pressable style={{flex: 1}} onPress={() => nav.navigate('Offers')}>
               <Card
-                flex={0.5}
                 variant="secondary"
                 mt="m"
                 mr="s"
-                px="cardPaddingX"
-                py="l">
-                <Box>
-                  <Box flexDirection="row">
-                    <Icon
-                      name="gift"
-                      size={globalUnits.icon_MD}
-                      color={mainForeground}
-                    />
-                    <Text ml="s" variant="title_bold">
-                      {lang('rewards')}
-                    </Text>
-                  </Box>
+                justifyContent="center"
+                height={mvs(80)}>
+                <Box alignItems="center">
+                  <Icon
+                    name="gift"
+                    size={globalUnits.icon_MD}
+                    color={mainForeground}
+                  />
+                  <Text ml="s" variant="body_sm_bold">
+                    {lang('rewards')}
+                  </Text>
                 </Box>
               </Card>
             </Pressable>
             <Pressable
-              style={{flex: 0.5}}
+              style={{flex: 1}}
               onPress={() => nav.navigate('OrderTab')}>
               <Card
                 flex={0.5}
                 ml="s"
                 variant="secondary"
                 mt="m"
-                px="cardPaddingX"
-                py="l">
+                justifyContent="center"
+                height={mvs(80)}>
                 <Box>
-                  <Box flexDirection="row">
+                  <Box alignItems="center">
                     <Icon
                       name="basket"
                       size={globalUnits.icon_MD}
                       color={mainForeground}
                     />
-                    <Text ml="s" variant="title_bold">
+                    <Text ml="s" variant="body_sm_bold">
                       {lang('orderNow')}
                     </Text>
                   </Box>

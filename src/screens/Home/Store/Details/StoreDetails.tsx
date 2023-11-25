@@ -51,7 +51,7 @@ const StoreDetails = ({navigation}) => {
 
   return (
     <ScreenContainer>
-      <Header label={business_name} onBackPress={navigation.goBack} />
+      <Header label={lang('storeDetails')} onBackPress={navigation.goBack} />
       <ScrollView>
         <Box mt="m" mx="l">
           <Box flexDirection="row" alignItems="center">

@@ -2,6 +2,8 @@ import i18next from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import english from './english.json';
 import french from './french.json';
+import german from './german.json';
+import italian from './italian.json';
 import * as RNlocalize from 'react-native-localize';
 
 // const languageDetector = {
@@ -23,6 +25,8 @@ i18next
     resources: {
       en: english,
       fr: french,
+      de: german,
+      it: italian,
     },
     react: {
       useSuspense: false,

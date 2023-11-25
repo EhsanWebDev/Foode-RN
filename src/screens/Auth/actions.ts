@@ -32,10 +32,9 @@ export const login = createAsyncThunk(
     const {status, message} = data || {};
 
     if (status === 500) {
-      handleApiErrors(data);
       return rejectWithValue(message);
     }
-    return response.data;
+    return data;
   },
 );
 export const signup = createAsyncThunk(
@@ -52,7 +51,6 @@ export const signup = createAsyncThunk(
       handleApiErrors(data);
       return rejectWithValue(message);
     }
-    console.log({response});
     return response.data;
   },
 );
@@ -99,7 +97,7 @@ export const updateUserProfile = createAsyncThunk(
         handleApiErrors(data);
         return rejectWithValue(message);
       }
-      return response.data?.data;
+      return response.data;
     } catch (error) {
       console.log({error});
     }

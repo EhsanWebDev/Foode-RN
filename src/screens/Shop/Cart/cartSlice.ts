@@ -1,8 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {CartProduct, CartState} from './types';
+import {CartProduct, CartState, paymentMethods} from './types';
+import {calculateTotals} from '../Product/ProductDetails/helpers';
 
 const initialState: CartState = {
   cartItems: [],
+  paymentMethod: undefined,
 };
 
 const cartSlice = createSlice({
@@ -51,12 +53,32 @@ const cartSlice = createSlice({
     clearCart: state => {
       state.cartItems = [];
     },
+    setPaymentMethod: (state, action: PayloadAction<paymentMethods>) => {
+      state.paymentMethod = action.payload;
+    },
+    clearPaymentMethod: state => {
+      state.paymentMethod = undefined;
+    },
   },
 });
 
 export const selectCartTotalPrice = (state: {cart: CartState}) => {
   return state.cart.cartItems
     .reduce((total, product) => {
+      if (product?.extraData) {
+        const totalAddOns = calculateTotals(product?.extraData);
+        let totalValueForAddOns = (totalAddOns || []).reduce(
+          (sum, item) => parseFloat(sum) + parseFloat(item?.total),
+          '0.0',
+        );
+        totalValueForAddOns = parseFloat(totalValueForAddOns);
+
+        return (
+          total +
+          parseFloat(product.details?.[0].price) * product.quantity +
+          totalValueForAddOns
+        );
+      }
       return total + parseFloat(product.details?.[0].price) * product.quantity;
     }, 0)
     .toFixed(2);
@@ -68,5 +90,7 @@ export const {
   incrementQuantity,
   decrementQuantity,
   clearCart,
+  setPaymentMethod,
+  clearPaymentMethod,
 } = cartSlice.actions;
 export default cartSlice.reducer;

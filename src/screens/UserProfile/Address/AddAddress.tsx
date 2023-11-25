@@ -42,8 +42,8 @@ const AddAddress = ({navigation}) => {
 
   const [tempAddress, setTempAddress] = useState<userAddressType>({
     userLocation: {
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: 46.204391,
+      longitude: 6.143158,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
@@ -220,6 +220,7 @@ const AddAddress = ({navigation}) => {
             placeholder={'Locate your address'}
             fetchDetails
             onPress={(_, details = null) => {
+              console.log({details});
               setTempAddress({
                 id: details?.reference,
                 street_address: details?.formatted_address,

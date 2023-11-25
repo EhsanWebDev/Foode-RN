@@ -11,14 +11,17 @@ import CustomButton from '../../../../components/Button/CustomButton';
 import {Divider} from 'react-native-paper';
 import RadioBar from '../../../../components/RadioButton/RadioBar';
 import {useTranslation} from 'react-i18next';
+import {paymentMethods} from '../../Cart/types';
+import {useReduxSelector} from '../../../../store';
 
 type PayMethodModalProps = {
   modalRef: any;
-  onDonePress?: (payMethod: 'cash' | 'adyen') => void;
+  onDonePress?: (payMethod: paymentMethods) => void;
 };
 
 const PayMethodModal = ({modalRef, onDonePress}: PayMethodModalProps) => {
   const {t: lang} = useTranslation();
+  const {paymentMethod: method} = useReduxSelector(store => store.cart);
 
   const deliveryTimeSnapPoints = useMemo(() => ['25%'], []);
 
@@ -33,7 +36,7 @@ const PayMethodModal = ({modalRef, onDonePress}: PayMethodModalProps) => {
     ),
     [],
   );
-  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'adyen'>('cash');
+  const [paymentMethod, setPaymentMethod] = useState<paymentMethods>(method);
   return (
     <>
       <BottomSheetModalProvider>
@@ -53,11 +56,17 @@ const PayMethodModal = ({modalRef, onDonePress}: PayMethodModalProps) => {
               alignItems="center"
               justifyContent="space-between"
               mb="size8">
-              <Text variant="title_bold" textTransform="uppercase" color="gray">
-                {lang('selectPayMethod')}
-              </Text>
+              <Box flex={1}>
+                <Text
+                  variant="title_bold"
+                  textTransform="uppercase"
+                  color="gray">
+                  {lang('selectPayMethod')}
+                </Text>
+              </Box>
+
               <CustomButton
-                label="Done"
+                label={lang('done')}
                 buttonType="outlined"
                 buttonSize="small"
                 onPress={async () => {
@@ -70,7 +79,7 @@ const PayMethodModal = ({modalRef, onDonePress}: PayMethodModalProps) => {
             <Divider />
             <Box px="s" marginVertical="s">
               <RadioBar
-                title={lang('cash')}
+                title={lang('COD')}
                 checked={paymentMethod === 'cash'}
                 onPress={() => setPaymentMethod('cash')}
                 leftIcon="cash-outline"
@@ -80,7 +89,7 @@ const PayMethodModal = ({modalRef, onDonePress}: PayMethodModalProps) => {
             <Box px="s" marginVertical="s">
               <RadioBar
                 checked={paymentMethod === 'adyen'}
-                title="Credit/Debit Card"
+                title={lang('CDC')}
                 leftIcon="card-outline"
                 onPress={() => setPaymentMethod('adyen')}
               />

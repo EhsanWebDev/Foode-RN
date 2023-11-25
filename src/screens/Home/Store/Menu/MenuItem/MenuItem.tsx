@@ -6,6 +6,7 @@ import IconButton from '../../../../../components/Button/IconButton/IconButton';
 import {Divider} from 'react-native-paper';
 import Image from '../../../../../components/Image/Image';
 import {ProductType} from './types';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 type MenuProps = {
   item: ProductType;
@@ -18,7 +19,9 @@ const MenuItem: FC<MenuProps> = ({item, onPress, onPressAdd}) => {
   const {price, name} = details[0] || {};
 
   return (
-    <>
+    <Box
+    // height={125}
+    >
       <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <Box
           flexDirection="row"
@@ -54,7 +57,7 @@ const MenuItem: FC<MenuProps> = ({item, onPress, onPressAdd}) => {
       </TouchableOpacity>
 
       <Divider />
-    </>
+    </Box>
   );
 };
 export default memo(MenuItem);

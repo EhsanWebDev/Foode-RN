@@ -20,6 +20,8 @@ import styles from '../../Auth/Signup/Bio/styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {PhoneNumberUtil} from 'google-libphonenumber';
+import {setUser} from '../../Auth/userSlice';
+import showToast from '../../../utils/toast';
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 type signupPayload = {
@@ -40,7 +42,7 @@ const UpdateProfile: React.FC = ({navigation, route}) => {
   const parsedNo = phone_number ? phoneUtil.parse(phone_number) : '';
   const phoneNumberOrigin = parsedNo
     ? phoneUtil.getRegionCodeForNumber(parsedNo)
-    : 'IN';
+    : 'CH';
 
   const [formattedValue, setFormattedValue] = useState('');
 
@@ -75,36 +77,74 @@ const UpdateProfile: React.FC = ({navigation, route}) => {
   const initial_values = {
     name,
     email,
-    phone: phone_number ? parsedNo?.getNationalNumber() : '',
+    phone: phone_number ? parsedNo?.getNationalNumber?.() : '',
   };
-
+  const handleSuccess = res => {
+    const {payload} = res || {};
+    const {status, message} = payload || {};
+    if (status === 200) {
+      showToast({
+        message,
+      });
+      navigation.goBack();
+    }
+  };
   const handleSignUp = (values: signupPayload) => {
     const {name: f_name, email: f_email} = values;
 
-    if (updateEntity === 'name')
+    if (updateEntity === 'name') {
       dispatch(
         updateUserProfile({
           user_id: uuid,
           update_for: 'name',
           update_value: f_name,
         }),
+      ).then(handleSuccess);
+      dispatch(
+        setUser({
+          data: {
+            ...data,
+            name: f_name,
+          },
+        }),
       );
-    if (updateEntity === 'email')
+    }
+
+    if (updateEntity === 'email') {
       dispatch(
         updateUserProfile({
           user_id: uuid,
           update_for: 'email',
           update_value: f_email,
         }),
+      ).then(handleSuccess);
+      dispatch(
+        setUser({
+          data: {
+            ...data,
+            email: f_email,
+          },
+        }),
       );
-    if (updateEntity === 'phone')
+    }
+
+    if (updateEntity === 'phone') {
       dispatch(
         updateUserProfile({
           user_id: uuid,
           update_for: 'phone_number',
           update_value: formattedValue,
         }),
+      ).then(handleSuccess);
+      dispatch(
+        setUser({
+          data: {
+            ...data,
+            phone_number: formattedValue,
+          },
+        }),
       );
+    }
   };
 
   return (
@@ -177,6 +217,7 @@ const UpdateProfile: React.FC = ({navigation, route}) => {
                             styles.phoneInputContainer,
                             {flex: 0},
                           ]}
+                          textInputStyle={{padding: 0}}
                           textContainerStyle={[
                             styles.input,
                             {
@@ -207,7 +248,7 @@ const UpdateProfile: React.FC = ({navigation, route}) => {
                       </>
                     )}
                   </Box>
-                  <Box mx="l">
+                  <Box mx="l" mb="xs">
                     <CustomButton
                       label="Save"
                       loading={signUp_status === 'loading'}

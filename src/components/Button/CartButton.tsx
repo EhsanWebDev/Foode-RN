@@ -14,6 +14,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {useAppTheme} from '../../utils/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {globalUnits} from '../../theme/globalStyles';
+import {useTranslation} from 'react-i18next';
 
 type RestyleProps = BoxProps<Theme> & TextProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([]);
@@ -50,6 +51,8 @@ const CartButton: React.FC<Props> = ({
 }) => {
   const props = useRestyle(restyleFunctions, rest);
   const {colors} = useAppTheme();
+  const {t: lang} = useTranslation();
+
   const roundedFull = {
     ...defaultStyles,
     backgroundColor: 'primary',
@@ -152,10 +155,10 @@ const CartButton: React.FC<Props> = ({
               {buttonType === 'dead_state' ? (
                 <Box alignItems="center">
                   <Text variant="body_sm" color="inactive2">
-                    Need to register
+                    {lang('needToReg')}
                   </Text>
                   <Text variant="body_xs" color="inactive2">
-                    Tap here to continue
+                    {lang('tapToContinue')}
                   </Text>
                 </Box>
               ) : (

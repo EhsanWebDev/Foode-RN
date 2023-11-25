@@ -14,13 +14,13 @@ export type orderCartItem = {
 
 export type orderPayload = {
   order_type?: string;
-  delivery_address: string;
-  delivery_time_opiton: string;
-  delivery_date: string;
-  delivery_timing: string;
+  delivery_address?: string;
+  delivery_time_opiton?: string;
+  delivery_date?: string;
+  delivery_timing?: string;
   order_instruction?: string;
   payment_option: 'cash' | 'adyen';
-  delivery_charge: string;
+  delivery_charge?: string;
   order_sub_total: string;
   discount_price: string;
   order_grant_total: string;

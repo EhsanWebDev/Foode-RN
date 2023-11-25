@@ -1,8 +1,7 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, ScrollView, StatusBar} from 'react-native';
+import {FlatList, StatusBar} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import RBSheet from 'react-native-raw-bottom-sheet';
 
 import ScreenContainer from '../../../components/AppComponents/Container/ScreenContainer';
 import Header from '../../../components/AppComponents/Header/Header';
@@ -29,19 +28,6 @@ import BottomSheet, {
 import BottomSheetInput from '../../../components/TextInput/BottomSheetInput';
 import ActionBar from '../../../components/AppComponents/ActionBar/ActionBar';
 import {useTranslation} from 'react-i18next';
-
-const recentOrdersData = [
-  {
-    id: 1,
-    name: 'Philly Cheese Steak Sandwich',
-    price: 'CHF 15.90',
-  },
-  {
-    id: 2,
-    name: 'Philly Cheese Steak Sandwich',
-    price: 'CHF 15.90',
-  },
-];
 
 const ListFooterComponent = () => {
   const {colors} = useAppTheme();
@@ -86,19 +72,22 @@ const ListFooterComponent = () => {
 };
 const ListEmptyComponent = () => {
   const {colors} = useAppTheme();
+  const {t: lang} = useTranslation();
   return (
     <Box alignItems="center">
       <Icon name="cart" size={80} color={colors.primary} />
-      <Text variant="body_sm_bold">Your cart is empty</Text>
+      <Text variant="body_sm_bold">{lang('emptyCart')}</Text>
     </Box>
   );
 };
 
 const Cart = ({navigation}) => {
+  const {colors} = useAppTheme();
   const refRBSheet = useRef();
   const {t: lang} = useTranslation();
   const {cartItems} = useReduxSelector(store => store.cart);
   const totalPrice = useReduxSelector(selectCartTotalPrice);
+  console.log({cartItems});
 
   const deliveryFee = 0.0;
   const result = parseFloat(totalPrice) + deliveryFee;
@@ -122,7 +111,7 @@ const Cart = ({navigation}) => {
   );
 
   // variables
-  const deliveryTimeSnapPoints = useMemo(() => ['45%'], []);
+  const deliveryTimeSnapPoints = useMemo(() => ['55%'], []);
 
   // callbacks
   const handleDeliveryTimeModalPress = useCallback(() => {
@@ -210,34 +199,60 @@ const Cart = ({navigation}) => {
             />
           )}
           keyboardBlurBehavior="restore">
-          <Box flex={1} marginVertical="l" px="m">
-            <Box>
-              <Text variant="body_bold">{lang('addMSG')}</Text>
+          <Box flex={1}>
+            <Box flex={1} marginVertical="l" px="m">
+              <Box>
+                <Box
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between">
+                  <Text variant="body_bold" textTransform="capitalize">
+                    {lang('addMSG')}
+                  </Text>
+                  <IconButton
+                    icon="close"
+                    iconColor={colors.gray}
+                    onPress={() => {
+                      deliveryTimeModalRef?.current?.dismiss();
+                    }}
+                  />
+                </Box>
 
-              <Box mt="m">
-                <Text variant="title" textTransform="capitalize">
-                  {lang('specialReq')}?
-                </Text>
-                <Text mt="size8" variant="body_xs" color="textMuted">
-                  {lang('msgNote')}
-                </Text>
-              </Box>
-
-              <Box mt="l+">
-                <BottomSheetInput
-                  value={message}
-                  onChangeText={text => setMessage(text)}
-                  blurOnSubmit
-                  placeholder={lang('writeMSG')}
-                  multiline
-                />
-
-                <Box alignItems="flex-end" mt="xs">
-                  <Text variant="body_xs" color="textMuted">
-                    {message.length} / 400
+                <Box mt="m">
+                  <Text variant="title" textTransform="capitalize">
+                    {lang('specialReq')}?
+                  </Text>
+                  <Text mt="size8" variant="body_xs" color="textMuted">
+                    {lang('msgNote')}
                   </Text>
                 </Box>
+
+                <Box mt="l+">
+                  <BottomSheetInput
+                    value={message}
+                    onChangeText={text => setMessage(text)}
+                    blurOnSubmit
+                    placeholder={lang('writeMSG')}
+                    multiline
+                    autoFocus
+                  />
+
+                  <Box alignItems="flex-end" mt="xs">
+                    <Text variant="body_xs" color="textMuted">
+                      {message.length} / 400
+                    </Text>
+                  </Box>
+                </Box>
               </Box>
+            </Box>
+            <Box mx="m" mb="s">
+              <CustomButton
+                label={lang('save')}
+                onPress={() => {
+                  deliveryTimeModalRef?.current?.dismiss();
+                }}
+                disabled={message?.length === 0}
+              />
             </Box>
           </Box>
         </BottomSheetModal>

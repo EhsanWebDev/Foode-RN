@@ -15,7 +15,7 @@ export enum AppFonts {
 }
 export enum AppFontSizes {
   _header = 24,
-  _top_header = 20,
+  _top_header = 18,
   _header1 = 18,
 
   _regular = 16,

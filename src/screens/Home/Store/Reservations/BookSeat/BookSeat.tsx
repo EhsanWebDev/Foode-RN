@@ -32,13 +32,6 @@ type bookingValues = {
   booking_instruction: string;
 };
 
-const tableBookingSchema = Yup.object().shape({
-  people: Yup.string().required('*Required'),
-  booking_date: Yup.date().required('*Required'),
-  booking_timing: Yup.string().required('*Required'),
-  booking_instruction: Yup.string(),
-});
-
 const BookSeat = ({navigation}) => {
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +40,13 @@ const BookSeat = ({navigation}) => {
   const {t: lang} = useTranslation();
 
   const {user} = useReduxSelector(store => store.user);
+
+  const tableBookingSchema = Yup.object().shape({
+    people: Yup.string().required(`*${lang('required')}`),
+    booking_date: Yup.date().required(`*${lang('required')}`),
+    booking_timing: Yup.string().required(`*${lang('required')}`),
+    booking_instruction: Yup.string(),
+  });
 
   const handleBooking = async (values: bookingValues) => {
     if (user) {
@@ -80,14 +80,17 @@ const BookSeat = ({navigation}) => {
     return (
       <ScreenContainer>
         <StatusBar barStyle="default" />
-        <Header label="Reserve a Table" onBackPress={navigation.goBack} />
+        <Header
+          label={lang('reserve a Table')}
+          onBackPress={navigation.goBack}
+        />
 
         <Box flex={1} mx="l">
           <Box flex={1} justifyContent="center">
             <Box alignItems="center">
               <Icon name="user-x" size={80} color={colors.primary} />
               <Text variant="body_sm" mt="l">
-                Please login in order to book a table
+                {lang('loginToBookTable')}
               </Text>
             </Box>
 
@@ -95,7 +98,7 @@ const BookSeat = ({navigation}) => {
               onPress={() => navigation.navigate('AuthStack')}
               mt="l"
               mx="l"
-              label="Sign in"
+              label={lang('login')}
             />
           </Box>
         </Box>

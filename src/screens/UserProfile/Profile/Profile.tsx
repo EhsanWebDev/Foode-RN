@@ -40,16 +40,19 @@ const Profile = ({navigation}) => {
         <Box flex={1} justifyContent="center">
           <Box alignItems="center">
             <Text variant="title_bold" marginVertical="s">
-              Please login to see your profile
+              {lang('loginToSeeProfile')}
             </Text>
             <CustomButton
-              label="Login"
+              label={lang('login')}
               buttonSize="small"
               buttonType="outlined"
               showLeftIcon
               iconName="login"
               iconFamily="MaterialCommunityIcons"
               onPress={() => navigation.navigate('AuthStack')}
+              textStyles={{
+                textTransform: 'capitalize',
+              }}
             />
           </Box>
         </Box>
@@ -69,12 +72,12 @@ const Profile = ({navigation}) => {
                 />
                 <Box ml="size8">
                   <Text variant="body_bold">{name}</Text>
-                  <Text variant="body_sm" color="muted">
+                  {/* <Text variant="body_sm" color="muted">
                     Private Member
-                  </Text>
+                  </Text> */}
                 </Box>
               </Box>
-              <CustomButton
+              {/* <CustomButton
                 label="Edit"
                 buttonSize="small"
                 buttonType="outlined"
@@ -82,7 +85,7 @@ const Profile = ({navigation}) => {
                 iconName="pencil"
                 iconFamily="MaterialCommunityIcons"
                 onPress={() => {}}
-              />
+              /> */}
             </Box>
             <ProfileTab
               activeTab={tabIndex}

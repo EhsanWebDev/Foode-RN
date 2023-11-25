@@ -17,16 +17,17 @@ const initial_values = {
   email: '',
 };
 
-const forgotPassSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('*Required'),
-});
-
 const RegisteredCredentials = ({navigation}) => {
   const dispatch = useReduxDispatch();
   const {t: lang} = useTranslation();
 
   const {forgotPass_status} = useReduxSelector(state => state.user);
 
+  const forgotPassSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email')
+      .required(`*${lang('required')}`),
+  });
   const handleSendMail = (values: {email: string}) => {
     dispatch(forgotPassword({forgot_email: values.email}));
   };
@@ -48,8 +49,7 @@ const RegisteredCredentials = ({navigation}) => {
         }) => (
           <Box flex={2.5} mt="xl" mx="l">
             <Input
-              required
-              placeholder={lang('email')}
+              placeholder={lang('emailAdd')}
               value={values.email}
               onChangeText={handleChange('email')}
               onBlur={() => setFieldTouched('email')}

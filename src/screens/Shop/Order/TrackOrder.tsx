@@ -70,35 +70,24 @@ const Item = ({item, onItemPress}: OrderItemProps) => {
     order_type,
     address,
   } = item || {};
-  const orderStatuses = {
-    pending: {
-      title: 'Process',
-      bg: 'success',
-    },
-    completed: {
-      title: 'Completed',
-      bg: 'completed',
-    },
-    canceled: {
-      title: 'Canceled',
-      bg: 'error',
-    },
-  };
   return (
     <Pressable onPress={onItemPress}>
       <Card variant="primary" paddingVertical="s_m" px="s" mb="m" mx="xs">
         <Box flexDirection="row" justifyContent="space-between">
           <Box flex={1} flexDirection="row" justifyContent="space-between">
             <Box ml="xs" flex={1}>
-              <Text variant="title_bold">Order Id: {order_ref}</Text>
-              <Text variant="body_xs">
-                Order type:{' '}
+              <Text variant="body_sm_bold">Order Id: {order_ref}</Text>
+              <Text variant="body_xs" mt="xxs">
+                {lang('orderType')}:{' '}
                 <Text variant="body_xs_bold" color="primary">
-                  {order_type === 1 ? 'Pickup' : 'Delivery'}
+                  {order_type === 1 ? lang('pickup') : lang('delivery')}
                 </Text>
               </Text>
-              <Text variant="body_xs_bold" color="primary">
-                Order total: CHF {total_price}
+              <Text variant="body_xs_bold" mt="xxs">
+                {lang('orderTotal')}:{' '}
+                <Text variant="body_xs_bold" color="primary">
+                  CHF {total_price}
+                </Text>
               </Text>
             </Box>
             <Box>
@@ -109,9 +98,9 @@ const Item = ({item, onItemPress}: OrderItemProps) => {
           </Box>
         </Box>
         {order_type === 2 && (
-          <Text variant="body_xs_bold" color="primary">
+          <Text ml="xs" variant="body_xs_bold" mt="xxs">
             {lang('address')}:{' '}
-            <Text variant="body_xs_2" numberOfLines={2}>
+            <Text variant="body_xs_2" numberOfLines={2} color="primary">
               {address}
             </Text>
           </Text>

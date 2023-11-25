@@ -60,7 +60,7 @@ const ImageCarousel = ({imagesData = []}: Props) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            width: moderateScale(imagesData.length * 30),
+            width: moderateScale(imagesData.length * 36),
             alignItems: 'center',
             alignSelf: 'center',
             marginTop: moderateVerticalScale(-8),

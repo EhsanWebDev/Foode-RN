@@ -9,7 +9,9 @@ type errorTypes = {
 export const handleApiErrors = (error: errorTypes) => {
   const {message} = error || {};
 
-  showToast({message});
+  console.log({message});
+
+  showToast({message: message ?? ''});
 };
 export function dateToFromNowDaily(myDate: Date) {
   // get from-now for this date

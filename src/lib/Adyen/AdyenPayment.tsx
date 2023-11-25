@@ -6,8 +6,11 @@ import {AdyenCheckout} from '@adyen/react-native';
 import api from '../../store/fetcher/fetcher';
 import {apiEndpoints} from '../../store/fetcher/appEndpoints';
 import showToast from '../../utils/toast';
+import {useTranslation} from 'react-i18next';
 
 const AdyenPayment = ({children, config, onSubmit, orderId}) => {
+  const {t: lang} = useTranslation();
+
   const handlePayment = async (cardInfo, adyenComponent) => {
     try {
       const response = await api.post(apiEndpoints.ADYEN_PAYMENT_URL, {
@@ -22,7 +25,7 @@ const AdyenPayment = ({children, config, onSubmit, orderId}) => {
     } catch (_) {
       showToast({
         type: 'error',
-        message: 'Payment declined',
+        message: lang('payDeclined'),
         visibilityTime: 2000,
       });
     }
@@ -38,7 +41,7 @@ const AdyenPayment = ({children, config, onSubmit, orderId}) => {
       onFail={() => {
         showToast({
           type: 'error',
-          message: 'Payment declined',
+          message: lang('payDeclined'),
           visibilityTime: 2000,
         });
       }}>

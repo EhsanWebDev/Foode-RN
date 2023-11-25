@@ -12,10 +12,11 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 import {AppFonts, Theme} from '../../theme/theme';
+import {useAppTheme} from '../../utils/hooks';
 
 const screenWidth = Dimensions.get('window').width;
 
-const DISTANCE_BETWEEN_TABS = 32;
+const DISTANCE_BETWEEN_TABS = 12;
 
 const TabBar = ({
   state,
@@ -27,7 +28,6 @@ const TabBar = ({
   const scrollViewRef = useRef<ScrollView>(null);
   const transform = [];
   const inputRange = state.routes.map((_, i) => i);
-
   // keep a ref to easily scroll the tab bar to the focused label
   const outputRangeRef = useRef<number[]>([]);
 
@@ -78,7 +78,6 @@ const TabBar = ({
           : outputRange[0],
     });
   }
-
   // scrolls to the active tab label when a new tab is focused
   useEffect(() => {
     if (
@@ -130,9 +129,9 @@ const TabBar = ({
     const inputRange = state.routes.map((_, i) => i);
     const opacity = position.interpolate({
       inputRange,
-      outputRange: inputRange.map(i => (i === index ? 1 : 0.5)),
+      outputRange: inputRange.map(i => (i === index ? 1 : 0.6)),
     });
-
+    const {colors} = useAppTheme();
     return (
       <TouchableOpacity
         key={route.key}
@@ -144,7 +143,18 @@ const TabBar = ({
         <View
           onLayout={event => onLayout(event, index)}
           style={styles.buttonContainer}>
-          <Animated.Text style={[styles.text, {opacity}]}>
+          <Animated.Text
+            style={[
+              styles.text,
+              {
+                opacity,
+
+                color: isFocused ? colors.primary : colors.mainForeground,
+                backgroundColor: isFocused
+                  ? colors.primaryLight
+                  : 'transparent',
+              },
+            ]}>
             {label}
           </Animated.Text>
         </View>
@@ -153,22 +163,23 @@ const TabBar = ({
   });
   const theme = useTheme<Theme>();
   const {colors} = theme;
+
   return (
     <View style={styles.contentContainer}>
-      <Animated.ScrollView
+      <ScrollView
         horizontal
         ref={scrollViewRef}
         showsHorizontalScrollIndicator={false}
         style={styles.container}>
         {labels}
-        <Animated.View
+        {/* <Animated.View
           style={[
             styles.indicator,
             {backgroundColor: colors.primary},
             {transform},
           ]}
-        />
-      </Animated.ScrollView>
+        /> */}
+      </ScrollView>
     </View>
   );
 };
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     height: 30,
-    marginTop: 20,
+    marginTop: 8,
   },
   indicator: {
     backgroundColor: 'black',
@@ -199,10 +210,13 @@ const styles = StyleSheet.create({
     width: 1,
   },
   text: {
-    color: 'black',
     fontSize: 13,
     textAlign: 'center',
     fontFamily: AppFonts.Primary_SemiBold,
+    paddingVertical: 4,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    overflow: 'hidden',
   },
 });
 

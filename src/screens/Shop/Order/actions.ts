@@ -25,7 +25,7 @@ export const placeOrder = createAsyncThunk(
         },
       );
 
-      console.log({params});
+      console.log({response});
 
       const {data} = response || {};
       const {status, message} = data || {};
@@ -36,6 +36,7 @@ export const placeOrder = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
+      console.log({error});
       return rejectWithValue(error.message);
     }
   },

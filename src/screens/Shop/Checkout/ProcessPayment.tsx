@@ -13,12 +13,13 @@ import {useTranslation} from 'react-i18next';
 
 const PaymentButton = ({price, count}) => {
   const {start} = useAdyenCheckout();
+  const {t: lang} = useTranslation();
 
   return (
     <Box>
       <CartButton
         onPress={() => start('scheme')}
-        label={'PROCESS PAYMENT'}
+        label={lang('processPayment')}
         price={price}
         itemsCount={count}
       />
@@ -39,7 +40,7 @@ const ProcessPayment = ({navigation, route}) => {
   const handleSubmit = (message: 'Refused' | 'Authorised') => {
     if (message === 'Refused') {
       showToast({
-        message: 'Payment declined',
+        message: lang('payDeclined'),
         visibilityTime: 2000,
       });
       return;
@@ -51,7 +52,7 @@ const ProcessPayment = ({navigation, route}) => {
 
   return (
     <ScreenContainer>
-      <Header label="Process Payment" />
+      <Header label={lang('processPayment')} />
       <Box mx="l" flex={1} justifyContent="center">
         <Text variant="body_sm_bold" textAlign="center">
           {lang('orderSuccess')}

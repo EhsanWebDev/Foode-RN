@@ -8,8 +8,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import Text from '../../Text/CustomText';
 
-const width = 26;
-const height = 14;
+const width = 44;
+const height = 25;
 
 const PaginationItem: React.FC<{
   index: number;
@@ -75,7 +75,7 @@ const PaginationItem: React.FC<{
           },
           animStyle,
         ]}>
-        <Text variant="body_xs_bold" color="text">
+        <Text variant="body_sm_bold" color="text">
           {currentIndex}/{length}
         </Text>
       </Animated.View>
@@ -84,6 +84,6 @@ const PaginationItem: React.FC<{
 };
 
 const styles = StyleSheet.create({
-  container: {borderRadius: 6, overflow: 'hidden'},
+  container: {borderRadius: 16, overflow: 'hidden'},
 });
 export default PaginationItem;

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
   },
-  checkIcon: {position: 'absolute', right: 16, top: 17},
+  checkIcon: {position: 'absolute', right: 16, top: 19},
   input: {
     backgroundColor: 'white',
     borderWidth: 1,
